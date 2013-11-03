@@ -21,19 +21,19 @@ public class GameState extends State {
 	}
 
 	public void renderHUD() {
-		if (!paused) {
-			NewGLHandler.setCurrentColor(
-					new float[] { 0.0f, 0.0f, 0.0f, 0.8f }, true);
-			NewGLHandler.draw2DRect(0, 0, Zordz.WIDTH, 32, true);
-			NewGLHandler.resetColors();
-			if (zordz.hp <= (100 * 0.4))
-				Drawer.setCol(Color.red);
-			Text.render("HP:" + zordz.hp + "/100", 0, 0, 16, 16);
-			Drawer.setCol(Color.white);
-			Text.render("Z", 300, 0, 8, 8);
-			Text.render("X", 332, 0, 8, 8);
-			NewGLHandler.resetColors();
-		} else {
+		NewGLHandler.setCurrentColor(new float[] { 0.0f, 0.0f, 0.0f, 0.8f },
+				true);
+		NewGLHandler.draw2DRect(0, 0, Zordz.WIDTH, 32, true);
+		NewGLHandler.resetColors();
+		if (zordz.hp <= (100 * 0.4))
+			Drawer.setCol(Color.red);
+		Text.render("HP:" + zordz.hp + "/100", 0, 0, 16, 16);
+		Drawer.setCol(Color.white);
+		Text.render("Z", 300, 0, 8, 8);
+		Text.render("X", 332, 0, 8, 8);
+		NewGLHandler.resetColors();
+
+		if (paused) {
 			Text.render("PAUSED", Zordz.WIDTH / 2 - 3 * 30,
 					Zordz.HEIGHT / 2 - 30, 30, 30);
 		}
