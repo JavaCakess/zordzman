@@ -5,6 +5,7 @@ import java.awt.Color;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
+import zordz.entity.TextParticle;
 import zordz.gfx.Drawer;
 import zordz.gfx.Text;
 
@@ -21,19 +22,8 @@ public class Screen {
 	}
 
 	public void render() {
-		zordz.level.render();
-		renderHUD();
+		zordz.state.render();
 	}
-	
-	private void renderHUD() {
-		NewGLHandler.setCurrentColor(new float[]{0.0f, 0.0f, 0.0f, 0.8f}, true);
-		NewGLHandler.draw2DRect(0, 0, Zordz.WIDTH, 32, true);
-		NewGLHandler.resetColors();
-		if (zordz.hp <= (100 * 0.4)) Drawer.setCol(Color.red);
-		Text.render("HP:"+ zordz.hp + "/100", 0, 0, 16, 16);
-		NewGLHandler.resetColors();
-	}
-
 	public void setOff(float xOff, float yOff) {
 		if (xOff < 0) xOff = 0;
 		if (yOff < 0) yOff = 0; 
@@ -41,13 +31,11 @@ public class Screen {
 		this.yOff = yOff;
 	}
 	
+	int times = 6;
+	
 	public void update() {
 		//logic 'n' stuff goes here!
-		if (Keyboard.isKeyDown(Keyboard.KEY_UP) && zordz.hp < 100) zordz.hp++;
-		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN) && zordz.hp > 0) zordz.hp--;
-		
-		zordz.level.tick();
-		tickCount++;
+		zordz.state.tick();
 		//Don't touch this stuff. Logic above! ^
 		Display.update();
 		Display.sync(60); //60 FPS. My favourite...
