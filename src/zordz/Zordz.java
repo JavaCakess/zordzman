@@ -22,6 +22,7 @@ public class Zordz {
 	public State state;
 	public TitleState titlestate;
 	public GameState gamestate;
+	public InputHandler inputhandler;
 	public static Zordz zordz;
 	
 	public static void main(String[] args) {
@@ -56,6 +57,7 @@ public class Zordz {
 		titlestate = new TitleState(this);
 		gamestate = new GameState(this);
 		state = titlestate;
+		inputhandler = new InputHandler(this);
 		SoundPlayer.init();
 		zordz = this;
 	}
