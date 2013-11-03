@@ -34,8 +34,8 @@ public class GameState extends State {
 			Text.render("X", 332, 0, 8, 8);
 			NewGLHandler.resetColors();
 		} else {
-			Text.render("PAUSED", zordz.WIDTH / 2 - 3 * 30,
-					zordz.HEIGHT / 2 - 30, 30, 30);
+			Text.render("PAUSED", Zordz.WIDTH / 2 - 3 * 30,
+					Zordz.HEIGHT / 2 - 30, 30, 30);
 		}
 	}
 
