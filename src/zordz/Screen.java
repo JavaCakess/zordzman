@@ -36,6 +36,7 @@ public class Screen {
 	public void update() {
 		//logic 'n' stuff goes here!
 		zordz.state.tick();
+		zordz.inputhandler.doInput();
 		//Don't touch this stuff. Logic above! ^
 		Display.update();
 		Display.sync(60); //60 FPS. My favourite...
