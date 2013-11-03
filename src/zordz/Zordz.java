@@ -41,11 +41,14 @@ public class Zordz {
 	}
 
 	public void start() {
-		init(); //Initialize variables, etc.
-		run();  //Run the game!
-		stop(); //Stop running the game, and close the window.
+		init();
+		run();
+		stop();
 	}
 	
+	/** 
+	 * Initialize variables, etc
+	 */
 	public void init() {
 		NewGLHandler.init2D(WIDTH, HEIGHT);
 		screen = new Screen(this);
@@ -57,6 +60,9 @@ public class Zordz {
 		zordz = this;
 	}
 	
+	/**
+	 * Run the game!
+	 */
 	public void run() {
 		while (!Display.isCloseRequested()) {
 			NewGLHandler.wipeScreen();
@@ -65,6 +71,9 @@ public class Zordz {
 		}
 	}
 	
+	/**
+	 * Clean up (close the window, etc.). Used before quitting
+	 */
 	public void stop() {
 		Display.destroy();
 		AL.destroy();
