@@ -1,12 +1,19 @@
 package zordz.util;
-import static org.lwjgl.openal.AL10.*;
+
+import static org.lwjgl.openal.AL10.AL_BUFFER;
+import static org.lwjgl.openal.AL10.alBufferData;
+import static org.lwjgl.openal.AL10.alGenBuffers;
+import static org.lwjgl.openal.AL10.alGenSources;
+import static org.lwjgl.openal.AL10.alSourcePlay;
+import static org.lwjgl.openal.AL10.alSourcei;
 
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import org.lwjgl.util.WaveData;
+
+import zordz.util.Sound;
 
 public class SoundPlayer {
 

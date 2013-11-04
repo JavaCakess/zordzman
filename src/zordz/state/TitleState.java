@@ -3,6 +3,7 @@ package zordz.state;
 import java.awt.Color;
 
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.Display;
 import org.newdawn.slick.opengl.Texture;
 
 import zordz.Zordz;
@@ -19,6 +20,7 @@ public class TitleState extends State {
 	Texture titlescreen = NewGLHandler.loadTexture("res/titlescreen.png");
 	Level titleLevel = new Level(640 / 32, 480 / 32);
 	Button sp = new Button("Singleplayer", Color.red, 232, 200, 12, 12);
+	Button exit = new Button("Quit", Color.orange, 232, 260, 52, 16);
 	public TitleState(Zordz zordz) {
 		this.zordz = zordz;
 		for (int x = 0; x < titleLevel.getWidth(); x++) {
@@ -37,58 +39,15 @@ public class TitleState extends State {
 		Text.render("ordzman", titleX + 32, 56, 32, 16);
 		Drawer.setCol(Color.white);
 		sp.draw();
+		exit.draw();
 	}
 	public void tick() {
 		if (sp.clicked()) {
 			SoundPlayer.play(Sound.button_clicked);
-			zordz.state = zordz.gamestate;
-		}
-	}
-
-	private class Button {
-		String text;
-		Color col;
-		float x, y;
-		int tx, tsize;
-		int width = (int) (256 / 1.5f), height = (int) (64 / 1.5f);
-		final Texture tex = NewGLHandler.loadTexture("res/titlescr/button_plate.png");
-		public Button(String text, Color col, float x, float y, int tx, int ts) {
-			this.text = text;
-			this.col = col;
-			this.x = x;
-			this.y = y;
-			this.tx = tx;
-			tsize = ts;
-		}
-
-		public void draw() {
-			NewGLHandler.drawTexture2D(tex, x, y, width, height);
-			Drawer.setCol(col);
-			Text.render(text, x + tx, y + 13, tsize, tsize);
-			Drawer.setCol(Color.white);
-			if (isMouseInside()) {
-				NewGLHandler.setCurrentColor(new float[]{1.0f, 1.0f, 1.0f, 0.5f}, true);
-				NewGLHandler.draw2DRect(x, y, width, height, true);
-				Drawer.setCol(Color.white);
-			}
-		}
-
-		public boolean isMouseInside() {
-			return (Mouse.getX() > x && Mouse.getX() < x + width
-					&& 480-Mouse.getY() > y && 480-Mouse.getY() < y + height);
-		}
-
-		public boolean clicked() {
-			if (isMouseInside()) {
-				while (Mouse.next()){
-					if (!Mouse.getEventButtonState()) {
-						if (Mouse.getEventButton() == 0) {
-							return true;
-						}
-					}
-				}
-			}
-			return false;
+			zordz.switchState(zordz.gamestate);
+		} else if (exit.clicked()) {
+			System.out.println("Stopping Game");
+			zordz.stop();
 		}
 	}
 

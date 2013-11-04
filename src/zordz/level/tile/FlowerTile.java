@@ -5,7 +5,7 @@ import zordz.gfx.SpriteSheet;
 import zordz.level.Level;
 
 public class FlowerTile extends Tile {
-
+	
 	public FlowerTile(int id, int ssx, int ssy) {
 		super(id, ssx, ssy, false);
 	}

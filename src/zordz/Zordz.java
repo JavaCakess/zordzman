@@ -6,6 +6,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
 import zordz.level.Level;
+import zordz.state.Button;
 import zordz.state.GameState;
 import zordz.state.State;
 import zordz.state.TitleState;
@@ -80,5 +81,10 @@ public class Zordz {
 		Display.destroy();
 		AL.destroy();
 		System.exit(0);
+	}
+	
+	public void switchState(State state) {
+		this.state = state;
+		Button.between_state_cd = 15;
 	}
 }

@@ -31,6 +31,7 @@ public class Level {
 				}
 			}
 		}
+		tiles[0][4] = Tile.WATER.getID();
 	}
 	
 	public Level(int WIDTH, int HEIGHT) {

@@ -10,6 +10,7 @@ public abstract class Tile {
 	public static Tile[] tiles = new Tile[256];
 	public static Tile GRASS = new GrassTile(0, 0, 0);
 	public static Tile FLOWER = new FlowerTile(1, 1, 0);
+	public static Tile WATER = new WaterTile(2);
 	
 	public Tile(int id, int ssx, int ssy, boolean solid) {
 		this.ssx = ssx;
