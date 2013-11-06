@@ -4,7 +4,7 @@ import zordz.level.Level;
 
 public abstract class Tile {
 
-	int id, ssx, ssy;
+	int id, ssx, ssy, col;
 	boolean solid = false;
 	
 	public static Tile[] tiles = new Tile[256];
@@ -12,7 +12,7 @@ public abstract class Tile {
 	public static Tile FLOWER = new FlowerTile(1, 1, 0);
 	public static Tile WATER = new WaterTile(2);
 	
-	public Tile(int id, int ssx, int ssy, boolean solid) {
+	public Tile(int id, int ssx, int ssy, int col, boolean solid) {
 		this.ssx = ssx;
 		this.ssy = ssy;
 		this.id = id;
@@ -34,5 +34,9 @@ public abstract class Tile {
 			}
 		}
 		return null;
+	}
+
+	public int getCol() {
+		return col;
 	}
 }

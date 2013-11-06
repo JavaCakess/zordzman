@@ -7,6 +7,7 @@ import org.lwjgl.opengl.DisplayMode;
 
 import zordz.level.Level;
 import zordz.state.Button;
+import zordz.state.ChooseLevelState;
 import zordz.state.GameState;
 import zordz.state.State;
 import zordz.state.TitleState;
@@ -23,6 +24,7 @@ public class Zordz {
 	public State state;
 	public TitleState titlestate;
 	public GameState gamestate;
+	public ChooseLevelState chooselevelstate;
 	public InputHandler inputhandler;
 	public static Zordz zordz;
 	
@@ -54,9 +56,10 @@ public class Zordz {
 	public void init() {
 		NewGLHandler.init2D(WIDTH, HEIGHT);
 		screen = new Screen(this);
-		level = new Level();
+		level = Level.loadLevel("res/levels/test_0.lvl");
 		titlestate = new TitleState(this);
 		gamestate = new GameState(this);
+		chooselevelstate = new ChooseLevelState(this);
 		state = titlestate;
 		inputhandler = new InputHandler(this);
 		SoundPlayer.init();

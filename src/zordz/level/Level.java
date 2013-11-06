@@ -1,7 +1,10 @@
 package zordz.level;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 import zordz.Zordz;
 import zordz.entity.Entity;
@@ -13,40 +16,58 @@ public class Level {
 	public static final int WIDTH = 20;
 	public static final int HEIGHT = 15;
 	private int width, height;
+	public int tickCount = 0;
 	private byte[][] tiles;
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
 	private Random rand = new Random();
 	private Player player;
 	
 	public Level() {
-		width = WIDTH;
-		height = HEIGHT;
-		tiles = new byte[WIDTH][WIDTH];
-		for (int x = 0; x < WIDTH; x++) {
-			for (int y = 0; y < HEIGHT; y++) {
-				if (rand.nextInt(5) == 0) {
-					tiles[x][y] = Tile.FLOWER.getID();
-				} else {
-					tiles[x][y] = Tile.GRASS.getID();
-				}
-			}
+		
+	}
+	
+	public static Level loadLevel(String path) {
+		int yPos = 0;
+		Scanner x = null;
+		
+		try {
+			x = new Scanner(new File(path));
+		} catch (FileNotFoundException e) {
+			System.err.println("[ERROR] Could not find file " + path + "!");
 		}
-		tiles[0][4] = Tile.WATER.getID();
+		int wd = 0, ht = 0;
+		while (x.hasNextLine()) {
+			String row = x.nextLine();
+			String[] tiles = row.split(" ");
+			wd = tiles.length;
+			ht++;
+		}
+		x.close();
+		try {
+			x = new Scanner(new File(path));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		Level level = new Level(wd, ht);
+		while (x.hasNextLine()) {
+			String row = x.nextLine();
+			String[] tiles = row.split(" ");
+			for (int i = 0; i < wd; i++) {
+				level.setTileIDAt(i, yPos, Byte.parseByte(tiles[i]));
+			}
+			yPos++;
+		}
+		ht = yPos;
+		level.setWidth(wd);
+		level.setHeight(ht);
+		x.close();
+		return level;
 	}
 	
 	public Level(int WIDTH, int HEIGHT) {
 		this.setWidth(WIDTH);
 		this.setHeight(HEIGHT);
 		tiles = new byte[WIDTH][WIDTH];
-		for (int x = 0; x < WIDTH; x++) {
-			for (int y = 0; y < HEIGHT; y++) {
-				if (rand.nextInt(5) == 0) {
-					tiles[x][y] = Tile.FLOWER.getID();
-				} else {
-					tiles[x][y] = Tile.GRASS.getID();
-				}
-			}
-		}
 	}
 
 	public byte getTileIDAt(int x, int y) {	
@@ -83,6 +104,7 @@ public class Level {
 			Entity e = entities.get(i);
 			e.tick();
 		}
+		tickCount++;
 	}
 
 	public int getWidth() {

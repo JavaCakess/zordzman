@@ -7,7 +7,7 @@ import zordz.level.Level;
 public class GrassTile extends Tile {
 
 	public GrassTile(int id, int ssx, int ssy) {
-		super(id, ssx, ssy, false);
+		super(id, ssx, ssy, 0x00FF00, false);
 	}
 
 	public void render(Level level, float x, float y) {

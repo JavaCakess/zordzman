@@ -44,9 +44,9 @@ public class TitleState extends State {
 	public void tick() {
 		if (sp.clicked()) {
 			SoundPlayer.play(Sound.button_clicked);
-			zordz.switchState(zordz.gamestate);
+			zordz.switchState(zordz.chooselevelstate);
 		} else if (exit.clicked()) {
-			System.out.println("Stopping Game");
+			System.out.println("[INFO] Stopping Game");
 			zordz.stop();
 		}
 	}

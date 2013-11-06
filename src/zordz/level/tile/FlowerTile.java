@@ -7,7 +7,7 @@ import zordz.level.Level;
 public class FlowerTile extends Tile {
 	
 	public FlowerTile(int id, int ssx, int ssy) {
-		super(id, ssx, ssy, false);
+		super(id, ssx, ssy, 0xFFFF00, false);
 	}
 
 	public void render(Level level, float x, float y) {
