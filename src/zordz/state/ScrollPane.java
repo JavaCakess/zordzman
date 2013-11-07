@@ -38,6 +38,7 @@ public class ScrollPane {
 		NewGLHandler.setCurrentColor(new float[]{0.4f, 0.4f, 0.4f}, false);
 		NewGLHandler.draw2DRect(x, y, width, height, true);
 		Drawer.setCol(Color.black);
+		NewGLHandler.draw2DRect(x-1, y, width+1, height+1, false);
 		Text.render(name, (x + (width / 2)) - (name.length() * 8), y + 2, 16, 16);
 		NewGLHandler.draw2DRect(x + 20, y + 20, width - 40, height - 40, false);
 		Drawer.setCol(Color.white);
@@ -45,6 +46,9 @@ public class ScrollPane {
 		down.draw();
 		NewGLHandler.setCurrentColor(new float[]{0.8f, 0.8f, 0.8f}, false);
 		int barSize = 289 / elements.size();
+		NewGLHandler.setCurrentColor(new float[]{0.85f, 0.85f, 0.85f, 0.7f}, true);
+		NewGLHandler.draw2DRect(x + width - 18, y + 36, 16, 289, true);
+		Drawer.setCol(Color.white);
 		NewGLHandler.draw2DRect(x + width - 18, y + 36 + (barSize * currentInd), 16, barSize, true);
 		
 		int correctedStart = start, correctedFinish = start + 8;
@@ -88,11 +92,22 @@ public class ScrollPane {
 			if (currentInd != 0) currentInd--;
 			else return;
 			SoundPlayer.play(Sound.scroll);
+			event(ScrollPaneEType.SCROLLBAR_UP);
 		} else if (down.clicked()) {
 			if (currentInd != elements.size()-1) currentInd++;
 			else return;
 			SoundPlayer.play(Sound.scroll);
+			event(ScrollPaneEType.SCROLLBAR_DOWN);
 		}
 	}
 
+	public void event(ScrollPaneEType type) {
+		if (event != null) {
+			event.onEvent(type);
+		}
+	}
+
+	public String getSelected() {
+		return elements.get(currentInd);
+	}
 }

@@ -45,7 +45,7 @@ public class ScrButton {
 				if (cooldown > 0) {
 					return false;
 				}
-				cooldown = 15;
+				cooldown = 9;
 				return true;
 			}
 		}
