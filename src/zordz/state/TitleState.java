@@ -2,8 +2,6 @@ package zordz.state;
 
 import java.awt.Color;
 
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.Display;
 import org.newdawn.slick.opengl.Texture;
 
 import zordz.Zordz;

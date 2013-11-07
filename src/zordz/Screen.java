@@ -1,16 +1,8 @@
 package zordz;
 
-import java.awt.Color;
-
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
-
-import zordz.entity.TextParticle;
-import zordz.gfx.Drawer;
-import zordz.gfx.Text;
 import zordz.state.Button;
-
-import cjaf.tools.NewGLHandler;
+import zordz.state.ScrButton;
 
 public class Screen {
 
@@ -36,6 +28,7 @@ public class Screen {
 		//logic 'n' stuff goes here!
 		zordz.state.tick();
 		if (Button.between_state_cd != 0 ) Button.between_state_cd--;
+		if (ScrButton.cooldown != 0 ) ScrButton.cooldown--;
 		zordz.inputhandler.doInput();
 		//Don't touch this stuff. Logic above! ^
 		Display.update();

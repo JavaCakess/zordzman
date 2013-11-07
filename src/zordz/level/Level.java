@@ -3,12 +3,12 @@ package zordz.level;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Random;
+//import java.util.Random;
 import java.util.Scanner;
 
 import zordz.Zordz;
 import zordz.entity.Entity;
-import zordz.entity.Player;
+//import zordz.entity.Player;
 import zordz.level.tile.Tile;
 
 public class Level {
@@ -19,8 +19,8 @@ public class Level {
 	public int tickCount = 0;
 	private byte[][] tiles;
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
-	private Random rand = new Random();
-	private Player player;
+	//private Random rand = new Random();
+	//private Player player;
 	
 	public Level() {
 		

@@ -3,8 +3,8 @@ package zordz.gfx;
 public class Text {
 
 	private static String chars = 
-		"ABCDEFGHIJKLMNOPQRSTUVWXYZ      " + 
-		"0123456789.,:;'\"!?$%()-=+/*     ";
+		 "ABCDEFGHIJKLMNOPQRSTUVWXYZ      " + 
+		"0123456789.,:;'\"!?$%()-=+/*_     ";
 
 	public static void render(String msg, float x, float y, float w, float h) {
 		msg = msg.toUpperCase();

@@ -1,7 +1,5 @@
 package zordz.entity;
 
-import java.awt.Rectangle;
-
 import zordz.level.Level;
 
 public abstract class Entity {

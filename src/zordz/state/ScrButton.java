@@ -6,7 +6,6 @@ import org.lwjgl.input.Mouse;
 import org.newdawn.slick.opengl.Texture;
 
 import zordz.gfx.Drawer;
-import zordz.gfx.Text;
 import cjaf.tools.NewGLHandler;
 
 public class ScrButton {
@@ -15,6 +14,7 @@ public class ScrButton {
 	int width = 16, height = 16;
 	final Texture tex = NewGLHandler.loadTexture("res/levelselectscr/scr_button.png");
 	boolean flipped = false;
+	public static int cooldown = 20;
 	public ScrButton(float x, float y, boolean flipped) {
 		this.x = x;
 		this.y = y;
@@ -42,10 +42,10 @@ public class ScrButton {
 	public boolean clicked() {
 		if (isMouseInside()) {
 			if (Mouse.isButtonDown(0)) {
-				if (Button.between_state_cd > 0) {
-					Button.between_state_cd = 15;
+				if (cooldown > 0) {
 					return false;
 				}
+				cooldown = 15;
 				return true;
 			}
 		}
