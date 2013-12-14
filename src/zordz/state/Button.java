@@ -5,6 +5,7 @@ import java.awt.Color;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.opengl.Texture;
 
+import zordz.Zordz;
 import zordz.gfx.Drawer;
 import zordz.gfx.Text;
 import cjaf.tools.NewGLHandler;
@@ -28,24 +29,28 @@ public class Button {
 	}
 
 	public void draw() {
-		NewGLHandler.drawTexture2D(tex, x, y, width, height);
+		float ox = Zordz.zordz.screen.xOff;
+		float oy = Zordz.zordz.screen.yOff;
+		NewGLHandler.drawTexture2D(tex, ox + x, oy + y, width, height);
 		Drawer.setCol(col);
-		Text.render(text, x + tx, y + 13, tsize, tsize);
+		Text.render(text, ox + x + tx, oy + y + 13, tsize, tsize);
 		Drawer.setCol(Color.white);
-		if (isMouseInside()) {
+		if (isMouseInside(ox, oy)) {
 			NewGLHandler.setCurrentColor(new float[]{1.0f, 1.0f, 1.0f, 0.5f}, true);
-			NewGLHandler.draw2DRect(x, y, width, height, true);
+			NewGLHandler.draw2DRect(ox + x, oy + y, width, height, true);
 			Drawer.setCol(Color.white);
 		}
 	}
 
-	public boolean isMouseInside() {
-		return (Mouse.getX() > x && Mouse.getX() < x + width
-				&& 480-Mouse.getY() > y && 480-Mouse.getY() < y + height);
+	public boolean isMouseInside(float ox, float oy) {
+		return (Mouse.getX() > x && Mouse.getX() <  x + width
+				&& 480-Mouse.getY() > y && 480-Mouse.getY() <  y + height);
 	}
 
 	public boolean clicked() {
-		if (isMouseInside()) {
+		float ox = Zordz.zordz.screen.xOff;
+		float oy = Zordz.zordz.screen.yOff;
+		if (isMouseInside(ox, oy)) {
 			if (Mouse.isButtonDown(0)) {
 				if (between_state_cd > 0) {
 					between_state_cd = 15;

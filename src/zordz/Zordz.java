@@ -56,7 +56,6 @@ public class Zordz {
 	public void init() {
 		NewGLHandler.init2D(WIDTH, HEIGHT);
 		screen = new Screen(this);
-		level = Level.loadLevel("res/levels/test_0.lvl");
 		titlestate = new TitleState(this);
 		gamestate = new GameState(this);
 		chooselevelstate = new ChooseLevelState(this);

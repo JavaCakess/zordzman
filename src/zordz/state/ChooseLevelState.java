@@ -14,6 +14,7 @@ public class ChooseLevelState extends State {
 	Level stateLevel = new Level(20, 15);
 	ScrollPane selectLevel = new ScrollPane("Select Level", 80, 60, 480, (480 / 12 * 9) + 2, 0, 0, null);
 	Button select;
+	Button backToTitle;
 	
 	public ChooseLevelState(Zordz zordz) {
 		this.zordz = zordz;
@@ -22,7 +23,8 @@ public class ChooseLevelState extends State {
 				stateLevel.setTileIDAt(x, y, Tile.WATER.getID());
 			}
 		}
-		select = new Button("Select", Color.blue, Zordz.WIDTH / 2 - (Button.width / 2), 471 - Button.height, 10, 16);
+		select = new Button("Select", Color.cyan, Zordz.WIDTH / 2 - (Button.width / 2), 471 - Button.height, 34, 16);
+		backToTitle = new Button("Go Back", Color.yellow, Zordz.WIDTH / 2 - (Button.width / 2), 3, 26, 16);
 		loadLevels();
 	}
 
@@ -37,6 +39,7 @@ public class ChooseLevelState extends State {
 		stateLevel.render();
 		selectLevel.render();
 		select.draw();
+		backToTitle.draw();
 	}
 
 	public void tick() {
@@ -45,6 +48,9 @@ public class ChooseLevelState extends State {
 		if (select.clicked()) {
 			zordz.level = Level.loadLevel("res/levels/" + selectLevel.getSelected() + ".lvl");
 			zordz.switchState(zordz.gamestate);
+			SoundPlayer.play(Sound.button_clicked);
+		} else if (backToTitle.clicked()) {
+			zordz.switchState(zordz.titlestate);
 			SoundPlayer.play(Sound.button_clicked);
 		}
 	}

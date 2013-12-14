@@ -11,6 +11,8 @@ public abstract class Tile {
 	public static Tile GRASS = new GrassTile(0, 0, 0);
 	public static Tile FLOWER = new FlowerTile(1, 1, 0);
 	public static Tile WATER = new WaterTile(2);
+	public static Tile SAND = new SandTile(3, 5, 0);
+	public static Tile SAND_ROCK = new SandRockTile(4, 6, 0);
 	
 	public Tile(int id, int ssx, int ssy, int col, boolean solid) {
 		this.ssx = ssx;

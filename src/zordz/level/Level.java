@@ -15,9 +15,11 @@ public class Level {
 
 	public static final int WIDTH = 20;
 	public static final int HEIGHT = 15;
-	private int width, height;
+	public int width;
+	public int height;
 	public int tickCount = 0;
 	private byte[][] tiles;
+	private byte[][] tile_data;
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
 	//private Random rand = new Random();
 	//private Player player;
@@ -38,7 +40,7 @@ public class Level {
 		int wd = 0, ht = 0;
 		while (x.hasNextLine()) {
 			String row = x.nextLine();
-			String[] tiles = row.split(" ");
+			byte[] tiles = row.getBytes();
 			wd = tiles.length;
 			ht++;
 		}
@@ -51,9 +53,9 @@ public class Level {
 		Level level = new Level(wd, ht);
 		while (x.hasNextLine()) {
 			String row = x.nextLine();
-			String[] tiles = row.split(" ");
+			byte[] tiles = row.getBytes();
 			for (int i = 0; i < wd; i++) {
-				level.setTileIDAt(i, yPos, Byte.parseByte(tiles[i]));
+				level.setTileIDAt(i, yPos, tiles[i]);
 			}
 			yPos++;
 		}
@@ -75,9 +77,24 @@ public class Level {
 	}
 	
 	public void render() {
-		for (int x = (int)(Zordz.zordz.screen.xOff / 32); x < (int)(Zordz.zordz.screen.xOff / 32) + WIDTH; x++) {
-			for (int y = (int)(Zordz.zordz.screen.yOff / 32); y < (int)(Zordz.zordz.screen.yOff / 32) + HEIGHT; y++) {
-				Tile.getByID(tiles[x][y]).render(this, x * 32, y * 32);
+		for (int x = (int)(Zordz.zordz.screen.xOff / 32) - 1; x < (int)(Zordz.zordz.screen.xOff / 32) + WIDTH + 1; x++) {
+			for (int y = (int)(Zordz.zordz.screen.yOff / 32) - 1; y < (int)(Zordz.zordz.screen.yOff / 32) + HEIGHT + 1; y++) {
+				int tempX = x, tempY = y;
+				if (x >= width) {
+					tempX = width-1;
+				} else if (x < 0) {
+					tempX = 0;
+				} else {
+					tempX = x;
+				}
+				if (y >= height) {
+					tempY = height-1;
+				} else if (y < 0) {
+					tempY = 0;
+				} else {
+					tempY = y;
+				}
+				Tile.getByID(tiles[tempX][tempY]).render(this, x * 32, y * 32);
 			}
 		}
 		for (int i = 0; i < entities.size(); i++) {
@@ -95,8 +112,8 @@ public class Level {
 	}
 
 	public void tick() {
-		for (int x = 0; x < WIDTH; x++) {
-			for (int y = 0; y < HEIGHT; y++) {
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
 				Tile.getByID(tiles[x][y]).tick(this, x * 32, y * 32);
 			}
 		}

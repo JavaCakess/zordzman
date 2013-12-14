@@ -40,6 +40,7 @@ public class TitleState extends State {
 		exit.draw();
 	}
 	public void tick() {
+		zordz.screen.setOff(0, 0);
 		if (sp.clicked()) {
 			SoundPlayer.play(Sound.button_clicked);
 			zordz.switchState(zordz.chooselevelstate);

@@ -11,20 +11,22 @@ import cjaf.tools.NewGLHandler;
 
 public class GameState extends State {
 	Zordz zordz;
-	boolean paused = false;
+	public boolean paused = false;
 	Button backToMenu = new Button("Back to Menu", Color.white, 230, 200, 12, 12);
 	public GameState(Zordz zordz) {
 		this.zordz = zordz;
 	}
 
 	public void render() {
+		float ox = zordz.screen.xOff;
+		float oy = zordz.screen.yOff;
 		zordz.level.render();
 		if (paused) {
 			NewGLHandler.setCurrentColor(new float[]{0.0f, 0.0f, 0.0f, 0.4f}, true);
-			NewGLHandler.draw2DRect(0, 0, Zordz.WIDTH, Zordz.HEIGHT, true);
+			NewGLHandler.draw2DRect(ox + 0, oy + 0, Zordz.WIDTH, Zordz.HEIGHT, true);
 			Drawer.setCol(Color.white);
-			Text.render("- PAUSED -", Zordz.WIDTH / 2 - 5 * 30,
-					Zordz.HEIGHT / 2 - 180, 30, 30);
+			Text.render("- PAUSED -", ox +Zordz.WIDTH / 2 - 5 * 30,
+					oy +Zordz.HEIGHT / 2 - 180, 30, 30);
 
 			backToMenu.draw();
 			
@@ -39,16 +41,21 @@ public class GameState extends State {
 	}
 
 	public void renderHUD() {
+		float ox = zordz.screen.xOff;
+		float oy = zordz.screen.yOff;
 		NewGLHandler.setCurrentColor(new float[] { 0.0f, 0.0f, 0.0f, 0.8f },
 				true);
-		NewGLHandler.draw2DRect(0, 0, Zordz.WIDTH, 32, true);
+		NewGLHandler.draw2DRect(ox + 0, oy + 0, Zordz.WIDTH, 32, true);
 		NewGLHandler.resetColors();
 		if (zordz.hp <= (100 * 0.4))
 			Drawer.setCol(Color.red);
-		Text.render("HP:" + zordz.hp + "/100", 0, 0, 16, 16);
+		Text.render("HP:" + zordz.hp + "/100", ox + 0, oy + 0, 16, 16);
+		Text.render("WEP:" + "Zord", ox + 0, oy + 16, 16, 16);
 		Drawer.setCol(Color.white);
-		Text.render("Z", 300, 0, 8, 8);
-		Text.render("X", 332, 0, 8, 8);
+		Text.render("Z", ox + 300, oy + 0, 8, 8);
+		Text.render("X", ox + 332, oy + 0, 8, 8);
+		
+		Text.render("COINS", ox + 360, oy + 0, 8, 8);
 		NewGLHandler.resetColors();
 
 	}
