@@ -50,6 +50,7 @@ public class OptionsState extends State {
 	}
 
 	public void tick() {
+		zordz.screen.setOff(0, 0);
 		if (backToTitle.clicked()) {
 			if (backToState == 0) {
 				zordz.switchState(zordz.titlestate);
