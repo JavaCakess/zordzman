@@ -9,6 +9,7 @@ import zordz.level.Level;
 import zordz.state.Button;
 import zordz.state.ChooseLevelState;
 import zordz.state.GameState;
+import zordz.state.OptionsState;
 import zordz.state.State;
 import zordz.state.TitleState;
 import zordz.util.SoundPlayer;
@@ -21,12 +22,15 @@ public class Zordz {
 	public Screen screen;
 	public Level level;
 	public int hp = 100;
+	public int coins = 0;
 	public State state;
 	public TitleState titlestate;
 	public GameState gamestate;
 	public ChooseLevelState chooselevelstate;
+	public OptionsState optionsstate;
 	public InputHandler inputhandler;
 	public static Zordz zordz;
+	public static String version = "v0.1.0";
 	
 	public static void main(String[] args) {
 		new Zordz().start();
@@ -35,7 +39,7 @@ public class Zordz {
 	public Zordz() {
 		try {
 			Display.setDisplayMode(DISPLAY_MODE);
-			Display.setTitle("The Zordzman");
+			Display.setTitle("The Zordzman " + version);
 			Display.create();
 			AL.create();
 		} catch (LWJGLException e) {
@@ -59,6 +63,7 @@ public class Zordz {
 		titlestate = new TitleState(this);
 		gamestate = new GameState(this);
 		chooselevelstate = new ChooseLevelState(this);
+		optionsstate = new OptionsState(this);
 		state = titlestate;
 		inputhandler = new InputHandler(this);
 		SoundPlayer.init();

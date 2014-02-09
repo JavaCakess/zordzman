@@ -23,7 +23,9 @@ public class InputHandler {
 			}
 			float camera_speed = 1.5f;
 			float ymax = (zordz.screen.yOff+640)/32;
+			float ymax_m = (zordz.level.height*32)-640;
 			float xmax = (zordz.screen.xOff+640)/32;
+			float xmax_m = (zordz.level.width*32)-640;
 			if (!zordz.gamestate.paused) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
 					zordz.screen.pushScr(0, -camera_speed);
@@ -31,7 +33,7 @@ public class InputHandler {
 				if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
 					zordz.screen.pushScr(0, camera_speed);
 					if (ymax > zordz.level.height) {
-						zordz.screen.setOff((float)zordz.screen.xOff, ymax);
+						zordz.screen.setOff((float)zordz.screen.xOff, ymax_m+1);
 					}
 				}
 				if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
@@ -39,13 +41,13 @@ public class InputHandler {
 				}
 				if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
 					zordz.screen.pushScr(camera_speed, 0);
-					zordz.screen.pushScr(0, -camera_speed);
 					if (xmax > zordz.level.width) {
-						zordz.screen.setOff((float)xmax, zordz.screen.yOff);
+						zordz.screen.setOff((float)xmax_m+1, zordz.screen.yOff);
 					}
 				}
 			}
 			break;
+		case 2:
 		}
 	}
 }

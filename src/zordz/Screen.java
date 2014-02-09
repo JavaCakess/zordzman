@@ -21,7 +21,7 @@ public class Screen {
 					while (!Display.isCloseRequested()) {
 						try { Thread.sleep(1000); } catch (Exception e) {}
 						stateID = zordz.state.getID();
-						Display.setTitle("Zordzman | TPS: " + tickCount + " | S: " + stateID);
+						Display.setTitle("Zordzman " + Zordz.version + " | TPS: " + tickCount + " | S: " + stateID);
 						tickCount = 0;
 					}
 				}

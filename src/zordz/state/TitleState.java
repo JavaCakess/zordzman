@@ -15,10 +15,10 @@ import cjaf.tools.NewGLHandler;
 
 public class TitleState extends State {
 	Zordz zordz;
-	Texture titlescreen = NewGLHandler.loadTexture("res/titlescreen.png");
 	Level titleLevel = new Level(640 / 32, 480 / 32);
-	Button sp = new Button("Singleplayer", Color.red, 232, 200, 12, 12);
-	Button exit = new Button("Quit", Color.orange, 232, 260, 52, 16);
+	Button sp = new Button("Singleplayer", Color.red, 232, 180, 12, 12);
+	Button options = new Button("Options", Color.white, 232, 240, 28, 16);
+	Button exit = new Button("Quit", Color.orange, 232, 300, 52, 16);
 	public TitleState(Zordz zordz) {
 		this.zordz = zordz;
 		for (int x = 0; x < titleLevel.getWidth(); x++) {
@@ -37,6 +37,7 @@ public class TitleState extends State {
 		Text.render("ordzman", titleX + 32, 56, 32, 16);
 		Drawer.setCol(Color.white);
 		sp.draw();
+		options.draw();
 		exit.draw();
 	}
 	public void tick() {
@@ -47,6 +48,10 @@ public class TitleState extends State {
 		} else if (exit.clicked()) {
 			System.out.println("[INFO] Stopping Game");
 			zordz.stop();
+		} else if (options.clicked()) {
+			SoundPlayer.play(Sound.button_clicked);
+			zordz.switchState(zordz.optionsstate);
+			zordz.optionsstate.backToState = getID();
 		}
 	}
 

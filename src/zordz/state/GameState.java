@@ -13,6 +13,7 @@ public class GameState extends State {
 	Zordz zordz;
 	public boolean paused = false;
 	Button backToMenu = new Button("Back to Menu", Color.white, 230, 200, 12, 12);
+	Button options =    new Button("Options", Color.orange, 230, 260, 12, 12);
 	public GameState(Zordz zordz) {
 		this.zordz = zordz;
 	}
@@ -29,11 +30,16 @@ public class GameState extends State {
 					oy +Zordz.HEIGHT / 2 - 180, 30, 30);
 
 			backToMenu.draw();
+			options.draw();
 			
 			if (backToMenu.clicked()) {
 				SoundPlayer.play(Sound.button_clicked);
 				this.togglePaused();
 				zordz.switchState(zordz.titlestate);
+			} else if (options.clicked()) {
+				SoundPlayer.play(Sound.button_clicked);
+				zordz.optionsstate.backToState = getID();
+				zordz.switchState(zordz.optionsstate);
 			}
 		} else {
 			renderHUD();
@@ -55,7 +61,8 @@ public class GameState extends State {
 		Text.render("Z", ox + 300, oy + 0, 8, 8);
 		Text.render("X", ox + 332, oy + 0, 8, 8);
 		
-		Text.render("COINS", ox + 360, oy + 0, 8, 8);
+		Text.render("COINS", ox + 460, oy + 0, 8, 8);
+		Text.render("" + zordz.coins, ox + 472, oy + 12, 16, 16);
 		NewGLHandler.resetColors();
 
 	}
