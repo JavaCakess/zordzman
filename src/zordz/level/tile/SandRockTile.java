@@ -13,6 +13,7 @@ public class SandRockTile extends Tile {
 	public void render(Level level, float x, float y) {
 		Drawer.draw(SpriteSheet.sheet, ssx, ssy, x, y, 32, 32);
 	}
+	
 	public void tick(Level level, float x, float y) {
 		
 	}

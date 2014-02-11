@@ -16,9 +16,12 @@ import cjaf.tools.NewGLHandler;
 public class TitleState extends State {
 	Zordz zordz;
 	Level titleLevel = new Level(640 / 32, 480 / 32);
-	Button sp = new Button("Singleplayer", Color.red, 232, 180, 12, 12);
-	Button options = new Button("Options", Color.white, 232, 240, 28, 16);
-	Button exit = new Button("Quit", Color.orange, 232, 300, 52, 16);
+	Button sp = new Button("Singleplayer", Color.red, 232, 160, 12, 12);
+	Button options = new Button("Options", Color.white, 232, 220, 28, 16);
+	Button help    = new Button("Help", Color.green, 232, 280, 52, 16);
+	Button exit = new Button("Quit", Color.orange, 232, 340, 52, 16);
+	int ticks = 0;
+	int cjafFlashNum = 0;
 	public TitleState(Zordz zordz) {
 		this.zordz = zordz;
 		for (int x = 0; x < titleLevel.getWidth(); x++) {
@@ -38,7 +41,19 @@ public class TitleState extends State {
 		Drawer.setCol(Color.white);
 		sp.draw();
 		options.draw();
+		help.draw();
 		exit.draw();
+		Text.render(Zordz.version, 0, 480-24, 24, 24);
+		if (ticks % 20 == 0) cjafFlashNum++;
+		String cjafString = "CJAF!";
+		for (int i = 0; i < cjafString.length(); i++) {
+			if (cjafFlashNum % cjafString.length() == i) {
+				Drawer.setCol(Color.red);
+			}
+			Text.render(""+cjafString.charAt(i), 640 - (24 * -i+1) - (24 * 5), 480 - 24, 24, 24);
+			Drawer.setCol(Color.white);
+		}
+		Drawer.setCol(Color.white);
 	}
 	public void tick() {
 		zordz.screen.setOff(0, 0);
@@ -52,6 +67,13 @@ public class TitleState extends State {
 			SoundPlayer.play(Sound.button_clicked);
 			zordz.switchState(zordz.optionsstate);
 			zordz.optionsstate.backToState = getID();
+		} else if (help.clicked()) {
+			SoundPlayer.play(Sound.button_clicked);
+			zordz.switchState(zordz.helpstate);
+		}
+		ticks++;
+		if (ticks == 60) {
+			ticks = 0;
 		}
 	}
 

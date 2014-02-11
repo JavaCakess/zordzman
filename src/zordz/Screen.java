@@ -10,8 +10,9 @@ public class Screen {
 
 	Zordz zordz;
 	public long tickCount = 0;
+	public float xOff;
 	public int stateID = 0;
-	public float xOff, yOff;
+	public float yOff;
 	Thread tpsThread;
 	public Screen(Zordz zord) {
 		this.zordz = zord;

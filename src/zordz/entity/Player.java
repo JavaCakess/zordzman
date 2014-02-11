@@ -14,7 +14,7 @@ public class Player extends Mob {
 	}
 
 	public void render() {
-		int scale = 3;
+		int scale = 2;
 		Drawer.draw(SpriteSheet.sheet, 0, 4, this.x, this.y, 8 * scale, 8 * scale);
 		Drawer.draw(SpriteSheet.sheet, 1, 4, this.x + 8 * scale, this.y, 8 * scale, 8 * scale);
 		Drawer.draw(SpriteSheet.sheet, 1, 5, this.x + 8 * scale, this.y + 8 * scale, 8 * scale, 8 * scale);

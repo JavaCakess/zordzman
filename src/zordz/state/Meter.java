@@ -12,6 +12,7 @@ public class Meter extends Button {
 
 	float w, h;
 	float value, max;
+	int textSize = 16;
 	float[] cols;
 	public Meter(float x, float y, float w, float h, float max, float def, float[] cols) {
 		super("", Color.black, x, y, 0, 2);
@@ -28,6 +29,10 @@ public class Meter extends Button {
 		this.value = value;
 	}
 	
+	public void setTextSize(int size) {
+		textSize = size;
+	}
+	
 	public void draw() {
 		
 		NewGLHandler.setCurrentColor(new float[]{0.3f, 0.3f, 0.3f}, false);
@@ -36,10 +41,11 @@ public class Meter extends Button {
 		NewGLHandler.draw2DRect(x, y, value, h, true);
 		NewGLHandler.setCurrentColor(new int[]{0, 0, 0}, false);
 		NewGLHandler.draw2DRect(x-1, y, w, h+1, false);
+		NewGLHandler.draw2DLine(x + value, y, x + value, h + y);
 		NewGLHandler.resetColors();
 
 		String s = Math.round((value / max) * 100) + "%";
-		Text.render(s, x + (w / 2) - s.length() * 8, y + (h / 2) - 8, 16, 16);
+		Text.render(s, x + (w / 2) - s.length() * (textSize / 2), y + (h / 2) - (textSize / 2), textSize, textSize);
 	}
 	
 	public boolean isMouseInside(float ox, float oy) {
