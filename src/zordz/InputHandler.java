@@ -21,7 +21,7 @@ public class InputHandler {
 					zordz.gamestate.togglePaused();
 				}
 			}
-			float camera_speed = 1.5f;
+			float camera_speed = 2.5f;
 			float ymax = (zordz.screen.yOff+640)/32;
 			float ymax_m = (zordz.level.height*32)-640;
 			float xmax = (zordz.screen.xOff+640)/32;
