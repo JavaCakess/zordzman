@@ -28,7 +28,7 @@ public class Screen {
 				}
 			}
 		);
-		tpsThread.start();
+		
 	}
 
 	public void render() {
@@ -49,11 +49,17 @@ public class Screen {
 		}
 	}
 	
+	public void startTPSThread() {
+		tpsThread.start();
+	}
+	
 	public void update() {
+		
 		//logic 'n' stuff goes here!
 		zordz.state.tick();
 		if (Button.between_state_cd != 0 ) Button.between_state_cd--;
 		if (ScrButton.cooldown != 0 ) ScrButton.cooldown--;
+		if (Button.between_state_over_cd != 0) Button.between_state_over_cd--;
 		zordz.inputhandler.doInput();
 		tickCount++;
 		//Don't touch this stuff. Logic above! ^

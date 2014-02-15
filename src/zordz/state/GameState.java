@@ -65,9 +65,8 @@ public class GameState extends State {
 		Drawer.setCol(Color.white);
 		Text.render("Z", ox + 300, oy + 0, 8, 8);
 		Text.render("X", ox + 332, oy + 0, 8, 8);
-		
 		Text.render("COINS", ox + 460, oy + 0, 8, 8);
-		Text.render("" + zordz.coins, (ox + 472) - (""+zordz.coins).length() * 8, oy + 12, 16, 16);
+		Text.render("" + zordz.coins, (ox + 472) - ((""+zordz.coins).length()-1) * 8, oy + 12, 16, 16);
 		NewGLHandler.resetColors();
 
 	}

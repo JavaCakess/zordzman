@@ -8,10 +8,13 @@ import org.newdawn.slick.opengl.Texture;
 import zordz.Zordz;
 import zordz.gfx.Drawer;
 import zordz.gfx.Text;
+import zordz.util.Sound;
+import zordz.util.SoundPlayer;
 import cjaf.tools.NewGLHandler;
 
 public class Button {
 	public static int between_state_cd;
+	public static int between_state_over_cd;
 	String text;
 	Color col;
 	float x, y;
@@ -19,6 +22,7 @@ public class Button {
 	static int width = (int) (256 / 1.5f);
 	static int height = (int) (64 / 1.5f);
 	final Texture tex = NewGLHandler.loadTexture("res/titlescr/button_plate.png");
+	boolean over = false;
 	public Button(String text, Color col, float x, float y, int tx, int ts) {
 		this.text = text;
 		this.col = col;
@@ -40,6 +44,24 @@ public class Button {
 			NewGLHandler.draw2DRect(ox + x, oy + y, width, height, true);
 			Drawer.setCol(Color.white);
 		}
+		mouseOver();
+	}
+
+	public void mouseOver() {
+		
+		if (mouseOn()) {
+			if (between_state_over_cd > 0) {
+				between_state_over_cd = 4;
+				return;
+			}
+			if (over == false) {
+				over = true;
+				between_state_over_cd = 4;
+				SoundPlayer.play(Sound.button_over);
+			}
+		} else {
+			over = false;
+		}
 	}
 
 	public boolean isMouseInside(float ox, float oy) {
@@ -59,6 +81,16 @@ public class Button {
 				return true;
 			}
 		}
+		return false;
+	}
+
+	public boolean mouseOn() {
+		float ox = Zordz.zordz.screen.xOff;
+		float oy = Zordz.zordz.screen.yOff;
+		if (isMouseInside(ox, oy)) {
+			return true;
+		}
+
 		return false;
 	}
 }

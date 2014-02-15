@@ -20,7 +20,7 @@ import org.newdawn.slick.opengl.Texture;
 public class Drawer {
 
 	public static void setCol(Color c) {
-		glColor3f(c.getRed()/1.0f, (float)c.getGreen()/1.0f, (float)c.getBlue()/1.0f);
+		glColor3f((float)c.getRed()/255.0f, (float)c.getGreen()/255.0f, (float)c.getBlue()/255.0f);
 	}
 	
 	public static void draw(SpriteSheet ss, int xtile, int ytile, float x, float y,

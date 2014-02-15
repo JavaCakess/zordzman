@@ -77,6 +77,7 @@ public class Zordz {
 	 * Run the game!
 	 */
 	public void run() {
+		screen.startTPSThread();
 		while (!Display.isCloseRequested()) {
 			NewGLHandler.wipeScreen();
 			screen.render();

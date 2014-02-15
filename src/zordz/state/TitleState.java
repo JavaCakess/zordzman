@@ -17,9 +17,15 @@ public class TitleState extends State {
 	Zordz zordz;
 	Level titleLevel = new Level(640 / 32, 480 / 32);
 	Button sp = new Button("Singleplayer", Color.red, 232, 160, 12, 12);
+	String sp_text = "Play Singleplayer mode.";
 	Button options = new Button("Options", Color.white, 232, 220, 28, 16);
+	String options_text = "Configure the options.";
 	Button help    = new Button("Help", Color.green, 232, 280, 52, 16);
+	String help_text = "How to play the game and info.";
 	Button exit = new Button("Quit", Color.orange, 232, 340, 52, 16);
+	String exit_text = "Exit. Why would you want to do that?";
+	
+	String buttonDesc = "";
 	int ticks = 0;
 	int cjafFlashNum = 0;
 	public TitleState(Zordz zordz) {
@@ -43,6 +49,9 @@ public class TitleState extends State {
 		options.draw();
 		help.draw();
 		exit.draw();
+		Drawer.setCol(Color.lightGray);
+		Text.render(buttonDesc, 0, 480-41, 16, 16);
+		Drawer.setCol(Color.white);
 		Text.render(Zordz.version, 0, 480-24, 24, 24);
 		if (ticks % 20 == 0) cjafFlashNum++;
 		String cjafString = "CJAF!";
@@ -57,6 +66,18 @@ public class TitleState extends State {
 	}
 	public void tick() {
 		zordz.screen.setOff(0, 0);
+		if (sp.mouseOn()) {
+			buttonDesc = sp_text;
+		} else if (options.mouseOn()) {
+			buttonDesc = options_text;
+		} else if (help.mouseOn()) {
+			buttonDesc = help_text;
+		} else if (exit.mouseOn()) {
+			buttonDesc = exit_text;
+		} else {
+			buttonDesc = "";
+		}
+		
 		if (sp.clicked()) {
 			SoundPlayer.play(Sound.button_clicked);
 			zordz.switchState(zordz.chooselevelstate);
