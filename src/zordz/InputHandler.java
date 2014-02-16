@@ -6,7 +6,7 @@ import org.lwjgl.input.Keyboard;
 
 public class InputHandler {
 	Zordz zordz;
-	
+
 	public InputHandler(Zordz zordz) {
 		this.zordz = zordz;
 	}
@@ -21,7 +21,7 @@ public class InputHandler {
 					zordz.gamestate.togglePaused();
 				}
 			}
-			float camera_speed = 2.5f;
+			float camera_speed = 2f * ((float)Options.MAX_TICK_RATE / Options.TICK_RATE);
 			float ymax = (zordz.screen.yOff+640)/32;
 			float ymax_m = (zordz.level.height*32)-640;
 			float xmax = (zordz.screen.xOff+640)/32;
@@ -31,18 +31,17 @@ public class InputHandler {
 					zordz.screen.pushScr(0, -camera_speed);
 				}
 				if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-					zordz.screen.pushScr(0, camera_speed);
-					if (ymax > zordz.level.height) {
-						zordz.screen.setOff((float)zordz.screen.xOff, ymax_m+1);
+					if (ymax <= zordz.level.height) {
+						zordz.screen.pushScr(0, camera_speed);
+						System.out.println(zordz.level.height);
 					}
 				}
 				if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
 					zordz.screen.pushScr(-camera_speed, 0);
 				}
 				if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-					zordz.screen.pushScr(camera_speed, 0);
-					if (xmax > zordz.level.width) {
-						zordz.screen.setOff((float)xmax_m+1, zordz.screen.yOff);
+					if (xmax <= zordz.level.width) {
+						zordz.screen.pushScr(camera_speed, 0);
 					}
 				}
 			}
@@ -50,6 +49,8 @@ public class InputHandler {
 		case 2:
 			break;
 		case 3:
+			break;
+		case 4:
 			break;
 		}
 	}

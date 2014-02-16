@@ -64,7 +64,7 @@ public class Screen {
 		tickCount++;
 		//Don't touch this stuff. Logic above! ^
 		Display.update();
-		Display.sync(60); //60 FPS. My favourite...
+		Display.sync(Options.TICK_RATE); //60 FPS. My favourite...
 	}
 
 	public void setOff(float i, float j) {

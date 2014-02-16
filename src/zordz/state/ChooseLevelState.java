@@ -59,4 +59,15 @@ public class ChooseLevelState extends State {
 		return 2;
 	}
 	
+	public void onSwitchAway(State to) {
+		if (to.getID() == zordz.gamestate.getID()) {
+			zordz.gamestate.privOx = 0;
+			zordz.gamestate.privOy = 0;
+		}
+	}
+
+	public void onSwitchTo(State awayFrom) {
+
+	}
+	
 }

@@ -11,6 +11,7 @@ import zordz.Zordz;
 import zordz.gfx.Text;
 import zordz.level.Level;
 import zordz.level.tile.Tile;
+import zordz.state.Meter.TextType;
 import zordz.util.Sound;
 import zordz.util.SoundPlayer;
 
@@ -21,6 +22,7 @@ public class OptionsState extends State {
 	Button backToTitle = new Button("Go Back", new Color(0, 100, 0), Zordz.WIDTH / 2 - (Button.width / 2), 
 			Zordz.HEIGHT - 86, 26, 16);
 	Meter volume = new Meter(100f, 100f, 400f, 50f, 400f, 400f, new float[]{0.4f, 0.5f, 0.4f});
+	Meter tickRate = new Meter(100, 200f, 400f, 50f, 400f, 400f, new float[]{0.4f, 0.5f, 0.4f}).setTextType(TextType.NORMAL).setCustomText(true);
 	int backToState = 0;
 	public OptionsState(Zordz zordz) {
 		this.zordz = zordz;
@@ -45,11 +47,14 @@ public class OptionsState extends State {
 		//Draw the volume bar!
 		NewGLHandler.setCurrentColor(new float[]{0.7f, 0.7f, 0.7f}, false);
 		Text.render("Volume:", 40, 60, 16, 16);
+		Text.render("Performance:", 40, 160, 16, 16);
 		NewGLHandler.resetColors();
 		volume.draw();
+		tickRate.draw();
 	}
 
 	public void tick() {
+		String performance = "";
 		zordz.screen.setOff(0, 0);
 		if (backToTitle.clicked()) {
 			if (backToState == 0) {
@@ -61,11 +66,35 @@ public class OptionsState extends State {
 		} else if (volume.clicked()) {
 			volume.setValue(Mouse.getX() - 100);
 			Options.SOUND_LEVEL = Math.round(volume.value / 4);
+		}  else if (tickRate.clicked()) {
+			tickRate.setValue(Mouse.getX() - 100);
+			Options.TICK_RATE = 30 + Math.round(tickRate.value / 14);
+			if (Options.TICK_RATE % 2 == 1) {
+				Options.TICK_RATE++;
+			}
 		}
+		if (Options.TICK_RATE <= 40) {
+			performance = "Sux";
+		}
+		if (Options.TICK_RATE > 40 && Options.TICK_RATE <= 50) {
+			performance = "Kashmir";
+		}
+		if (Options.TICK_RATE > 50) {
+			performance = "Gosu";
+		}
+		tickRate.setMeterText(performance);
 	}
 
 	public int getID() {
 		return 3;
+	}
+
+	public void onSwitchAway(State to) {
+		
+	}
+
+	public void onSwitchTo(State awayFrom) {
+		
 	}
 	
 }

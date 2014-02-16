@@ -1,5 +1,6 @@
 package zordz.level.tile;
 
+import zordz.Options;
 import zordz.gfx.Drawer;
 import zordz.gfx.SpriteSheet;
 import zordz.level.Level;
@@ -17,7 +18,7 @@ public class WaterTile extends Tile {
 	}
 
 	public void tick(Level level, float x, float y) {
-		if (level.tickCount == 60) { 
+		if (level.tickCount == Options.TICK_RATE) { 
 			level.tickCount = 0;
 			currentAnim++;
 

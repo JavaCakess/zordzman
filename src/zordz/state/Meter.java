@@ -10,10 +10,17 @@ import cjaf.tools.NewGLHandler;
 
 public class Meter extends Button {
 
+	public static enum TextType {
+		PERCENT, NORMAL
+	}
+	
 	float w, h;
 	float value, max;
 	int textSize = 16;
+	TextType textType = TextType.PERCENT;
 	float[] cols;
+	String meterText = "";
+	boolean customText = false;
 	public Meter(float x, float y, float w, float h, float max, float def, float[] cols) {
 		super("", Color.black, x, y, 0, 2);
 		this.x = x;
@@ -29,8 +36,22 @@ public class Meter extends Button {
 		this.value = value;
 	}
 	
+	public Meter setTextType(TextType textType) {
+		this.textType = textType;
+		return this;
+	}
+	
 	public void setTextSize(int size) {
 		textSize = size;
+	}
+	
+	public void setMeterText(String s) {
+		meterText = s;
+	}
+	
+	public Meter setCustomText(boolean tof) {
+		customText = tof;
+		return this;
 	}
 	
 	public void draw() {
@@ -43,8 +64,13 @@ public class Meter extends Button {
 		NewGLHandler.draw2DRect(x-1, y, w, h+1, false);
 		NewGLHandler.draw2DLine(x + value, y, x + value, h + y);
 		NewGLHandler.resetColors();
-
-		String s = Math.round((value / max) * 100) + "%";
+		String s = ""+Math.round((value / max) * 100);
+		if (textType == TextType.PERCENT) {
+			s = s.concat("%");
+		}
+		if (customText == true) {
+			s = meterText;
+		}
 		Text.render(s, x + (w / 2) - s.length() * (textSize / 2), y + (h / 2) - (textSize / 2), textSize, textSize);
 	}
 	

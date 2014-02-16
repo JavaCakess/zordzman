@@ -2,6 +2,7 @@ package zordz.state;
 
 import java.awt.Color;
 
+import zordz.Options;
 import zordz.Zordz;
 import zordz.gfx.Text;
 import zordz.util.Sound;
@@ -31,7 +32,7 @@ public class HelpState extends State {
 			lastLen = s.length();
 			Text.render(s, 0, ind * 16, 16, 16);
 		}
-		if (ticks < 30) {
+		if (ticks < Options.TICK_RATE / 2) {
 			Text.render("_", (lastLen) * 16 , ind * 16, 16, 16);
 		}
 		Text.render("NOW!", Zordz.WIDTH / 2 - (64), 250, 32, 32);
@@ -44,7 +45,7 @@ public class HelpState extends State {
 			zordz.switchState(zordz.titlestate);
 		}
 		ticks++;
-		if (ticks == 61) {
+		if (ticks == Options.TICK_RATE) {
 			ticks = 0;
 		}
 	}
@@ -52,6 +53,15 @@ public class HelpState extends State {
 	public int getID() {
 		
 		return 4;
+	}
+
+
+	public void onSwitchAway(State to) {
+		
+	}
+
+	public void onSwitchTo(State awayFrom) {
+		
 	}
 	
 }

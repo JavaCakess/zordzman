@@ -95,6 +95,8 @@ public class Zordz {
 	}
 	
 	public void switchState(State state) {
+		this.state.onSwitchAway(state);
+		state.onSwitchTo(this.state);
 		this.state = state;
 		Button.between_state_cd = 15;
 	}

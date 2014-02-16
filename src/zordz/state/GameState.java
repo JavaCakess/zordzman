@@ -15,6 +15,7 @@ public class GameState extends State {
 	Button backToMenu = new Button("Back to Menu", Color.white, 230, 180, 12, 12);
 	Button options =    new Button("Options", Color.orange, 230, 240, 28, 16);
 	Button resume     = new Button("Resume", Color.blue, 230, 300, 36, 16);
+	float privOx, privOy;
 	public GameState(Zordz zordz) {
 		this.zordz = zordz;
 	}
@@ -22,6 +23,7 @@ public class GameState extends State {
 	public void render() {
 		float ox = zordz.screen.xOff;
 		float oy = zordz.screen.yOff;
+
 		zordz.level.render();
 		if (paused) {
 			NewGLHandler.setCurrentColor(new float[]{0.0f, 0.0f, 0.0f, 0.4f}, true);
@@ -84,5 +86,15 @@ public class GameState extends State {
 	public void togglePaused() {
 		paused = !paused;
 	}
+	
+	public void onSwitchAway(State to) {
+		privOx = zordz.screen.xOff;
+		privOy = zordz.screen.yOff;
+		
+	}
 
+	public void onSwitchTo(State awayFrom) {
+		zordz.screen.setOff(privOx, privOy);
+		
+	}
 }

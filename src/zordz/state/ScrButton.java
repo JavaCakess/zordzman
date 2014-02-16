@@ -5,6 +5,7 @@ import java.awt.Color;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.opengl.Texture;
 
+import zordz.Options;
 import zordz.gfx.Drawer;
 import cjaf.tools.NewGLHandler;
 
@@ -14,7 +15,7 @@ public class ScrButton {
 	int width = 16, height = 16;
 	final Texture tex = NewGLHandler.loadTexture("res/levelselectscr/scr_button.png");
 	boolean flipped = false;
-	public static int cooldown = 20;
+	public static int cooldown = Options.TICK_RATE / 3;
 	public ScrButton(float x, float y, boolean flipped) {
 		this.x = x;
 		this.y = y;
@@ -45,7 +46,7 @@ public class ScrButton {
 				if (cooldown > 0) {
 					return false;
 				}
-				cooldown = 9;
+				cooldown = Math.round(Options.TICK_RATE / 6.6666f);
 				return true;
 			}
 		}

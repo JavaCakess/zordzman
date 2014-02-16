@@ -51,7 +51,7 @@ public class Button {
 		
 		if (mouseOn()) {
 			if (between_state_over_cd > 0) {
-				between_state_over_cd = 4;
+				between_state_over_cd = 2;
 				return;
 			}
 			if (over == false) {

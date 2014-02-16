@@ -1,12 +1,13 @@
 package zordz.entity;
 
 import cjaf.tools.NewGLHandler;
+import zordz.Options;
 import zordz.gfx.Text;
 import zordz.level.Level;
 
 public class TextParticle extends Entity {
 
-	public static final int MAX_TICKS = 30;
+	public static final int MAX_TICKS = Options.TICK_RATE / 2;
 	private int ticksToLive;
 	private String str;
 	private float[] col;

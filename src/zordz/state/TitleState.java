@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import org.newdawn.slick.opengl.Texture;
 
+import zordz.Options;
 import zordz.Zordz;
 import zordz.gfx.Drawer;
 import zordz.gfx.Text;
@@ -53,7 +54,7 @@ public class TitleState extends State {
 		Text.render(buttonDesc, 0, 480-41, 16, 16);
 		Drawer.setCol(Color.white);
 		Text.render(Zordz.version, 0, 480-24, 24, 24);
-		if (ticks % 20 == 0) cjafFlashNum++;
+		if (ticks % Options.TICK_RATE == 0) cjafFlashNum++;
 		String cjafString = "CJAF!";
 		for (int i = 0; i < cjafString.length(); i++) {
 			if (cjafFlashNum % cjafString.length() == i) {
@@ -93,12 +94,20 @@ public class TitleState extends State {
 			zordz.switchState(zordz.helpstate);
 		}
 		ticks++;
-		if (ticks == 60) {
+		if (ticks == Options.TICK_RATE) {
 			ticks = 0;
 		}
 	}
 
 	public int getID() {
 		return 0;
+	}
+
+	public void onSwitchAway(State to) {
+		
+	}
+
+	public void onSwitchTo(State awayFrom) {
+		
 	}
 }
