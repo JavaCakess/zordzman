@@ -13,7 +13,7 @@ public class ScrButton {
 
 	float x, y;
 	int width = 16, height = 16;
-	final Texture tex = NewGLHandler.loadTexture("res/levelselectscr/scr_button.png");
+	final Texture tex = NewGLHandler.loadTexture("res/gui/scr_button.png");
 	boolean flipped = false;
 	public static int cooldown = Options.TICK_RATE / 3;
 	public ScrButton(float x, float y, boolean flipped) {

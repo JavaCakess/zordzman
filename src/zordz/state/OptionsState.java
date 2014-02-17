@@ -23,6 +23,7 @@ public class OptionsState extends State {
 			Zordz.HEIGHT - 86, 26, 16);
 	Meter volume = new Meter(100f, 100f, 400f, 50f, 400f, 400f, new float[]{0.4f, 0.5f, 0.4f});
 	Meter tickRate = new Meter(100, 200f, 400f, 50f, 400f, 400f, new float[]{0.4f, 0.5f, 0.4f}).setTextType(TextType.NORMAL).setCustomText(true);
+	Checkbox console = new Checkbox(Color.green, true, 300, 260, 32, 32);
 	int backToState = 0;
 	public OptionsState(Zordz zordz) {
 		this.zordz = zordz;
@@ -46,16 +47,19 @@ public class OptionsState extends State {
 		backToTitle.draw();
 		//Draw the volume bar!
 		NewGLHandler.setCurrentColor(new float[]{0.7f, 0.7f, 0.7f}, false);
-		Text.render("Volume:", 40, 60, 16, 16);
-		Text.render("Performance:", 40, 160, 16, 16);
+		Text.render(zordz.getString("#ZM_Volume") + ":", 40, 60, 16, 16);
+		Text.render(zordz.getString("#ZM_Performance") + ":", 40, 160, 16, 16);
+		Text.render("Enable Console: ", 40, 260, 16, 16);
 		NewGLHandler.resetColors();
 		volume.draw();
 		tickRate.draw();
+		console.draw();
 	}
 
 	public void tick() {
 		String performance = "";
 		zordz.screen.setOff(0, 0);
+		volume.setValue(Options.SOUND_LEVEL * 4);
 		if (backToTitle.clicked()) {
 			if (backToState == 0) {
 				zordz.switchState(zordz.titlestate);
@@ -73,14 +77,18 @@ public class OptionsState extends State {
 				Options.TICK_RATE++;
 			}
 		}
+		if (console.wasClicked) {
+			zordz.console.setVisible(console.checked);
+		}
+		
 		if (Options.TICK_RATE <= 40) {
-			performance = "Sux";
+			performance = zordz.getString("#ZM_Performance_Low");
 		}
 		if (Options.TICK_RATE > 40 && Options.TICK_RATE <= 50) {
-			performance = "Kashmir";
+			performance = zordz.getString("#ZM_Performance_Middle");
 		}
 		if (Options.TICK_RATE > 50) {
-			performance = "Gosu";
+			performance = zordz.getString("#ZM_Performance_Good");
 		}
 		tickRate.setMeterText(performance);
 	}

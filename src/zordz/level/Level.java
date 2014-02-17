@@ -29,6 +29,7 @@ public class Level {
 	}
 	
 	public static Level loadLevel(String path) {
+		Zordz.zordz.console.write("Loading level " + path);
 		int yPos = 0;
 		Scanner x = null;
 		
@@ -63,6 +64,7 @@ public class Level {
 		level.setWidth(wd);
 		level.setHeight(ht);
 		x.close();
+		Zordz.zordz.console.write("Done loading level.");
 		return level;
 	}
 	

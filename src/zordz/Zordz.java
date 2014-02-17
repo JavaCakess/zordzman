@@ -1,5 +1,11 @@
 package zordz;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
 import org.lwjgl.LWJGLException;
 import org.lwjgl.openal.AL;
 import org.lwjgl.opengl.Display;
@@ -33,16 +39,22 @@ public class Zordz {
 	public InputHandler inputhandler;
 	public static Zordz zordz;
 	public static String version = "v0.1.0";
+	public Map<String, String> englishMap = new HashMap<String, String>();
+	public Map<String, String> germanMap = new HashMap<String, String>();
+	public Console console;
 	
 	public static void main(String[] args) {
 		new Zordz().start();
 	}
 
 	public Zordz() {
+		console = new Console();
 		try {
 			Display.setDisplayMode(DISPLAY_MODE);
 			Display.setTitle("The Zordzman " + version);
+			console.write("Creating window...");
 			Display.create();
+			console.write("Initializing AudioLibrary...");
 			AL.create();
 		} catch (LWJGLException e) {
 			e.printStackTrace();
@@ -70,7 +82,22 @@ public class Zordz {
 		state = titlestate;
 		inputhandler = new InputHandler(this);
 		SoundPlayer.init();
+		
+		console.write("Loading languages...");
+		try {
+			Scanner scan = new Scanner(new File("res/languages/english.txt"));
+			String line = "";
+			while (scan.hasNextLine()) {
+				line = scan.nextLine();
+				englishMap.put(line.substring(0, line.indexOf(" ")), line.substring(line.indexOf(" ") + 2, line.length() - 1));
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
 		zordz = this;
+		
+		console.write("Done! And Have fun.");
 	}
 	
 	/**
@@ -99,5 +126,16 @@ public class Zordz {
 		state.onSwitchTo(this.state);
 		this.state = state;
 		Button.between_state_cd = 15;
+	}
+	
+	public String getString(String key) {
+		if (Options.LANGUAGE == "ENGLISH") {
+			if (englishMap.get(key) == null) {
+				System.err.println("The key " + key + " does not exist!");
+				return "Unknown";
+			}
+			return englishMap.get(key);
+		}
+		return englishMap.get(key);
 	}
 }

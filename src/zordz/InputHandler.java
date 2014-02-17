@@ -33,7 +33,6 @@ public class InputHandler {
 				if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
 					if (ymax <= zordz.level.height) {
 						zordz.screen.pushScr(0, camera_speed);
-						System.out.println(zordz.level.height);
 					}
 				}
 				if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {

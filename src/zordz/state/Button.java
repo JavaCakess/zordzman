@@ -21,7 +21,7 @@ public class Button {
 	int tx, tsize;
 	static int width = (int) (256 / 1.5f);
 	static int height = (int) (64 / 1.5f);
-	final Texture tex = NewGLHandler.loadTexture("res/titlescr/button_plate.png");
+	final Texture tex = NewGLHandler.loadTexture("res/gui/button_plate.png");
 	boolean over = false;
 	public Button(String text, Color col, float x, float y, int tx, int ts) {
 		this.text = text;
