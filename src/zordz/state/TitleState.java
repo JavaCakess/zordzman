@@ -24,7 +24,7 @@ public class TitleState extends State {
 	Button help    = new Button("Help", Color.green, 232, 280, 52, 16);
 	String help_text = "How to play the game and info.";
 	Button exit = new Button("Quit", Color.orange, 232, 340, 52, 16);
-	String exit_text = "Exit. Why would you want to do that?";
+	String exit_text = "Quit the game.";
 	
 	String buttonDesc = "";
 	int ticks = 0;
@@ -62,6 +62,10 @@ public class TitleState extends State {
 			}
 			Text.render(""+cjafString.charAt(i), 640 - (24 * -i+1) - (24 * 5), 480 - 24, 24, 24);
 			Drawer.setCol(Color.white);
+		}
+		
+		for (int i = 0; i < zordz.hex.length(); i++) {
+			Text.render(""+zordz.hex.charAt(i), 640 - (16 * -i+1) - (16 * zordz.hex.length()), 480 - 40, 16, 16);
 		}
 		Drawer.setCol(Color.white);
 	}

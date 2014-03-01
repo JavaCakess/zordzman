@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 import zordz.Zordz;
 import zordz.entity.Entity;
+import zordz.entity.Player;
 //import zordz.entity.Player;
 import zordz.level.tile.Tile;
 
@@ -29,7 +30,6 @@ public class Level {
 	}
 	
 	public static Level loadLevel(String path) {
-		Zordz.zordz.console.write("Loading level " + path);
 		int yPos = 0;
 		Scanner x = null;
 		
@@ -64,7 +64,8 @@ public class Level {
 		level.setWidth(wd);
 		level.setHeight(ht);
 		x.close();
-		Zordz.zordz.console.write("Done loading level.");
+		
+
 		return level;
 	}
 	

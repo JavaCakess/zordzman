@@ -1,5 +1,8 @@
 package zordz.level.tile;
 
+import java.awt.Rectangle;
+
+import zordz.entity.Mob;
 import zordz.level.Level;
 
 public abstract class Tile {
@@ -40,5 +43,15 @@ public abstract class Tile {
 
 	public int getCol() {
 		return col;
+	}
+	
+	public boolean pass(Level level, Mob mob, float x, float y) {
+		Rectangle rect = new Rectangle((int)x, (int)y, 32, 32);
+		if (rect.intersects(mob.rect)) {
+			if (this.solid) {
+				return false;
+			}
+		}
+		return true;
 	}
 }

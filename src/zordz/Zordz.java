@@ -11,6 +11,7 @@ import org.lwjgl.openal.AL;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
+import zordz.entity.Player;
 import zordz.level.Level;
 import zordz.state.Button;
 import zordz.state.ChooseLevelState;
@@ -41,14 +42,17 @@ public class Zordz {
 	public static String version = "v0.1.0";
 	public Map<String, String> englishMap = new HashMap<String, String>();
 	public Map<String, String> germanMap = new HashMap<String, String>();
+	public Map<String, Level> levels = new HashMap<String, Level>();
 	public Console console;
+	public String hex = "8B96315";
+	public Player player = null;
 	
 	public static void main(String[] args) {
 		new Zordz().start();
 	}
 
 	public Zordz() {
-		console = new Console();
+		console = new Console(this);
 		try {
 			Display.setDisplayMode(DISPLAY_MODE);
 			Display.setTitle("The Zordzman " + version);
@@ -83,6 +87,8 @@ public class Zordz {
 		inputhandler = new InputHandler(this);
 		SoundPlayer.init();
 		
+		
+		
 		console.write("Loading languages...");
 		try {
 			Scanner scan = new Scanner(new File("res/languages/english.txt"));
@@ -96,8 +102,13 @@ public class Zordz {
 		}
 		
 		zordz = this;
-		
-		console.write("Done! And Have fun.");
+		Zordz.zordz.console.write("Loading levels... ");
+		File levelsDir = new File("res/levels/");
+		for (File x : levelsDir.listFiles()) {
+			levels.put(x.getName().substring(0, x.getName().length()-4), Level.loadLevel(x.getPath()));
+		}
+		Zordz.zordz.console.write("Done loading levels.");
+		console.write("Done! And have fun.");
 	}
 	
 	/**
@@ -137,5 +148,9 @@ public class Zordz {
 			return englishMap.get(key);
 		}
 		return englishMap.get(key);
+	}
+
+	public Level getLevel(String selected) {
+		return levels.get(selected);
 	}
 }

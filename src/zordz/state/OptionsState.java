@@ -23,7 +23,7 @@ public class OptionsState extends State {
 			Zordz.HEIGHT - 86, 26, 16);
 	Meter volume = new Meter(100f, 100f, 400f, 50f, 400f, 400f, new float[]{0.4f, 0.5f, 0.4f});
 	Meter tickRate = new Meter(100, 200f, 400f, 50f, 400f, 400f, new float[]{0.4f, 0.5f, 0.4f}).setTextType(TextType.NORMAL).setCustomText(true);
-	Checkbox console = new Checkbox(Color.green, true, 300, 260, 32, 32);
+	Checkbox console = new Checkbox(Color.green, false, 300, 260, 32, 32);
 	int backToState = 0;
 	public OptionsState(Zordz zordz) {
 		this.zordz = zordz;

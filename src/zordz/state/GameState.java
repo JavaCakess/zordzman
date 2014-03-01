@@ -3,6 +3,7 @@ package zordz.state;
 import java.awt.Color;
 
 import zordz.Zordz;
+import zordz.entity.Player;
 import zordz.gfx.Drawer;
 import zordz.gfx.Text;
 import zordz.util.Sound;
@@ -16,8 +17,10 @@ public class GameState extends State {
 	Button options =    new Button("Options", Color.orange, 230, 240, 28, 16);
 	Button resume     = new Button("Resume", Color.blue, 230, 300, 36, 16);
 	float privOx, privOy;
+	Player player;
 	public GameState(Zordz zordz) {
 		this.zordz = zordz;
+		this.player = new Player(zordz.level, 100, 100);
 	}
 
 	public void render() {

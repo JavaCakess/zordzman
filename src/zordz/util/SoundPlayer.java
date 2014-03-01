@@ -43,6 +43,10 @@ public class SoundPlayer {
 		alSourcef(sound.s, AL_GAIN, Options.SOUND_LEVEL / 100f);
 		alSourcePlay(sound.s);
 	}
+	
+	public static void play(Sound sound, float volumePercent) {
+		alSourcef(sound.s, AL_GAIN, (Options.SOUND_LEVEL / 100f) * volumePercent);
+	}
 
 	public static void deleteAll() {
 

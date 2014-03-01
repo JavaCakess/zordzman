@@ -2,8 +2,10 @@ package zordz.state;
 
 import java.awt.Color;
 import java.io.File;
+import java.util.Scanner;
 
 import zordz.Zordz;
+import zordz.entity.Player;
 import zordz.level.Level;
 import zordz.level.tile.Tile;
 import zordz.util.Sound;
@@ -33,6 +35,7 @@ public class ChooseLevelState extends State {
 		for (File x : levelsDir.listFiles()) {
 			selectLevel.add(x.getName().substring(0, x.getName().length()-4));
 		}
+		
 	}
 	
 	public void render() {
@@ -46,7 +49,10 @@ public class ChooseLevelState extends State {
 		stateLevel.tick();
 		
 		if (select.clicked()) {
-			zordz.level = Level.loadLevel("res/levels/" + selectLevel.getSelected() + ".lvl");
+			zordz.level = zordz.getLevel(selectLevel.getSelected());
+			zordz.player = new Player(zordz.level, 100, 100);
+			zordz.level.remove(zordz.player);
+			zordz.level.add(zordz.player);
 			zordz.switchState(zordz.gamestate);
 			SoundPlayer.play(Sound.button_clicked);
 		} else if (backToTitle.clicked()) {

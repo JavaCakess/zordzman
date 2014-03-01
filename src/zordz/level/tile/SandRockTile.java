@@ -7,7 +7,7 @@ import zordz.level.Level;
 public class SandRockTile extends Tile {
 
 	public SandRockTile(int id, int ssx, int ssy) {
-		super(id, ssx, ssy, 0x967F00, false);
+		super(id, ssx, ssy, 0x967F00, true);
 	}
 	
 	public void render(Level level, float x, float y) {
