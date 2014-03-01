@@ -23,6 +23,9 @@ public class InputHandler {
 				if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
 					zordz.gamestate.togglePaused();
 				}
+				if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+					zordz.player.attack();
+				}
 			}
 			float camera_speed = zordz.player.getSpeed() * ((float)Options.MAX_TICK_RATE / Options.TICK_RATE);
 			float ymax = (zordz.screen.yOff+640)/32;
@@ -36,8 +39,8 @@ public class InputHandler {
 							zordz.screen.pushScr(0, -camera_speed);
 						}
 					}
-					zordz.player.move(0, -zordz.player.getSpeed());
 					zordz.player.direction = 0x00;
+					zordz.player.move(0, -zordz.player.getSpeed());
 				} else
 				if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
 					if (zordz.player.getY() > zordz.screen.yOff + max_scroll_y) {
@@ -45,15 +48,15 @@ public class InputHandler {
 							zordz.screen.pushScr(0, camera_speed);
 						}
 					}
-					zordz.player.move(0, zordz.player.getSpeed());
 					zordz.player.direction = 0x01;
+					zordz.player.move(0, zordz.player.getSpeed());
 				} else
 				if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
 					if (zordz.player.getX() < zordz.screen.xOff + min_scroll_x) {
 						zordz.screen.pushScr(-camera_speed, 0);
 					}
-					zordz.player.move(-zordz.player.getSpeed(), 0);
 					zordz.player.direction = 0x02;
+					zordz.player.move(-zordz.player.getSpeed(), 0);
 				} else
 				if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
 					if (zordz.player.getX() > zordz.screen.xOff + max_scroll_x) {
@@ -61,8 +64,8 @@ public class InputHandler {
 							zordz.screen.pushScr(camera_speed, 0);
 						}
 					}
-					zordz.player.move(zordz.player.getSpeed(), 0);
 					zordz.player.direction = 0x03;
+					zordz.player.move(zordz.player.getSpeed(), 0);
 				}
 			}
 			break;

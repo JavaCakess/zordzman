@@ -2,6 +2,7 @@ package zordz.state;
 
 import java.awt.Color;
 
+import zordz.Options;
 import zordz.Zordz;
 import zordz.entity.Player;
 import zordz.gfx.Drawer;
@@ -18,6 +19,7 @@ public class GameState extends State {
 	Button resume     = new Button("Resume", Color.blue, 230, 300, 36, 16);
 	float privOx, privOy;
 	Player player;
+	int ticks = 0;
 	public GameState(Zordz zordz) {
 		this.zordz = zordz;
 		this.player = new Player(zordz.level, 100, 100);
@@ -63,9 +65,10 @@ public class GameState extends State {
 				true);
 		NewGLHandler.draw2DRect(ox + 0, oy + 0, Zordz.WIDTH, 32, true);
 		NewGLHandler.resetColors();
-		if (zordz.hp <= (100 * 0.4))
+		if (zordz.player.health <= (100 * 0.4) && ticks < Options.TICK_RATE / 2)
 			Drawer.setCol(Color.red);
-		Text.render("HP:" + zordz.hp + "/100", ox + 0, oy + 0, 16, 16);
+		Text.render("HP:" + zordz.player.health + "/100", ox + 0, oy + 0, 16, 16);
+		Drawer.setCol(Color.white);
 		Text.render("WEP:" + "Zord", ox + 0, oy + 16, 16, 16);
 		Drawer.setCol(Color.white);
 		Text.render("Z", ox + 300, oy + 0, 8, 8);
@@ -79,6 +82,10 @@ public class GameState extends State {
 	public void tick() {
 		if (!paused) {
 			zordz.level.tick();
+		}
+		ticks++;
+		if (ticks == Options.TICK_RATE) {
+			ticks = 0;
 		}
 	}
 

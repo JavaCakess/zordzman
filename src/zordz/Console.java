@@ -52,6 +52,36 @@ public class Console extends JFrame {
 						}
 					} else if (args[0].equals(zordz.hex)) {
 						write("Can you guess what that means?");
+					} else if (args[0].equals("hurtme")) {
+						if (args.length-1 < 1) {
+							write("Not enough arguments! Usage: hurtme [damage]");
+						}
+						try {
+							int i = Integer.parseInt(args[1]);
+							zordz.player.damage(i);
+						} catch (Exception e) {
+							write("Usage: hurtme [damage]");
+						}
+					} else if (args[0].equals("healme")) {
+						if (args.length-1 < 1) {
+							write("Not enough arguments! Usage: healme [hp]");
+						}
+						try {
+							int i = Integer.parseInt(args[1]);
+							zordz.player.heal(i);
+						} catch (Exception e) {
+							write("Usage: healme [hp]");
+						}
+					} else if (args[0].equals("speed")) {
+						if (args.length-1 < 1) {
+							write("Not enough arguments! Usage: speed [sped]");
+						}
+						try {
+							int i = Integer.parseInt(args[1]);
+							zordz.player.setSpeed(i / 60f);
+						} catch (Exception e) {
+							write("Usage: speed [speed]");
+						}
 					}
 				}
 			}
