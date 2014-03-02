@@ -2,6 +2,7 @@ package zordz;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -20,6 +21,7 @@ import zordz.state.HelpState;
 import zordz.state.OptionsState;
 import zordz.state.State;
 import zordz.state.TitleState;
+import zordz.util.IOTools;
 import zordz.util.SoundPlayer;
 import cjaf.tools.NewGLHandler;
 
@@ -87,7 +89,21 @@ public class Zordz {
 		inputhandler = new InputHandler(this);
 		SoundPlayer.init();
 		
-		
+		console.write("Loading options");
+		ArrayList<String> options = IOTools.readFile(new File("res/settings/options.txt"));
+		for (String s : options) {
+			String option = s.split(":")[0];
+			String[] v = s.split(":");
+			if (option.equals("soundlevel")) {
+				Options.SOUND_LEVEL = Integer.parseInt(v[1]);
+			} else if (option.equals("tickrate")) {
+				Options.TICK_RATE = Integer.parseInt(v[1]);
+			} else if (option.equals("console")) {
+				Options.console = Boolean.parseBoolean(v[1]);
+			} else if (option.equals("damage_feedback")) {
+				Options.DAMAGE_FEEDBACK = Boolean.parseBoolean(v[1]);
+			}
+		}
 		
 		console.write("Loading languages...");
 		try {
@@ -127,6 +143,16 @@ public class Zordz {
 	 * Clean up (close the window, etc.). Used before quitting
 	 */
 	public void stop() {
+		console.write("Saving options");
+		ArrayList<String> data = new ArrayList<String>();
+		{
+			data.add("soundlevel:" + Options.SOUND_LEVEL);
+			data.add("tickrate:" + Options.TICK_RATE);
+			data.add("console:" + Options.console);
+			data.add("damage_feedback:" + Options.DAMAGE_FEEDBACK);
+		}
+		IOTools.writeToFile(new File("res/settings/options.txt"), data);
+		console.write("Destroying window...");
 		Display.destroy();
 		AL.destroy();
 		System.exit(0);

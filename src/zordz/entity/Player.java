@@ -15,6 +15,7 @@ public class Player extends Mob {
 	int max_health = 100;
 	int ticks;
 	int attackTicks = 0, attackDelay = 0;
+	Rectangle swordHitbox = new Rectangle();
 	public Player(Level lvl, float x, float y) {
 		super(lvl, x, y);
 		health = max_health;
@@ -54,6 +55,7 @@ public class Player extends Mob {
 			if (attackTicks > 0) {
 				Drawer.draw(SpriteSheet.sheet, 8, 5, this.x + 20, this.y + 28, 12, 12, Drawer.FLIP_Y);
 				Drawer.draw(SpriteSheet.sheet, 9, 5, this.x + 20 , this.y + 16, 12, 12, Drawer.FLIP_Y);
+				swordHitbox = new Rectangle(Math.round(this.x + 20), Math.round(this.y + 16), 12, 24);
 			}
 		} else if (direction == Mob.LEFT) {
 			if (move_ticks > Options.TICK_RATE / 2 || attackTicks > 0) {
@@ -69,6 +71,7 @@ public class Player extends Mob {
 			if (attackTicks > 0) {
 				Drawer.draw(SpriteSheet.sheet, 8, 4, this.x - 7, this.y + 11, 12, 12, Drawer.FLIP_X);
 				Drawer.draw(SpriteSheet.sheet, 9, 4, this.x - 19, this.y + 11, 12, 12, Drawer.FLIP_X);
+				swordHitbox = new Rectangle(Math.round(this.x - 19), Math.round(this.y + 11), 24, 12);
 			}
 		} else if (direction == Mob.RIGHT) {
 			if (move_ticks > Options.TICK_RATE / 2 || attackTicks > 0) {
@@ -84,11 +87,13 @@ public class Player extends Mob {
 			if (attackTicks > 0) {
 				Drawer.draw(SpriteSheet.sheet, 8, 4, this.x + 26, this.y + 11, 12, 12);
 				Drawer.draw(SpriteSheet.sheet, 9, 4, this.x + 34, this.y + 11, 12, 12);
+				swordHitbox = new Rectangle(Math.round(this.x + 26), Math.round(this.y + 11), 24, 12);
 			}
 		} else if (direction == Mob.UP) {
 			if (attackTicks > 0) {
 				Drawer.draw(SpriteSheet.sheet, 8, 5, this.x + 20, this.y - 14, 12, 12);
 				Drawer.draw(SpriteSheet.sheet, 9, 5, this.x + 20, this.y - 2, 12, 12);
+				swordHitbox = new Rectangle(Math.round(this.x + 20), Math.round(this.y - 14), 12, 24);
 			}
 			if (move_ticks > Options.TICK_RATE / 2 || attackTicks > 0) {
 				up_flip_arms = 0b00;
@@ -122,7 +127,18 @@ public class Player extends Mob {
 
 	public void tick() {
 		rect = new Rectangle((int)x + 6, (int)y + 5, 12, 24);
-		if (attackTicks > 0) attackTicks--;
+		if (attackTicks > 0) {
+			attackTicks--;
+			if (attackTicks == 3) {
+				for (Mob mob : lvl.getMobs()) {
+					if (mob.intersects(swordHitbox)) {
+						mob.damage(15);
+						this.heal(15 * 0.15);
+					}
+					
+				}
+			}
+		}
 		if (attackDelay > 0) attackDelay--;
 		if (damageTicks > 0) damageTicks--;
 	}
@@ -147,6 +163,10 @@ public class Player extends Mob {
 		if (move_ticks >= Options.MAX_TICK_RATE) {
 			move_ticks = 0;
 		}
+	}
+
+	public boolean isDead() {
+		return health <= 0;
 	}
 
 }

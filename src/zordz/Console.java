@@ -3,13 +3,14 @@ package zordz;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.util.Date;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import zordz.entity.Player;
 
 public class Console extends JFrame {
 
@@ -74,7 +75,7 @@ public class Console extends JFrame {
 						}
 					} else if (args[0].equals("speed")) {
 						if (args.length-1 < 1) {
-							write("Not enough arguments! Usage: speed [sped]");
+							write("Not enough arguments! Usage: speed [speed]");
 						}
 						try {
 							int i = Integer.parseInt(args[1]);
@@ -82,6 +83,23 @@ public class Console extends JFrame {
 						} catch (Exception e) {
 							write("Usage: speed [speed]");
 						}
+					} else if (args[0].equals("damage_feedback")) {
+						Options.DAMAGE_FEEDBACK = !Options.DAMAGE_FEEDBACK;
+						if (Options.DAMAGE_FEEDBACK) write("Damage feedback turned on.");
+						else						 write("Damage feedback turned off.");
+					} else if (args[0].equals("add_player")) {
+						if (args.length-1 < 2) {
+							write("Not enough arguments! Usage: add_player [x] [y]");
+						}
+						try {
+							float x = Float.parseFloat(args[1]);
+							float y = Float.parseFloat(args[2]);
+							zordz.level.add(new Player(zordz.level, x, y));
+						} catch (Exception e) {
+							write("Usage: add_player [x] [y]");
+						}
+					} else if (args[0].equals("help")) {
+						write("volume, levels, damage_feedback, speed, healme, hurtme\n\tadd_player");
 					}
 				}
 			}

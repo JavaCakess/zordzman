@@ -29,7 +29,6 @@ public abstract class Entity {
 		this.y = y;
 	}
 
-	
 	public abstract void render();
 	public abstract void tick();
 }

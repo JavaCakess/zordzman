@@ -7,5 +7,6 @@ public class Options {
 	public static int MAX_TICK_RATE = 60;
 	public static String LANGUAGE = "ENGLISH";
 	public static boolean console = false;
+	public static boolean DAMAGE_FEEDBACK = true;
 	
 }

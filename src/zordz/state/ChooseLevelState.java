@@ -50,8 +50,8 @@ public class ChooseLevelState extends State {
 		
 		if (select.clicked()) {
 			zordz.level = zordz.getLevel(selectLevel.getSelected());
-			zordz.player = new Player(zordz.level, 100, 100);
 			zordz.level.remove(zordz.player);
+			zordz.player = new Player(zordz.level, 100, 100);
 			zordz.level.add(zordz.player);
 			zordz.switchState(zordz.gamestate);
 			SoundPlayer.play(Sound.button_clicked);

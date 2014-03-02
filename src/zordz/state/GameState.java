@@ -17,6 +17,8 @@ public class GameState extends State {
 	Button backToMenu = new Button("Back to Menu", Color.white, 230, 180, 12, 12);
 	Button options =    new Button("Options", Color.orange, 230, 240, 28, 16);
 	Button resume     = new Button("Resume", Color.blue, 230, 300, 36, 16);
+	Button backToMenu2 =new Button("Back to Menu", Color.red, 135, 400, 12, 12);
+	Button newGame    = new Button("Restart", Color.yellow, 300, 400, 28, 16);
 	float privOx, privOy;
 	Player player;
 	int ticks = 0;
@@ -25,6 +27,13 @@ public class GameState extends State {
 		this.player = new Player(zordz.level, 100, 100);
 	}
 
+	public void init(Zordz zordz) {
+		this.zordz = zordz;
+		zordz.level.remove(zordz.player);
+		zordz.player = new Player(zordz.level, 100, 100);
+		zordz.level.add(zordz.player);
+	}
+	
 	public void render() {
 		float ox = zordz.screen.xOff;
 		float oy = zordz.screen.yOff;
@@ -54,6 +63,26 @@ public class GameState extends State {
 				togglePaused();
 			}
 		} else {
+			if (zordz.player.isDead()) {
+				NewGLHandler.setCurrentColor(new float[]{0.0f, 0.0f, 0.0f, 0.4f}, true);
+				NewGLHandler.draw2DRect(ox + 0, oy + 0, Zordz.WIDTH, Zordz.HEIGHT, true);
+				Drawer.setCol(Color.white);
+				Drawer.setCol(Color.RED);
+				Text.render("YOU ARE DED", 40, 190, 48, 48);
+				Text.render("GAME OVER", 88, 190 + 56, 48, 48);
+				Drawer.setCol(Color.white);
+				
+				backToMenu2.draw();
+				newGame.draw();
+				if (backToMenu2.clicked()) {
+					SoundPlayer.play(Sound.button_clicked);
+					zordz.switchState(zordz.titlestate);
+				} else if (newGame.clicked()) {
+					SoundPlayer.play(Sound.button_clicked);
+					zordz.switchState(zordz.gamestate);
+					init(zordz);
+				}
+			}
 			renderHUD();
 		}
 	}

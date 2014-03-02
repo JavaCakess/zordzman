@@ -91,6 +91,7 @@ public class OptionsState extends State {
 			performance = zordz.getString("#ZM_Performance_Good");
 		}
 		tickRate.setMeterText(performance);
+		tickRate.setValue(400 * (30 - Options.TICK_RATE / 30 - Options.MAX_TICK_RATE));
 	}
 
 	public int getID() {

@@ -3,13 +3,11 @@ package zordz.level;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-//import java.util.Random;
 import java.util.Scanner;
 
 import zordz.Zordz;
 import zordz.entity.Entity;
-import zordz.entity.Player;
-//import zordz.entity.Player;
+import zordz.entity.Mob;
 import zordz.level.tile.Tile;
 
 public class Level {
@@ -145,5 +143,19 @@ public class Level {
 
 	public void setTileIDAt(int x, int y, byte id) {
 		this.tiles[x][y] = id;
+	}
+
+	public ArrayList<Entity> getEntities() {
+		return entities;
+	}
+
+	public ArrayList<Mob> getMobs() {
+		ArrayList<Mob> mobs = new ArrayList<Mob>();
+		for (Entity e : getEntities()) {
+			if (e instanceof Mob) {
+				mobs.add((Mob)e);
+			}
+		}
+		return mobs;
 	}
 }

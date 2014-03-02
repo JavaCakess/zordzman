@@ -1,0 +1,4 @@
+soundlevel:100
+tickrate:46
+console:true
+damage_feedback:true
