@@ -24,7 +24,7 @@ public class InputHandler {
 					zordz.gamestate.togglePaused();
 				}
 				if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-					zordz.player.attack();
+					zordz.player.attack(true);
 				}
 			}
 			float camera_speed = zordz.player.getSpeed() * ((float)Options.MAX_TICK_RATE / Options.TICK_RATE);

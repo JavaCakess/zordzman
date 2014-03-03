@@ -14,7 +14,7 @@ import cjaf.tools.NewGLHandler;
 public class Checkbox extends Button {
 	float w, h;
 	boolean wasClicked = false;
-	boolean checked = false;
+	public boolean checked = false;
 	final Texture check = NewGLHandler.loadTexture("res/gui/tick.png");
 	public Checkbox(Color col, boolean def, float x, float y, float w, float h) {
 		super("", col, x, y, 0, 2);

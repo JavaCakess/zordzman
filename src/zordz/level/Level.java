@@ -8,6 +8,8 @@ import java.util.Scanner;
 import zordz.Zordz;
 import zordz.entity.Entity;
 import zordz.entity.Mob;
+import zordz.entity.Player;
+import zordz.entity.PlayerMP;
 import zordz.level.tile.Tile;
 
 public class Level {
@@ -157,5 +159,29 @@ public class Level {
 			}
 		}
 		return mobs;
+	}
+
+	public void movePlayer(String username, float xa, float ya, int direction) {
+		for (Mob mob : getMobs()) {
+			if (mob instanceof Player) {
+				Player player = (Player) mob;
+				if (player.getUsername().equals(username)) {
+					player.setX(xa);
+					player.setY(ya);
+					player.setDirection(direction);
+				}
+			}
+		}
+	}
+
+	public void playerAttack(String username) {
+		for (Mob mob : getMobs()) {
+			if (mob instanceof PlayerMP) {
+				PlayerMP player = (PlayerMP) mob;
+				if (player.getUsername().equals(username)) {
+					player.attack(false);
+				}
+			}
+		}
 	}
 }

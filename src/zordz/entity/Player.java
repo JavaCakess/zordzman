@@ -2,13 +2,17 @@ package zordz.entity;
 
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.util.Random;
 
 import zordz.Options;
+import zordz.Zordz;
 import zordz.gfx.Drawer;
 import zordz.gfx.SpriteSheet;
+import zordz.gfx.Text;
 import zordz.level.Level;
 import zordz.util.Sound;
 import zordz.util.SoundPlayer;
+import cjaf.tools.NewGLHandler;
 
 public class Player extends Mob {
 	float move_ticks = 0;
@@ -16,14 +20,22 @@ public class Player extends Mob {
 	int ticks;
 	int attackTicks = 0, attackDelay = 0;
 	Rectangle swordHitbox = new Rectangle();
-	public Player(Level lvl, float x, float y) {
+	String username = "Player";
+	public Player(Level lvl, float x, float y, String username) {
 		super(lvl, x, y);
 		health = max_health;
+		this.username = username;
 		speed = 1f; //Speed: 60
 		rect = new Rectangle((int)x, (int)y, 32, 32);
 	}
 
 	public void render() {
+		
+		NewGLHandler.setCurrentColor(new float[]{0.3f, 0.3f, 0.3f, 0.3f}, true);
+		NewGLHandler.draw2DRect(this.x - 10, this.y - 13, 52, 10, true);
+		Drawer.setCol(Color.white);
+		Text.render(username, this.x - 8, this.y - 13, 8, 8);
+		
 		int scale = 2;
 		int down_legs_modifier = 0;
 		int side_pos_modifier = 0;
@@ -126,6 +138,7 @@ public class Player extends Mob {
 	}
 
 	public void tick() {
+		canMove();
 		rect = new Rectangle((int)x + 6, (int)y + 5, 12, 24);
 		if (attackTicks > 0) {
 			attackTicks--;
@@ -133,7 +146,6 @@ public class Player extends Mob {
 				for (Mob mob : lvl.getMobs()) {
 					if (mob.intersects(swordHitbox)) {
 						mob.damage(15);
-						this.heal(15 * 0.15);
 					}
 					
 				}
@@ -153,20 +165,48 @@ public class Player extends Mob {
 	
 	
 
-	public void move(float xa, float ya) {
-		if (!super.canMove()) return ;
+	public boolean move(float xa, float ya) {
+		if (!super.canMove()) return false;
 		float d = Options.TICK_RATE;
 		x+=xa*((float)Options.MAX_TICK_RATE / d);
 		y+=ya*((float)Options.MAX_TICK_RATE / d);
 
+		
+		if (xa > 0) {
+			xa = 1;
+		} else if (xa < 0) {
+			xa = -1;
+		}
+		
+		if (ya > 0) {
+			ya = 1;
+		} else if (ya < 0) {
+			ya = -1;
+		}
+		
+		
 		move_ticks+=Options.MAX_TICK_RATE / d;
 		if (move_ticks >= Options.MAX_TICK_RATE) {
 			move_ticks = 0;
 		}
+		
+		for (Mob mob : lvl.getMobs()) {
+			if (mob instanceof Player && !mob.equals(this)) {
+				Player player = (Player) mob;
+				if (Options.PLAYERS_MIMIC && !Zordz.zordz.player.equals(player)) {
+					player.move(xa, ya);
+				}
+			}
+		}
+		return true;
 	}
 
 	public boolean isDead() {
 		return health <= 0;
 	}
 
+	public String getUsername() {
+		return username;
+	}
+	
 }

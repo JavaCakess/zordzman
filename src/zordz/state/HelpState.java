@@ -17,7 +17,7 @@ public class HelpState extends State {
 								+  "current weapon.\n \n"
 								+  "Now get playing!";
 	
-	Button back = new Button("Back", Color.white, Zordz.WIDTH / 2 - (Button.width / 2), 471 - Button.height, 52, 16);
+	Button back = new Button("Back", Color.white, Zordz.WIDTH / 2 - (Button.WIDTH / 2), 471 - Button.HEIGHT, 52, 16);
 	int ticks = 0;
 	Zordz zordz;
 	public HelpState(Zordz zordz) {

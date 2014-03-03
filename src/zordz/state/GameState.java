@@ -2,9 +2,12 @@ package zordz.state;
 
 import java.awt.Color;
 
+import javax.swing.JOptionPane;
+
 import zordz.Options;
 import zordz.Zordz;
 import zordz.entity.Player;
+import zordz.entity.PlayerMP;
 import zordz.gfx.Drawer;
 import zordz.gfx.Text;
 import zordz.util.Sound;
@@ -17,21 +20,23 @@ public class GameState extends State {
 	Button backToMenu = new Button("Back to Menu", Color.white, 230, 180, 12, 12);
 	Button options =    new Button("Options", Color.orange, 230, 240, 28, 16);
 	Button resume     = new Button("Resume", Color.blue, 230, 300, 36, 16);
-	Button backToMenu2 =new Button("Back to Menu", Color.red, 135, 400, 12, 12);
-	Button newGame    = new Button("Restart", Color.yellow, 300, 400, 28, 16);
+	Button backToMenu2 =new Button("Back to Menu", Color.red, 120, 400, 12, 12);
+	Button newGame    = new Button("Restart", Color.yellow, 310, 400, 28, 16);
 	float privOx, privOy;
 	Player player;
 	int ticks = 0;
 	public GameState(Zordz zordz) {
 		this.zordz = zordz;
-		this.player = new Player(zordz.level, 100, 100);
+		zordz.player = new PlayerMP(zordz.level, 100, 100, zordz.myName, null, -1);
 	}
 
 	public void init(Zordz zordz) {
 		this.zordz = zordz;
 		zordz.level.remove(zordz.player);
-		zordz.player = new Player(zordz.level, 100, 100);
+		zordz.player = new PlayerMP(zordz.level, 100, 100, zordz.myName, null, -1);
 		zordz.level.add(zordz.player);
+		zordz.screen.setOff(0, 0);
+		
 	}
 	
 	public void render() {

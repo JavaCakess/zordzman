@@ -4,10 +4,14 @@ import java.awt.Color;
 import java.io.File;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 import zordz.Zordz;
 import zordz.entity.Player;
+import zordz.entity.PlayerMP;
 import zordz.level.Level;
 import zordz.level.tile.Tile;
+import zordz.net.Packet00Login;
 import zordz.util.Sound;
 import zordz.util.SoundPlayer;
 
@@ -25,8 +29,8 @@ public class ChooseLevelState extends State {
 				stateLevel.setTileIDAt(x, y, Tile.WATER.getID());
 			}
 		}
-		select = new Button("Select", Color.cyan, Zordz.WIDTH / 2 - (Button.width / 2), 471 - Button.height, 34, 16);
-		backToTitle = new Button("Go Back", Color.yellow, Zordz.WIDTH / 2 - (Button.width / 2), 3, 26, 16);
+		select = new Button("Select", Color.cyan, Zordz.WIDTH / 2 - (Button.WIDTH / 2), 471 - Button.HEIGHT, 34, 16);
+		backToTitle = new Button("Go Back", Color.yellow, Zordz.WIDTH / 2 - (Button.WIDTH / 2), 3, 26, 16);
 		loadLevels();
 	}
 
@@ -51,8 +55,14 @@ public class ChooseLevelState extends State {
 		if (select.clicked()) {
 			zordz.level = zordz.getLevel(selectLevel.getSelected());
 			zordz.level.remove(zordz.player);
-			zordz.player = new Player(zordz.level, 100, 100);
+			
+			
+			zordz.player = new PlayerMP(zordz.level, 100, 100, zordz.myName, null, -1);
 			zordz.level.add(zordz.player);
+			
+			PlayerMP player = zordz.player;
+			Packet00Login loginPacket = new Packet00Login(player.getUsername(), player.getX(), player.getY());
+			loginPacket.writeData(zordz.gameclient);
 			zordz.switchState(zordz.gamestate);
 			SoundPlayer.play(Sound.button_clicked);
 		} else if (backToTitle.clicked()) {

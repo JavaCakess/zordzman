@@ -19,14 +19,17 @@ public class OptionsState extends State {
 
 	Zordz zordz;
 	Level titleLevel = new Level(640 / 32, 480 / 32);
-	Button backToTitle = new Button("Go Back", new Color(0, 100, 0), Zordz.WIDTH / 2 - (Button.width / 2), 
+	Button backToTitle = new Button("Go Back", new Color(0, 100, 0), Zordz.WIDTH / 2 - (Button.WIDTH / 2), 
 			Zordz.HEIGHT - 86, 26, 16);
 	Meter volume = new Meter(100f, 100f, 400f, 50f, 400f, 400f, new float[]{0.4f, 0.5f, 0.4f});
-	Meter tickRate = new Meter(100, 200f, 400f, 50f, 400f, 400f, new float[]{0.4f, 0.5f, 0.4f}).setTextType(TextType.NORMAL).setCustomText(true);
-	Checkbox console = new Checkbox(Color.green, false, 300, 260, 32, 32);
+	public Meter tickRate = new Meter(100, 200f, 400f, 50f, 400f, 400f, new float[]{0.4f, 0.5f, 0.4f}).setTextType(TextType.NORMAL).setCustomText(true);
+	public Checkbox console = new Checkbox(Color.green, false, 300, 260, 32, 32);
+	public TextBox text = new TextBox("player", 200f, 300, 332f, 32f, 24, 13, new char[]{':', ' ', '?'});
 	int backToState = 0;
 	public OptionsState(Zordz zordz) {
 		this.zordz = zordz;
+		tickRate.setValue(Options.TICK_RATE_METER);
+		console.checked = Options.console;
 		for (int x = 0; x < titleLevel.getWidth(); x++) {
 			for (int y = 0; y < titleLevel.getHeight(); y++) {
 				if (x == 0 || x == titleLevel.getWidth()-1) {
@@ -50,10 +53,12 @@ public class OptionsState extends State {
 		Text.render(zordz.getString("#ZM_Volume") + ":", 40, 60, 16, 16);
 		Text.render(zordz.getString("#ZM_Performance") + ":", 40, 160, 16, 16);
 		Text.render("Enable Console: ", 40, 260, 16, 16);
+		Text.render("Username:", 40, 300, 16, 16);
 		NewGLHandler.resetColors();
 		volume.draw();
 		tickRate.draw();
 		console.draw();
+		text.draw();
 	}
 
 	public void tick() {
@@ -73,6 +78,7 @@ public class OptionsState extends State {
 		}  else if (tickRate.clicked()) {
 			tickRate.setValue(Mouse.getX() - 100);
 			Options.TICK_RATE = 30 + Math.round(tickRate.value / 14);
+			Options.TICK_RATE_METER = (int)tickRate.value;
 			if (Options.TICK_RATE % 2 == 1) {
 				Options.TICK_RATE++;
 			}
@@ -91,9 +97,17 @@ public class OptionsState extends State {
 			performance = zordz.getString("#ZM_Performance_Good");
 		}
 		tickRate.setMeterText(performance);
-		tickRate.setValue(400 * (30 - Options.TICK_RATE / 30 - Options.MAX_TICK_RATE));
+		
 	}
 
+	public void meterToTickRate() {
+		Options.TICK_RATE = 30 + Math.round(tickRate.value / 14);
+		Options.TICK_RATE_METER = (int)tickRate.value;
+		if (Options.TICK_RATE % 2 == 1) {
+			Options.TICK_RATE++;
+		}
+	}
+	
 	public int getID() {
 		return 3;
 	}

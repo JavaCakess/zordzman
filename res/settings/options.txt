@@ -1,4 +1,4 @@
 soundlevel:100
-tickrate:46
+tickratemeter:399
 console:true
 damage_feedback:true

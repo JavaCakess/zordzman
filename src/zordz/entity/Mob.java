@@ -28,11 +28,13 @@ public abstract class Mob extends Entity {
 		return health;
 	}
 
-	public void move(float xa, float ya) {
+	public boolean move(float xa, float ya) {
 		if (canMove()) {
 			x+=xa;
 			y+=ya;
+			return true;
 		}
+		return false;
 	}
 
 	public void heal(double d) {
@@ -74,16 +76,16 @@ public abstract class Mob extends Entity {
 			for (int y = b - 1; y < b + tile_check_h; y++) {
 				if (!Tile.getByID(lvl.getTileIDAt(x, y)).pass(lvl, this, x*32, y*32)) {
 					if (this.x < x*32 && direction == RIGHT) {
-						//this.x-=speed;
+						this.x-=speed/60;
 						return false;
 					} else if (this.x > x*32 && direction == LEFT) {
-						//this.x+=speed;
+						this.x+=speed/60;
 						return false;
 					} else if (this.y < y*32 && direction == DOWN) {
-						//this.y-=speed;
+						this.y-=speed/60;
 						return false;
 					} else if (this.y > y*32 && direction == UP) {
-						//this.y+=speed;
+						this.y+=speed/60;
 						return false;
 					}
 				}
@@ -92,6 +94,10 @@ public abstract class Mob extends Entity {
 		return true;
 	}
 
+	public void setHealth(int i) {
+		health = i;
+	}
+	
 	public boolean intersects(Rectangle rect) {
 		return this.rect.intersects(rect);
 	}
@@ -110,5 +116,9 @@ public abstract class Mob extends Entity {
 
 	public void setSpeed(float speed) {
 		this.speed = speed;
+	}
+	
+	public void setDirection(int direction) {
+		this.direction = direction;
 	}
 }

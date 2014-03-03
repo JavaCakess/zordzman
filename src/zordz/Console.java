@@ -11,6 +11,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import zordz.entity.Player;
+import zordz.util.Sound;
+import zordz.util.SoundPlayer;
 
 public class Console extends JFrame {
 
@@ -94,10 +96,15 @@ public class Console extends JFrame {
 						try {
 							float x = Float.parseFloat(args[1]);
 							float y = Float.parseFloat(args[2]);
-							zordz.level.add(new Player(zordz.level, x, y));
+							zordz.level.add(new Player(zordz.level, x, y, zordz.myName));
 						} catch (Exception e) {
 							write("Usage: add_player [x] [y]");
 						}
+					} else if (args[0].equals("restart")) {
+						zordz.player.damage(zordz.player.getHealth());
+						zordz.gamestate.init(zordz);
+					} else if (args[0].equals("players_mimic")) {
+						Options.PLAYERS_MIMIC = !Options.PLAYERS_MIMIC;
 					} else if (args[0].equals("help")) {
 						write("volume, levels, damage_feedback, speed, healme, hurtme\n\tadd_player");
 					}
