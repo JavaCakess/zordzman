@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 
 import zordz.Zordz;
@@ -11,11 +13,16 @@ import zordz.entity.PlayerMP;
 import zordz.net.Packet.PacketType;
 public class GameServer extends Thread {
 	DatagramSocket server = null;
+	ServerSocket TCPSocket = null;
+	Socket globalSock = null;
+	ArrayList<ClientHandler> clienth = new ArrayList<ClientHandler>();
 	ArrayList<PlayerMP> players = new ArrayList<PlayerMP>();
 
 	public GameServer() {
 		try {
+			TCPSocket = new ServerSocket(Net.TCP_PORT);
 			server = new DatagramSocket(Net.PORT);
+			//globalSock = new Socket("cakessjaf.zapto.org", Net.GLOBAL_INFO_PORT);
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
@@ -23,6 +30,12 @@ public class GameServer extends Thread {
 
 	public void run() {
 		while (true) {
+			try {
+				Socket sock = TCPSocket.accept();
+			} catch (IOException ioe) {
+				
+			}
+			
 			byte[] data = new byte[1024];
 			DatagramPacket packet = new DatagramPacket(data, data.length);
 			try {

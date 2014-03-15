@@ -54,4 +54,8 @@ public abstract class Tile {
 		}
 		return true;
 	}
+
+	public boolean isSolid() {
+		return solid;
+	}
 }

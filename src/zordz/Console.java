@@ -96,7 +96,8 @@ public class Console extends JFrame {
 						try {
 							float x = Float.parseFloat(args[1]);
 							float y = Float.parseFloat(args[2]);
-							zordz.level.add(new Player(zordz.level, x, y, zordz.myName));
+							zordz.level.add(new Player(zordz.level, x, y, "bot" + zordz.level.botcount));
+							zordz.level.botcount++;
 						} catch (Exception e) {
 							write("Usage: add_player [x] [y]");
 						}
@@ -105,6 +106,16 @@ public class Console extends JFrame {
 						zordz.gamestate.init(zordz);
 					} else if (args[0].equals("players_mimic")) {
 						Options.PLAYERS_MIMIC = !Options.PLAYERS_MIMIC;
+					} else if (args[0].equals("burn")) {
+						if (args.length-1 < 1) {
+							write("Not enough arguments! Usage: burn [ticks]");
+						}
+						try {
+							int i = Integer.parseInt(args[1]);
+							zordz.player.setBurnTicks(i);
+						} catch (Exception e) {
+							write("Usage: burn [ticks]");
+						}
 					} else if (args[0].equals("help")) {
 						write("volume, levels, damage_feedback, speed, healme, hurtme\n\tadd_player");
 					}

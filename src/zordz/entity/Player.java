@@ -2,7 +2,6 @@ package zordz.entity;
 
 import java.awt.Color;
 import java.awt.Rectangle;
-import java.util.Random;
 
 import zordz.Options;
 import zordz.Zordz;
@@ -10,32 +9,63 @@ import zordz.gfx.Drawer;
 import zordz.gfx.SpriteSheet;
 import zordz.gfx.Text;
 import zordz.level.Level;
-import zordz.util.Sound;
-import zordz.util.SoundPlayer;
+import zordz.weapons.Weapon;
 import cjaf.tools.NewGLHandler;
 
 public class Player extends Mob {
 	float move_ticks = 0;
 	int max_health = 100;
-	int ticks;
-	int attackTicks = 0, attackDelay = 0;
-	Rectangle swordHitbox = new Rectangle();
+	public int ticks;
+	public int attackTicks = 0;
+	public int attackDelay = 0;
+	public int displayLifeTicks = 0;
+	public Rectangle swordHitbox = new Rectangle();
 	String username = "Player";
+	Weapon combat = Weapon.minizord;
 	public Player(Level lvl, float x, float y, String username) {
 		super(lvl, x, y);
 		health = max_health;
 		this.username = username;
 		speed = 1f; //Speed: 60
 		rect = new Rectangle((int)x, (int)y, 32, 32);
+		combatEquip(Weapon.minizord);
+	}
+
+	public void combatEquip(Weapon weapon) {
+		health = max_health;
+		speed = 1f; //Speed: 60
+		combat = weapon;
+		combat.equip(this);
+	}
+
+	public float healthPerc() {
+		return (float)health / max_health;
 	}
 
 	public void render() {
 		
+		// Debug
+		burnRate = 15;
+		// END
 		NewGLHandler.setCurrentColor(new float[]{0.3f, 0.3f, 0.3f, 0.3f}, true);
-		NewGLHandler.draw2DRect(this.x - 10, this.y - 13, 52, 10, true);
-		Drawer.setCol(Color.white);
-		Text.render(username, this.x - 8, this.y - 13, 8, 8);
+		NewGLHandler.draw2DRect((this.x + 12) - (username.length() * 4), this.y - 20, (8 * username.length()) + 4, 9, true);
 		
+		if (displayLifeTicks > 0) {
+			NewGLHandler.draw2DRect((this.x + 18) - (36), this.y - 11, 64, 8, true);
+			if (healthPerc() > 0.66) {
+				Drawer.setCol(Color.green);
+			} else if (healthPerc() > 0.33) {
+				Drawer.setCol(Color.orange);
+			} else if (healthPerc() > 0) {
+				Drawer.setCol(Color.red);
+			}
+			NewGLHandler.draw2DRect((this.x + 14) - (27), this.y - 10, 50 * ((float)health / max_health), 4, true);
+			Drawer.setCol(Color.black);
+			NewGLHandler.draw2DRect((this.x + 14) - (27), this.y - 9, 50, 4, false);
+		}
+		Drawer.setCol(Color.white);
+		Text.render(username, (this.x + 12) - (username.length() * 4), this.y - 20, 8, 8);
+
 		int scale = 2;
 		int down_legs_modifier = 0;
 		int side_pos_modifier = 0;
@@ -79,7 +109,7 @@ public class Player extends Mob {
 			Drawer.draw(SpriteSheet.sheet, 3 + side_pos_modifier, 4, this.x, this.y, 8 * scale, 8 * scale, Drawer.FLIP_X);
 			Drawer.draw(SpriteSheet.sheet, 2 + side_pos_modifier, 5, this.x + 8 * scale, this.y + 8 * scale, 8 * scale, 8 * scale, Drawer.FLIP_X);
 			Drawer.draw(SpriteSheet.sheet, 3 + side_pos_modifier, 5, this.x, this.y + 8 * scale, 8 * scale, 8 * scale, Drawer.FLIP_X);
-		
+
 			if (attackTicks > 0) {
 				Drawer.draw(SpriteSheet.sheet, 8, 4, this.x - 7, this.y + 11, 12, 12, Drawer.FLIP_X);
 				Drawer.draw(SpriteSheet.sheet, 9, 4, this.x - 19, this.y + 11, 12, 12, Drawer.FLIP_X);
@@ -95,7 +125,7 @@ public class Player extends Mob {
 			Drawer.draw(SpriteSheet.sheet, 3 + side_pos_modifier, 4, this.x + 8 * scale, this.y, 8 * scale, 8 * scale);
 			Drawer.draw(SpriteSheet.sheet, 2 + side_pos_modifier, 5, this.x, this.y + 8 * scale, 8 * scale, 8 * scale);
 			Drawer.draw(SpriteSheet.sheet, 3 + side_pos_modifier, 5, this.x + 8 * scale, this.y + 8 * scale, 8 * scale, 8 * scale);
-			
+
 			if (attackTicks > 0) {
 				Drawer.draw(SpriteSheet.sheet, 8, 4, this.x + 26, this.y + 11, 12, 12);
 				Drawer.draw(SpriteSheet.sheet, 9, 4, this.x + 34, this.y + 11, 12, 12);
@@ -115,7 +145,7 @@ public class Player extends Mob {
 				up_flip_arms = Drawer.FLIP_X;
 				up_larm_pos = (int)this.x + 8 * scale;
 				up_rarm_pos = (int)this.x + 0 * scale;
-				
+
 			}
 			Drawer.draw(SpriteSheet.sheet, 6, 4, up_larm_pos, this.y, 8 * scale, 8 * scale, up_flip_arms);
 			Drawer.draw(SpriteSheet.sheet, 7, 4, up_rarm_pos, this.y, 8 * scale, 8 * scale, up_flip_arms);
@@ -133,63 +163,47 @@ public class Player extends Mob {
 			Drawer.draw(SpriteSheet.sheet, 6, 5, bottom_right_pos, this.y + 8 * scale, 8 * scale, 8 * scale, down_legs_modifier);
 			Drawer.draw(SpriteSheet.sheet, 7, 5, bottom_left_pos, this.y + 8 * scale, 8 * scale, 8 * scale, down_legs_modifier);
 		}
-		
+
 		Drawer.setCol(Color.white);
 	}
 
 	public void tick() {
-		canMove();
-		rect = new Rectangle((int)x + 6, (int)y + 5, 12, 24);
+		rect = new Rectangle((int)x, (int)y, 32, 32);
 		if (attackTicks > 0) {
 			attackTicks--;
-			if (attackTicks == 3) {
-				for (Mob mob : lvl.getMobs()) {
-					if (mob.intersects(swordHitbox)) {
-						mob.damage(15);
-					}
-					
-				}
-			}
+			combat.function(this, lvl, x, y);
 		}
 		if (attackDelay > 0) attackDelay--;
 		if (damageTicks > 0) damageTicks--;
+		if (displayLifeTicks > 0) displayLifeTicks--;
+		burn();
 	}
 
 	public void attack() {
-		if (attackDelay < 1) {
-			attackTicks = (int) ((int)Options.TICK_RATE / 6f);
-			attackDelay = (int) ((int)Options.TICK_RATE / 3f);
-			SoundPlayer.play(Sound.melee_swing);
-		}
+		combat.use(this, lvl, x, y);
 	}
-	
-	
 
 	public boolean move(float xa, float ya) {
-		if (!super.canMove()) return false;
+		super.move(xa, ya);
 		float d = Options.TICK_RATE;
-		x+=xa*((float)Options.MAX_TICK_RATE / d);
-		y+=ya*((float)Options.MAX_TICK_RATE / d);
-
-		
 		if (xa > 0) {
 			xa = 1;
 		} else if (xa < 0) {
 			xa = -1;
 		}
-		
+
 		if (ya > 0) {
 			ya = 1;
 		} else if (ya < 0) {
 			ya = -1;
 		}
-		
-		
+
+
 		move_ticks+=Options.MAX_TICK_RATE / d;
 		if (move_ticks >= Options.MAX_TICK_RATE) {
 			move_ticks = 0;
 		}
-		
+
 		for (Mob mob : lvl.getMobs()) {
 			if (mob instanceof Player && !mob.equals(this)) {
 				Player player = (Player) mob;
@@ -201,6 +215,16 @@ public class Player extends Mob {
 		return true;
 	}
 
+	public void softDamage(double d) {
+		super.softDamage(d);
+		displayLifeTicks = Math.round(Options.TICK_RATE * 0.5f);
+	}
+	
+	public void damage(double d) {
+		super.damage(d);
+		displayLifeTicks = Math.round(Options.TICK_RATE * 1.5f);
+	}
+	
 	public boolean isDead() {
 		return health <= 0;
 	}
@@ -208,5 +232,9 @@ public class Player extends Mob {
 	public String getUsername() {
 		return username;
 	}
-	
+
+	public Weapon getCombatWeapon() {
+		return combat;
+	}
+
 }

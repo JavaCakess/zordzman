@@ -19,16 +19,19 @@ public class OptionsState extends State {
 
 	Zordz zordz;
 	Level titleLevel = new Level(640 / 32, 480 / 32);
-	Button backToTitle = new Button("Go Back", new Color(0, 100, 0), Zordz.WIDTH / 2 - (Button.WIDTH / 2), 
-			Zordz.HEIGHT - 86, 26, 16);
+	Button cancel = new Button("Back", new Color(0, 100, 0), Zordz.WIDTH / 2 - (Button.WIDTH / 2) + 100, 
+			Zordz.HEIGHT - 86, 50, 16);
+	Button done = new Button("Done", new Color(0, 100, 0), (Zordz.WIDTH / 2 - (Button.WIDTH / 2)) - 100, Zordz.HEIGHT - 86, 26, 16);
 	Meter volume = new Meter(100f, 100f, 400f, 50f, 400f, 400f, new float[]{0.4f, 0.5f, 0.4f});
 	public Meter tickRate = new Meter(100, 200f, 400f, 50f, 400f, 400f, new float[]{0.4f, 0.5f, 0.4f}).setTextType(TextType.NORMAL).setCustomText(true);
 	public Checkbox console = new Checkbox(Color.green, false, 300, 260, 32, 32);
-	public TextBox text = new TextBox("player", 200f, 300, 332f, 32f, 24, 13, new char[]{':', ' ', '?'});
+	public TextBox username;
+	long long_ticks = 0;
 	int backToState = 0;
 	public OptionsState(Zordz zordz) {
 		this.zordz = zordz;
 		tickRate.setValue(Options.TICK_RATE_METER);
+		username = new TextBox(Options.USERNAME, 200f, 300, 332f, 32f, 24, 13, new char[]{':', ' ', '?', '\n', '\r'});
 		console.checked = Options.console;
 		for (int x = 0; x < titleLevel.getWidth(); x++) {
 			for (int y = 0; y < titleLevel.getHeight(); y++) {
@@ -46,8 +49,12 @@ public class OptionsState extends State {
 	}
 	
 	public void render() {
+		if (long_ticks == 0) {
+			init();
+		}
 		titleLevel.render();
-		backToTitle.draw();
+		cancel.draw();
+		done.draw();
 		//Draw the volume bar!
 		NewGLHandler.setCurrentColor(new float[]{0.7f, 0.7f, 0.7f}, false);
 		Text.render(zordz.getString("#ZM_Volume") + ":", 40, 60, 16, 16);
@@ -58,14 +65,25 @@ public class OptionsState extends State {
 		volume.draw();
 		tickRate.draw();
 		console.draw();
-		text.draw();
+		username.draw();
 	}
 
+	public void saveOptions() {
+		//Username
+		Options.USERNAME = username.text;
+	}
+	
+	public void init() {
+		username.setText(Options.USERNAME);
+	}
+	
 	public void tick() {
+		
 		String performance = "";
 		zordz.screen.setOff(0, 0);
 		volume.setValue(Options.SOUND_LEVEL * 4);
-		if (backToTitle.clicked()) {
+		if (cancel.clicked()) {
+			saveOptions();
 			if (backToState == 0) {
 				zordz.switchState(zordz.titlestate);
 			} else if (backToState == 1) {
@@ -73,7 +91,6 @@ public class OptionsState extends State {
 			}
 			SoundPlayer.play(Sound.button_clicked);
 		} else if (volume.clicked()) {
-			volume.setValue(Mouse.getX() - 100);
 			Options.SOUND_LEVEL = Math.round(volume.value / 4);
 		}  else if (tickRate.clicked()) {
 			tickRate.setValue(Mouse.getX() - 100);
@@ -82,6 +99,14 @@ public class OptionsState extends State {
 			if (Options.TICK_RATE % 2 == 1) {
 				Options.TICK_RATE++;
 			}
+		} else if (done.clicked()) {
+			saveOptions();
+			if (backToState == 0) {
+				zordz.switchState(zordz.titlestate);
+			} else if (backToState == 1) {
+				zordz.switchState(zordz.gamestate);
+			}
+			SoundPlayer.play(Sound.button_clicked);
 		}
 		if (console.wasClicked) {
 			zordz.console.setVisible(console.checked);
@@ -97,7 +122,7 @@ public class OptionsState extends State {
 			performance = zordz.getString("#ZM_Performance_Good");
 		}
 		tickRate.setMeterText(performance);
-		
+		long_ticks++;
 	}
 
 	public void meterToTickRate() {

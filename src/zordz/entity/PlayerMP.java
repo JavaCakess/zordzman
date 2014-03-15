@@ -54,5 +54,4 @@ public class PlayerMP extends Player {
 	public void setPort(int port) {
 		this.port = port;
 	}
-
 }

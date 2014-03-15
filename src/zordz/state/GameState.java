@@ -27,13 +27,13 @@ public class GameState extends State {
 	int ticks = 0;
 	public GameState(Zordz zordz) {
 		this.zordz = zordz;
-		zordz.player = new PlayerMP(zordz.level, 100, 100, zordz.myName, null, -1);
+		zordz.player = new PlayerMP(zordz.level, 100, 100, Options.USERNAME, null, -1);
 	}
 
 	public void init(Zordz zordz) {
 		this.zordz = zordz;
 		zordz.level.remove(zordz.player);
-		zordz.player = new PlayerMP(zordz.level, 100, 100, zordz.myName, null, -1);
+		zordz.player = new PlayerMP(zordz.level, 100, 100, Options.USERNAME, null, -1);
 		zordz.level.add(zordz.player);
 		zordz.screen.setOff(0, 0);
 		
@@ -73,8 +73,8 @@ public class GameState extends State {
 				NewGLHandler.draw2DRect(ox + 0, oy + 0, Zordz.WIDTH, Zordz.HEIGHT, true);
 				Drawer.setCol(Color.white);
 				Drawer.setCol(Color.RED);
-				Text.render("YOU ARE DED", 40, 190, 48, 48);
-				Text.render("GAME OVER", 88, 190 + 56, 48, 48);
+				Text.render("YOU ARE DED", ox + 40, oy + 190, 48, 48);
+				Text.render("GAME OVER", ox + 88, oy + 190 + 56, 48, 48);
 				Drawer.setCol(Color.white);
 				
 				backToMenu2.draw();
@@ -99,11 +99,11 @@ public class GameState extends State {
 				true);
 		NewGLHandler.draw2DRect(ox + 0, oy + 0, Zordz.WIDTH, 32, true);
 		NewGLHandler.resetColors();
-		if (zordz.player.health <= (100 * 0.4) && ticks < Options.TICK_RATE / 2)
+		if (zordz.player.health <= (100 * 0.33) && ticks < Options.TICK_RATE / 2)
 			Drawer.setCol(Color.red);
 		Text.render("HP:" + zordz.player.health + "/100", ox + 0, oy + 0, 16, 16);
 		Drawer.setCol(Color.white);
-		Text.render("WEP:" + "Zord", ox + 0, oy + 16, 16, 16);
+		Text.render("WEP:" + zordz.player.getCombatWeapon().getName(), ox + 0, oy + 16, 16, 16);
 		Drawer.setCol(Color.white);
 		Text.render("Z", ox + 300, oy + 0, 8, 8);
 		Text.render("X", ox + 332, oy + 0, 8, 8);

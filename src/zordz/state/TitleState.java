@@ -17,13 +17,15 @@ import cjaf.tools.NewGLHandler;
 public class TitleState extends State {
 	Zordz zordz;
 	Level titleLevel = new Level(640 / 32, 480 / 32);
-	Button sp = new Button("Singleplayer", Color.red, 232, 160, 12, 12);
-	String sp_text = "Play Singleplayer mode.";
-	Button options = new Button("Options", Color.white, 232, 220, 28, 16);
+	Button sp = new Button("Singleplayer", Color.red, 232, 130, 12, 12);
+	String sp_text = "Singleplayer mode.";
+	Button mp = new Button("Multi-player", Color.blue, 232, 180, 12, 12);
+	String mp_text = "Multiplayer mode.";
+	Button options = new Button("Options", Color.white, 232, 240, 28, 16);
 	String options_text = "Configure the options.";
-	Button help    = new Button("Help", Color.green, 232, 280, 52, 16);
+	Button help    = new Button("Help", Color.green, 232, 300, 52, 16);
 	String help_text = "How to play the game and info.";
-	Button exit = new Button("Quit", Color.orange, 232, 340, 52, 16);
+	Button exit = new Button("Quit", Color.orange, 232, 360, 52, 16);
 	String exit_text = "Quit the game.";
 	
 	String buttonDesc = "";
@@ -47,6 +49,7 @@ public class TitleState extends State {
 		Text.render("ordzman", titleX + 32, 56, 32, 16);
 		Drawer.setCol(Color.white);
 		sp.draw();
+		mp.draw();
 		options.draw();
 		help.draw();
 		exit.draw();
@@ -73,6 +76,8 @@ public class TitleState extends State {
 		zordz.screen.setOff(0, 0);
 		if (sp.mouseOn()) {
 			buttonDesc = sp_text;
+		} else if (mp.mouseOn()) {
+			buttonDesc = mp_text;
 		} else if (options.mouseOn()) {
 			buttonDesc = options_text;
 		} else if (help.mouseOn()) {
@@ -96,6 +101,9 @@ public class TitleState extends State {
 		} else if (help.clicked()) {
 			SoundPlayer.play(Sound.button_clicked);
 			zordz.switchState(zordz.helpstate);
+		} else if (mp.clicked()) {
+			SoundPlayer.play(Sound.button_clicked);
+			zordz.switchState(zordz.mutliplayerstate);
 		}
 		ticks++;
 		if (ticks == Options.TICK_RATE) {

@@ -10,5 +10,6 @@ public class Options {
 	public static boolean console = false;
 	public static boolean DAMAGE_FEEDBACK = true;
 	public static boolean PLAYERS_MIMIC = false;
+	public static String USERNAME = "Player";
 	
 }

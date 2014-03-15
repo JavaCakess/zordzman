@@ -24,6 +24,7 @@ public class Level {
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
 	//private Random rand = new Random();
 	//private Player player;
+	public int botcount = 0;
 	
 	public Level() {
 		
@@ -114,6 +115,13 @@ public class Level {
 		if (entities.contains(e)) entities.remove(e);
 	}
 
+	public Tile getTileAt(int x, int y) {
+		if (x < 0 || x > width - 1 || y < 0 || y > height - 1) {
+			return Tile.SAND_ROCK;
+		}
+		return Tile.getByID(tiles[x][y]);
+	}
+	
 	public void tick() {
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {

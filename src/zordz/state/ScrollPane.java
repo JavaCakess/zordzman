@@ -17,7 +17,8 @@ public class ScrollPane {
 	int currentInd = 0;
 	ScrButton up, down;
 	ScrollPaneEHandler event;
-
+	public int fullBarSize = 289;
+	
 	public ScrollPane(String name, float x, float y, float width, float height,
 			float block_wd, float block_ht, ScrollPaneEHandler event) {
 		this.name = name;
@@ -45,9 +46,9 @@ public class ScrollPane {
 		up.draw();
 		down.draw();
 		NewGLHandler.setCurrentColor(new float[]{0.8f, 0.8f, 0.8f}, false);
-		int barSize = 289 / elements.size();
+		int barSize = fullBarSize / elements.size();
 		NewGLHandler.setCurrentColor(new float[]{0.85f, 0.85f, 0.85f, 0.7f}, true);
-		NewGLHandler.draw2DRect(x + width - 18, y + 36, 16, 289, true);
+		NewGLHandler.draw2DRect(x + width - 18, y + 36, 16, fullBarSize, true);
 		Drawer.setCol(Color.white);
 		NewGLHandler.draw2DRect(x + width - 18, y + 36 + (barSize * currentInd), 16, barSize, true);
 		

@@ -25,6 +25,7 @@ import zordz.state.Button;
 import zordz.state.ChooseLevelState;
 import zordz.state.GameState;
 import zordz.state.HelpState;
+import zordz.state.MutliplayerState;
 import zordz.state.OptionsState;
 import zordz.state.State;
 import zordz.state.TitleState;
@@ -40,13 +41,13 @@ public class Zordz {
 	public Level level;
 	public int hp = 100;
 	public int coins = 10230;
-	public String myName;
 	public State state;
 	public TitleState titlestate;
 	public GameState gamestate;
 	public ChooseLevelState chooselevelstate;
 	public OptionsState optionsstate;
 	public HelpState helpstate;
+	public MutliplayerState mutliplayerstate;
 	public InputHandler inputhandler;
 	public GameClient gameclient;
 	public GameServer gameserver;
@@ -59,12 +60,12 @@ public class Zordz {
 	public String hex = "8B96315";
 	public PlayerMP player = null;
 
+
 	public static void main(String[] args) {
 		new Zordz().start();
 	}
 
 	public Zordz() {
-		myName = JOptionPane.showInputDialog("Input username!");
 		console = new Console(this);
 		try {
 			Display.setDisplayMode(DISPLAY_MODE);
@@ -96,14 +97,15 @@ public class Zordz {
 		chooselevelstate = new ChooseLevelState(this);
 		optionsstate = new OptionsState(this);
 		helpstate = new HelpState(this);
+		mutliplayerstate = new MutliplayerState(this);
 		state = titlestate;
 		inputhandler = new InputHandler(this);
 		SoundPlayer.init();
-
-		if (JOptionPane.showConfirmDialog(null, "Run server?") == 0) {
-			gameserver = new GameServer();
-			gameserver.start();
-		}
+//
+//		if (JOptionPane.showConfirmDialog(null, "Run server?") == 0) {
+//			gameserver = new GameServer();
+//			gameserver.start();
+//		}
 		gameclient = new GameClient("localhost");
 		gameclient.start();
 		
@@ -120,8 +122,11 @@ public class Zordz {
 				Options.console = Boolean.parseBoolean(v[1]);
 			} else if (option.equals("damage_feedback")) {
 				Options.DAMAGE_FEEDBACK = Boolean.parseBoolean(v[1]);
+			} else if (option.equals("name")) {
+				Options.USERNAME = v[1];
 			}
 		}
+		console.write("Hello " + Options.USERNAME);
 		if (Options.console) {
 			console.setVisible(true);
 			optionsstate.console.checked = Options.console;
@@ -173,6 +178,7 @@ public class Zordz {
 			data.add("tickratemeter:" + Options.TICK_RATE_METER);
 			data.add("console:" + Options.console);
 			data.add("damage_feedback:" + Options.DAMAGE_FEEDBACK);
+			data.add("name:" + Options.USERNAME);
 		}
 		IOTools.writeToFile(new File("res/settings/options.txt"), data);
 		console.write("Destroying window...");

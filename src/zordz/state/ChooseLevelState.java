@@ -2,12 +2,9 @@ package zordz.state;
 
 import java.awt.Color;
 import java.io.File;
-import java.util.Scanner;
 
-import javax.swing.JOptionPane;
-
+import zordz.Options;
 import zordz.Zordz;
-import zordz.entity.Player;
 import zordz.entity.PlayerMP;
 import zordz.level.Level;
 import zordz.level.tile.Tile;
@@ -57,7 +54,7 @@ public class ChooseLevelState extends State {
 			zordz.level.remove(zordz.player);
 			
 			
-			zordz.player = new PlayerMP(zordz.level, 100, 100, zordz.myName, null, -1);
+			zordz.player = new PlayerMP(zordz.level, 100, 100, Options.USERNAME, null, -1);
 			zordz.level.add(zordz.player);
 			
 			PlayerMP player = zordz.player;
