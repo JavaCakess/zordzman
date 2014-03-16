@@ -6,6 +6,7 @@ import zordz.Zordz;
 import zordz.level.Level;
 import zordz.net.Packet01Move;
 import zordz.net.Packet02Attack;
+import zordz.weapons.Weapon;
 
 public class PlayerMP extends Player {
 
@@ -54,4 +55,6 @@ public class PlayerMP extends Player {
 	public void setPort(int port) {
 		this.port = port;
 	}
+
+	
 }

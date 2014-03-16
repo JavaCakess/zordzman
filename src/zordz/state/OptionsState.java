@@ -50,6 +50,7 @@ public class OptionsState extends State {
 	
 	public void render() {
 		if (long_ticks == 0) {
+			System.out.println("no");
 			init();
 		}
 		titleLevel.render();
@@ -74,7 +75,9 @@ public class OptionsState extends State {
 	}
 	
 	public void init() {
+		System.out.println("four eyes");
 		username.setText(Options.USERNAME);
+		System.out.println(username.text);
 	}
 	
 	public void tick() {

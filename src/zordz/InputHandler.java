@@ -26,6 +26,11 @@ public class InputHandler {
 				if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
 					zordz.player.attack(true);
 				}
+				if (Keyboard.isKeyDown(Keyboard.KEY_Z)) {
+					zordz.player.setCurrentWeapon(zordz.player.getCombatWeapon());
+				} else if (Keyboard.isKeyDown(Keyboard.KEY_X)) {
+					zordz.player.setCurrentWeapon(zordz.player.getSpecialWeapon());
+				}
 			}
 			float camera_speed = zordz.player.getSpeed() * ((float)Options.MAX_TICK_RATE / Options.TICK_RATE);
 			float ymax = (zordz.screen.yOff+640)/32;
@@ -57,8 +62,7 @@ public class InputHandler {
 					}
 					zordz.player.direction = 0x02;
 					zordz.player.move(-zordz.player.getSpeed(), 0);
-				} else
-				if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
+				} else if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
 					if (zordz.player.getX() > zordz.screen.xOff + max_scroll_x) {
 						if (xmax <= zordz.level.width) {
 							zordz.screen.pushScr(camera_speed, 0);

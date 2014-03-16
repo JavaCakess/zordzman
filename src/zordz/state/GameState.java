@@ -2,16 +2,18 @@ package zordz.state;
 
 import java.awt.Color;
 
-import javax.swing.JOptionPane;
-
 import zordz.Options;
 import zordz.Zordz;
+import zordz.entity.HealthPickup;
 import zordz.entity.Player;
 import zordz.entity.PlayerMP;
 import zordz.gfx.Drawer;
+import zordz.gfx.SpriteSheet;
 import zordz.gfx.Text;
 import zordz.util.Sound;
 import zordz.util.SoundPlayer;
+import zordz.weapons.Weapon;
+import zordz.weapons.Weapon.WeaponType;
 import cjaf.tools.NewGLHandler;
 
 public class GameState extends State {
@@ -25,9 +27,11 @@ public class GameState extends State {
 	float privOx, privOy;
 	Player player;
 	int ticks = 0;
+	int statusY = 6;
 	public GameState(Zordz zordz) {
 		this.zordz = zordz;
 		zordz.player = new PlayerMP(zordz.level, 100, 100, Options.USERNAME, null, -1);
+		
 	}
 
 	public void init(Zordz zordz) {
@@ -36,7 +40,7 @@ public class GameState extends State {
 		zordz.player = new PlayerMP(zordz.level, 100, 100, Options.USERNAME, null, -1);
 		zordz.level.add(zordz.player);
 		zordz.screen.setOff(0, 0);
-		
+		zordz.level.add(new HealthPickup(zordz.level, 175, 100));
 	}
 	
 	public void render() {
@@ -95,20 +99,49 @@ public class GameState extends State {
 	public void renderHUD() {
 		float ox = zordz.screen.xOff;
 		float oy = zordz.screen.yOff;
-		NewGLHandler.setCurrentColor(new float[] { 0.0f, 0.0f, 0.0f, 0.8f },
+		NewGLHandler.setCurrentColor(new float[] { 0.3f, 0.3f, 0.3f, 0.85f },
 				true);
-		NewGLHandler.draw2DRect(ox + 0, oy + 0, Zordz.WIDTH, 32, true);
+		NewGLHandler.draw2DRect(ox + 0, oy + 2, Zordz.WIDTH, 34, true);
+		Drawer.setCol(Color.black);
+		NewGLHandler.draw2DRect(ox + 0, oy + 2, Zordz.WIDTH, 34, false);
 		NewGLHandler.resetColors();
-		if (zordz.player.health <= (100 * 0.33) && ticks < Options.TICK_RATE / 2)
+		if (zordz.player.healthPerc() < 0.33f && ticks < Options.TICK_RATE / 2)
 			Drawer.setCol(Color.red);
-		Text.render("HP:" + zordz.player.health + "/100", ox + 0, oy + 0, 16, 16);
+		Text.render("HP:" + zordz.player.health + "/" + zordz.player.getMaxHealth(), ox + 0, oy + 0, 16, 16);
 		Drawer.setCol(Color.white);
-		Text.render("WEP:" + zordz.player.getCombatWeapon().getName(), ox + 0, oy + 16, 16, 16);
+		Text.render("WEPS:", ox + 0, oy + 16, 16, 16);
+		
+		WeaponType type = zordz.player.getCurrentWeapon().getType();
+		Weapon weap = zordz.player.getCurrentWeapon();
+		//Combat weapon, display the name.
+		if (zordz.player.getCombatWeapon().equals(weap)) {
+			Drawer.setCol(Color.green);
+		} else {
+			Drawer.setCol(Color.LIGHT_GRAY);
+		}
+		if (!type.canSwitch()) {
+			Drawer.setCol(Color.gray);
+		} 
+		Text.render(zordz.player.getCombatWeapon().getName(), ox + 80, oy + 16, 8, 8);
+		//Special weapon, display the name!!
+		
+		if (zordz.player.getSpecialWeapon().equals(weap)) {
+			Drawer.setCol(Color.red);
+		} else {
+			Drawer.setCol(Color.LIGHT_GRAY);
+		}
+		if (!zordz.player.getSpecialWeapon().getType().canSwitch()) {
+			Drawer.setCol(Color.gray);
+		} 
+		Text.render(zordz.player.getSpecialWeapon().getName(), ox + 80, oy + 24, 8, 8);
 		Drawer.setCol(Color.white);
 		Text.render("Z", ox + 300, oy + 0, 8, 8);
 		Text.render("X", ox + 332, oy + 0, 8, 8);
-		Text.render("COINS", ox + 460, oy + 0, 8, 8);
-		Text.render("" + zordz.coins, (ox + 472) - ((""+zordz.coins).length()-1) * 8, oy + 12, 16, 16);
+		int statusX = 0;
+		if (zordz.player.getBurnTicks() < 1) {
+			statusX = 1;
+		}
+		Drawer.draw(SpriteSheet.sheet, statusX, statusY, ox + 372, oy + 2, 32, 32);
 		NewGLHandler.resetColors();
 
 	}

@@ -8,13 +8,24 @@ public abstract class Weapon {
 	
 	public static Zord zord = new Zord();
 	public static Minizord minizord = new Minizord();
+	public static CrossedShield crossed_shield = new CrossedShield();
 	
 	public static enum WeaponType {
-		ZORD(0x00);
+		ZORD(0x00, true), SHIELD(0x01, false);
 		
 		private int slot;
-		WeaponType(int slot) {
+		private boolean switchable;
+		WeaponType(int slot, boolean switchable) {
 			this.slot = slot;
+			this.switchable = switchable;
+		}
+		
+		public int getSlot() {
+			return slot;
+		}
+		
+		public boolean canSwitch() {
+			return switchable;
 		}
 		
 		public boolean isCombat() {
@@ -55,6 +66,10 @@ public abstract class Weapon {
 
 	public void equip(Player player) {
 		
+	}
+	
+	public WeaponType getType() {
+		return type;
 	}
 	
 	public abstract void use(Player player, Level level, float x, float y);

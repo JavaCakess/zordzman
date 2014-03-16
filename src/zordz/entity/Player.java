@@ -13,29 +13,51 @@ import zordz.weapons.Weapon;
 import cjaf.tools.NewGLHandler;
 
 public class Player extends Mob {
+	//STATISTICS
+	public static final int DEFAULT_BURN_RATE = 15;
+	public float burnPercentage = 1f;
+	public static final int DEFAULT_MAX_HEALTH = 100;
+	public int healthAdditive;
+	public static final float DEFAULT_SPEED = 1f;
+	public float speedPercentage = 1f;
+	//END STATISTICS
 	float move_ticks = 0;
-	int max_health = 100;
+	
 	public int ticks;
 	public int attackTicks = 0;
 	public int attackDelay = 0;
 	public int displayLifeTicks = 0;
 	public Rectangle swordHitbox = new Rectangle();
 	String username = "Player";
-	Weapon combat = Weapon.minizord;
+	Weapon combat = Weapon.zord;
+	Weapon special = Weapon.crossed_shield;
+	int currentWeapon = 0;
 	public Player(Level lvl, float x, float y, String username) {
 		super(lvl, x, y);
+		max_health = DEFAULT_MAX_HEALTH;
 		health = max_health;
 		this.username = username;
 		speed = 1f; //Speed: 60
 		rect = new Rectangle((int)x, (int)y, 32, 32);
-		combatEquip(Weapon.minizord);
+		equip(Weapon.zord, Weapon.crossed_shield);
 	}
 
-	public void combatEquip(Weapon weapon) {
-		health = max_health;
-		speed = 1f; //Speed: 60
-		combat = weapon;
+	public void equip(Weapon combat, Weapon special) {
+		//Set default stats
+		max_health = DEFAULT_MAX_HEALTH;
+		healthAdditive = 0;
+		speed = DEFAULT_SPEED;
+		speedPercentage = 1f;
+		burnRate = DEFAULT_BURN_RATE;
+		burnPercentage = 1f;
+		this.combat = combat;
+		this.special = special;
 		combat.equip(this);
+		special.equip(this);
+		max_health += healthAdditive;
+		health = max_health;
+		speed *= speedPercentage;
+		burnRate = (int)(burnRate * burnPercentage);
 	}
 
 	public float healthPerc() {
@@ -43,13 +65,10 @@ public class Player extends Mob {
 	}
 
 	public void render() {
-		
-		// Debug
-		burnRate = 15;
-		// END
+
 		NewGLHandler.setCurrentColor(new float[]{0.3f, 0.3f, 0.3f, 0.3f}, true);
 		NewGLHandler.draw2DRect((this.x + 12) - (username.length() * 4), this.y - 20, (8 * username.length()) + 4, 9, true);
-		
+
 		if (displayLifeTicks > 0) {
 			NewGLHandler.draw2DRect((this.x + 18) - (36), this.y - 11, 64, 8, true);
 			if (healthPerc() > 0.66) {
@@ -176,7 +195,7 @@ public class Player extends Mob {
 		if (attackDelay > 0) attackDelay--;
 		if (damageTicks > 0) damageTicks--;
 		if (displayLifeTicks > 0) displayLifeTicks--;
-		burn();
+		doEffects();
 	}
 
 	public void attack() {
@@ -219,12 +238,12 @@ public class Player extends Mob {
 		super.softDamage(d);
 		displayLifeTicks = Math.round(Options.TICK_RATE * 0.5f);
 	}
-	
+
 	public void damage(double d) {
 		super.damage(d);
 		displayLifeTicks = Math.round(Options.TICK_RATE * 1.5f);
 	}
-	
+
 	public boolean isDead() {
 		return health <= 0;
 	}
@@ -235,6 +254,27 @@ public class Player extends Mob {
 
 	public Weapon getCombatWeapon() {
 		return combat;
+	}
+
+	public void setMaxHealth(int i) {
+		this.max_health = i;
+	}
+
+	public int getMaxHealth() {
+		return max_health;
+	}
+	
+	public void setCurrentWeapon(Weapon combatWeapon) {
+		if (!combatWeapon.getType().canSwitch()) return;
+		this.currentWeapon = combatWeapon.getType().getSlot();
+	}
+	
+	public Weapon getCurrentWeapon() {
+		if (currentWeapon == 0x00) return combat; else return special;
+	}
+	
+	public Weapon getSpecialWeapon() {
+		return special;
 	}
 
 }

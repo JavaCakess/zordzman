@@ -56,6 +56,7 @@ public class ChooseLevelState extends State {
 			
 			zordz.player = new PlayerMP(zordz.level, 100, 100, Options.USERNAME, null, -1);
 			zordz.level.add(zordz.player);
+			zordz.gamestate.init(zordz);
 			
 			PlayerMP player = zordz.player;
 			Packet00Login loginPacket = new Packet00Login(player.getUsername(), player.getX(), player.getY());
