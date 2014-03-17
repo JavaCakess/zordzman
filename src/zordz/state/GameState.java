@@ -40,7 +40,6 @@ public class GameState extends State {
 		zordz.player = new PlayerMP(zordz.level, 100, 100, Options.USERNAME, null, -1);
 		zordz.level.add(zordz.player);
 		zordz.screen.setOff(0, 0);
-		zordz.level.add(new HealthPickup(zordz.level, 175, 100));
 	}
 	
 	public void render() {

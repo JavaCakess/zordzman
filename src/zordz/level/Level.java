@@ -11,6 +11,7 @@ import zordz.entity.Mob;
 import zordz.entity.Player;
 import zordz.entity.PlayerMP;
 import zordz.level.tile.Tile;
+import zordz.util.IOTools;
 
 public class Level {
 
@@ -20,7 +21,7 @@ public class Level {
 	public int height;
 	public int tickCount = 0;
 	private byte[][] tiles;
-	private byte[][] tile_data;
+	//private byte[][] tile_data;
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
 	//private Random rand = new Random();
 	//private Player player;
@@ -28,6 +29,20 @@ public class Level {
 	
 	public Level() {
 		
+	}
+	
+	public static Level loadMap(String path, String fileName) {
+		// First the MAP loading.
+		// Load the .lvl bit.
+		Level l = Level.loadLevel(path + File.separatorChar + fileName.substring(0, fileName.length()-4) + ".lvl");
+		// Then the entities.
+		ArrayList<String> data = 
+			IOTools.readFile(new File(path + File.separatorChar + 
+			fileName.substring(0, fileName.length()-4) + ".ents"));
+		for (String s : data) {
+			l.add(Entity.parseEntity(l, s));
+		}
+		return l;
 	}
 	
 	public static Level loadLevel(String path) {

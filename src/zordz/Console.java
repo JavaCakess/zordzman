@@ -10,9 +10,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import zordz.entity.HealthPickup;
 import zordz.entity.Player;
-import zordz.util.Sound;
-import zordz.util.SoundPlayer;
 
 public class Console extends JFrame {
 
@@ -116,8 +115,25 @@ public class Console extends JFrame {
 						} catch (Exception e) {
 							write("Usage: burn [ticks]");
 						}
+					} else if (args[0].equals("entity")) {
+						if (args.length-1 < 3) {
+							write("Not enough arguments! Usage: entity [entity_name] [x] [y]");
+						}
+						try {
+							String name  = args[1];
+							float x = Float.parseFloat(args[2]);
+							float y = Float.parseFloat(args[3]);
+							
+							switch (name) {
+							case "health_pickup":
+								zordz.level.add(new HealthPickup(zordz.level, x, y));
+								break;
+							}
+						} catch (Exception e) {
+							write("Usage: entity [entity_name] [x] [y]");
+						}
 					} else if (args[0].equals("help")) {
-						write("volume, levels, damage_feedback, speed, healme, hurtme\n\tadd_player");
+						write("volume, levels, damage_feedback, speed, healme, hurtme\n\tadd_player, burn, restart, players_mimic, entity");
 					}
 				}
 			}

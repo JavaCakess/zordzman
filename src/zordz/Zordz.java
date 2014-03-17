@@ -149,7 +149,7 @@ public class Zordz {
 		Zordz.zordz.console.write("Loading levels... ");
 		File levelsDir = new File("res/levels/");
 		for (File x : levelsDir.listFiles()) {
-			levels.put(x.getName().substring(0, x.getName().length()-4), Level.loadLevel(x.getPath()));
+			levels.put(x.getName().substring(0, x.getName().length()-4), Level.loadMap("res/levels/" + x.getName(), x.getName()));
 		}
 		Zordz.zordz.console.write("Done loading levels.");
 		console.write("Done! And have fun.");

@@ -12,6 +12,11 @@ import zordz.level.Level;
 import zordz.weapons.Weapon;
 import cjaf.tools.NewGLHandler;
 
+/**
+ * ID: 0
+ * @author JavaCakess
+ *
+ */
 public class Player extends Mob {
 	//STATISTICS
 	public static final int DEFAULT_BURN_RATE = 15;
@@ -34,6 +39,7 @@ public class Player extends Mob {
 	int currentWeapon = 0;
 	public Player(Level lvl, float x, float y, String username) {
 		super(lvl, x, y);
+		id = 0;
 		max_health = DEFAULT_MAX_HEALTH;
 		health = max_health;
 		this.username = username;
