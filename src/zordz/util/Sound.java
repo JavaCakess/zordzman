@@ -12,6 +12,7 @@ public class Sound {
     public static final Sound melee_swing = SoundPlayer.newSound("res/sfx/melee_swing.wav", 5);
     public static final Sound burn_small = SoundPlayer.newSound("res/sfx/burn_small.wav", 6);
     public static final Sound bleed_small = SoundPlayer.newSound("res/sfx/bleed_small.wav", 7);
+	public static final Sound health_pickup = SoundPlayer.newSound("res/sfx/health_pickup.wav", 8);
     
     public Sound(int source, int id) {
             this.s = source;

@@ -3,15 +3,10 @@ package zordz.weapons;
 import zordz.entity.Player;
 import zordz.level.Level;
 
-public class CrossedShield extends Weapon {
+public class TestSpecial extends Weapon {
 
-	public CrossedShield() {
-		super(WeaponType.SHIELD, "Crossed Shield", 1, 7);
-	}
-	
-	public void equip(Player player) {
-		player.burnPercentage -= 0.4f;
-		player.healthAdditive += 35;
+	public TestSpecial() {
+		super(WeaponType.TEST, "TestSpecial", 0, 0);
 	}
 
 	public void use(Player player, Level level, float x, float y) {
@@ -19,7 +14,7 @@ public class CrossedShield extends Weapon {
 	}
 
 	public void function(Player player, Level level, float x, float y) {
-
+		
 	}
 
 }

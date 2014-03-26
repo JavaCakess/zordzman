@@ -10,7 +10,7 @@ import zordz.util.SoundPlayer;
 public class Minizord extends Weapon {
 
 	public Minizord() {
-		super(WeaponType.ZORD, "Minizord");
+		super(WeaponType.ZORD, "Minizord", 0, 0);
 		damage = 8;
 	}
 	

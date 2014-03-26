@@ -112,20 +112,26 @@ public class GameState extends State {
 		
 		WeaponType type = zordz.player.getCurrentWeapon().getType();
 		Weapon weap = zordz.player.getCurrentWeapon();
+		boolean active = false;
 		//Combat weapon, display the name.
 		if (zordz.player.getCombatWeapon().equals(weap)) {
 			Drawer.setCol(Color.green);
+			active = true;
 		} else {
-			Drawer.setCol(Color.LIGHT_GRAY);
+			Drawer.setCol(new Color(150, 150, 150));
 		}
 		if (!type.canSwitch()) {
-			Drawer.setCol(Color.gray);
+			Drawer.setCol(new Color(145, 145, 145));
 		} 
 		Text.render(zordz.player.getCombatWeapon().getName(), ox + 80, oy + 16, 8, 8);
+		if (active) 
+			Drawer.setCol(Color.white);
+		Drawer.draw(SpriteSheet.sheet, zordz.player.getCombatWeapon().texX, zordz.player.getCombatWeapon().texY, ox + 292, oy + 10, 24, 24);
 		//Special weapon, display the name!!
-		
+		active = false;
 		if (zordz.player.getSpecialWeapon().equals(weap)) {
-			Drawer.setCol(Color.red);
+			Drawer.setCol(Color.green);
+			active = true;
 		} else {
 			Drawer.setCol(Color.LIGHT_GRAY);
 		}
@@ -133,6 +139,9 @@ public class GameState extends State {
 			Drawer.setCol(Color.gray);
 		} 
 		Text.render(zordz.player.getSpecialWeapon().getName(), ox + 80, oy + 24, 8, 8);
+		if (active) 
+			Drawer.setCol(Color.white);
+		Drawer.draw(SpriteSheet.sheet, zordz.player.getSpecialWeapon().texX, zordz.player.getSpecialWeapon().texY, ox + 324, oy + 10, 24, 24);
 		Drawer.setCol(Color.white);
 		Text.render("Z", ox + 300, oy + 0, 8, 8);
 		Text.render("X", ox + 332, oy + 0, 8, 8);

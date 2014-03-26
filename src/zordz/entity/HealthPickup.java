@@ -5,6 +5,8 @@ import java.awt.Rectangle;
 import zordz.gfx.Drawer;
 import zordz.gfx.SpriteSheet;
 import zordz.level.Level;
+import zordz.util.Sound;
+import zordz.util.SoundPlayer;
 
 /**
  * ID: 1
@@ -23,7 +25,7 @@ public class HealthPickup extends Entity {
 		for (Mob m : lvl.getMobs()) {
 			if (m.intersects(rect)) {
 				m.heal(35);
-				m.setBurnTicks(0);
+				SoundPlayer.play(Sound.health_pickup);
 				lvl.remove(this);
 			}
 		}

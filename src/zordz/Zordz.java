@@ -131,8 +131,8 @@ public class Zordz {
 			console.setVisible(true);
 			optionsstate.console.checked = Options.console;
 		}
-		optionsstate.tickRate.setValue(Options.TICK_RATE_METER);
-		optionsstate.meterToTickRate();
+//		optionsstate.tickRate.setValue(Options.TICK_RATE_METER);
+//		optionsstate.meterToTickRate();
 		console.write("Loading languages...");
 		try {
 			Scanner scan = new Scanner(new File("res/languages/english.txt"));

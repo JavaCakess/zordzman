@@ -132,6 +132,16 @@ public class Console extends JFrame {
 						} catch (Exception e) {
 							write("Usage: entity [entity_name] [x] [y]");
 						}
+					} else if (args[0].equals("bleed")) {
+						if (args.length-1 < 1) {
+							write("Not enough arguments! Usage: bleed [ticks]");
+						}
+						try {
+							int i = Integer.parseInt(args[1]);
+							zordz.player.setBleedTicks(i);
+						} catch (Exception e) {
+							write("Usage: bleed [ticks]");
+						}
 					} else if (args[0].equals("help")) {
 						write("volume, levels, damage_feedback, speed, healme, hurtme\n\tadd_player, burn, restart, players_mimic, entity");
 					}

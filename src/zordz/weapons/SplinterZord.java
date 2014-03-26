@@ -1,5 +1,7 @@
 package zordz.weapons;
 
+import java.util.Random;
+
 import zordz.Options;
 import zordz.entity.Mob;
 import zordz.entity.Player;
@@ -7,18 +9,18 @@ import zordz.level.Level;
 import zordz.util.Sound;
 import zordz.util.SoundPlayer;
 
-public class Zord extends Weapon {
-
-	public Zord() {
-		super(WeaponType.ZORD, "zord", 0, 7);
-		damage = 15;
+public class SplinterZord extends Weapon {
+	Random r = new Random();
+	public SplinterZord() {
+		super(WeaponType.ZORD, "Splinter Zord", 3, 7);
+		damage = 5;
 	}
 
 	public void use(Player player, Level level, float x, float y) {
 		if (player.attackDelay < 1) {
 			player.attackTicks = (int) ((int)Options.TICK_RATE / 6f);
 			player.attackDelay = (int) ((int)Options.TICK_RATE / 3f);
-			SoundPlayer.play(Sound.melee_swing);
+			SoundPlayer.play(Sound.melee_swing, 0.6f);
 		}
 	}
 
@@ -27,8 +29,12 @@ public class Zord extends Weapon {
 			for (Mob mob : level.getMobs()) {
 				if (mob.intersects(player.swordHitbox) && mob != player) {
 					mob.damage(damage, player);
+					if (r.nextInt(5) == 0) {
+						mob.setBleedTicks((int) ((int)Options.TICK_RATE * 10f), player);
+					}
 				}
 			}
 		}
 	}
+	
 }

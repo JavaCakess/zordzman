@@ -40,37 +40,36 @@ public class InputHandler {
 			if (!zordz.gamestate.paused) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
 					if (zordz.player.getY() < zordz.screen.yOff + min_scroll_y) {
-						if (ymax <= zordz.level.height) {
-							zordz.screen.pushScr(0, -camera_speed);
-						}
+						zordz.screen.pushScr(0, -camera_speed);
 					}
 					zordz.player.direction = 0x00;
 					zordz.player.move(0, -zordz.player.getSpeed());
 				} else
-				if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-					if (zordz.player.getY() > zordz.screen.yOff + max_scroll_y) {
-						if (ymax <= zordz.level.height) {
-							zordz.screen.pushScr(0, camera_speed);
+					if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
+						if (zordz.player.getY() > zordz.screen.yOff + max_scroll_y) {
+							if (ymax <= zordz.level.height) {
+								zordz.screen.pushScr(0, camera_speed);
+							}
+						}
+						zordz.player.direction = 0x01;
+						zordz.player.move(0, zordz.player.getSpeed());
+					} else {
+						if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
+							if (zordz.player.getX() < zordz.screen.xOff + min_scroll_x) {
+								zordz.screen.pushScr(-camera_speed, 0);
+							}
+							zordz.player.direction = 0x02;
+							zordz.player.move(-zordz.player.getSpeed(), 0);
+						} else if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
+							if (zordz.player.getX() > zordz.screen.xOff + max_scroll_x) {
+								if (xmax <= zordz.level.width) {
+									zordz.screen.pushScr(camera_speed, 0);
+								}
+							}
+							zordz.player.direction = 0x03;
+							zordz.player.move(zordz.player.getSpeed(), 0);
 						}
 					}
-					zordz.player.direction = 0x01;
-					zordz.player.move(0, zordz.player.getSpeed());
-				} else
-				if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
-					if (zordz.player.getX() < zordz.screen.xOff + min_scroll_x) {
-						zordz.screen.pushScr(-camera_speed, 0);
-					}
-					zordz.player.direction = 0x02;
-					zordz.player.move(-zordz.player.getSpeed(), 0);
-				} else if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-					if (zordz.player.getX() > zordz.screen.xOff + max_scroll_x) {
-						if (xmax <= zordz.level.width) {
-							zordz.screen.pushScr(camera_speed, 0);
-						}
-					}
-					zordz.player.direction = 0x03;
-					zordz.player.move(zordz.player.getSpeed(), 0);
-				}
 			}
 			break;
 		case 2:

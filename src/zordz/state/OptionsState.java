@@ -94,6 +94,8 @@ public class OptionsState extends State {
 			}
 			SoundPlayer.play(Sound.button_clicked);
 		} else if (volume.clicked()) {
+			volume.setValue(Mouse.getX() - 100);
+			System.out.println("n: " + volume.value);
 			Options.SOUND_LEVEL = Math.round(volume.value / 4);
 		}  else if (tickRate.clicked()) {
 			tickRate.setValue(Mouse.getX() - 100);

@@ -27,7 +27,9 @@ public class Player extends Mob {
 	public float speedPercentage = 1f;
 	//END STATISTICS
 	float move_ticks = 0;
-	
+
+	public int foodCounter = 1;
+	public int foodEatTicks, foodEatDelay;
 	public int ticks;
 	public int attackTicks = 0;
 	public int attackDelay = 0;
@@ -35,8 +37,9 @@ public class Player extends Mob {
 	public Rectangle swordHitbox = new Rectangle();
 	String username = "Player";
 	Weapon combat = Weapon.zord;
-	Weapon special = Weapon.crossed_shield;
+	Weapon special = Weapon.cyanboys_plate;
 	int currentWeapon = 0;
+	public boolean canDoSwitch = true;
 	public Player(Level lvl, float x, float y, String username) {
 		super(lvl, x, y);
 		id = 0;
@@ -45,9 +48,13 @@ public class Player extends Mob {
 		this.username = username;
 		speed = 1f; //Speed: 60
 		rect = new Rectangle((int)x, (int)y, 32, 32);
-		equip(Weapon.zord, Weapon.crossed_shield);
+		equip(Weapon.splinter_zord, Weapon.cyanboys_plate);
 	}
 
+	public boolean canDoSwitch() {
+		return canDoSwitch;
+	}
+	
 	public void equip(Weapon combat, Weapon special) {
 		//Set default stats
 		max_health = DEFAULT_MAX_HEALTH;
@@ -72,11 +79,13 @@ public class Player extends Mob {
 
 	public void render() {
 
+		int x = Math.round(this.x);
+		int y = Math.round(this.y);
 		NewGLHandler.setCurrentColor(new float[]{0.3f, 0.3f, 0.3f, 0.3f}, true);
-		NewGLHandler.draw2DRect((this.x + 12) - (username.length() * 4), this.y - 20, (8 * username.length()) + 4, 9, true);
-
+		NewGLHandler.draw2DRect((x + 12) - (username.length() * 4), y - 20, (8 * username.length()) + 4, 9, true);
+		
 		if (displayLifeTicks > 0) {
-			NewGLHandler.draw2DRect((this.x + 18) - (36), this.y - 11, 64, 8, true);
+			NewGLHandler.draw2DRect((x + 18) - (36), y - 11, 64, 8, true);
 			if (healthPerc() > 0.66) {
 				Drawer.setCol(Color.green);
 			} else if (healthPerc() > 0.33) {
@@ -84,12 +93,12 @@ public class Player extends Mob {
 			} else if (healthPerc() > 0) {
 				Drawer.setCol(Color.red);
 			}
-			NewGLHandler.draw2DRect((this.x + 14) - (27), this.y - 10, 50 * ((float)health / max_health), 4, true);
+			NewGLHandler.draw2DRect((x + 14) - (27), y - 10, 50 * ((float)health / max_health), 4, true);
 			Drawer.setCol(Color.black);
-			NewGLHandler.draw2DRect((this.x + 14) - (27), this.y - 9, 50, 4, false);
+			NewGLHandler.draw2DRect((x + 14) - (27), y - 9, 50, 4, false);
 		}
 		Drawer.setCol(Color.white);
-		Text.render(username, (this.x + 12) - (username.length() * 4), this.y - 20, 8, 8);
+		Text.render(username, (x + 12) - (username.length() * 4), y - 20, 8, 8);
 
 		int scale = 2;
 		int down_legs_modifier = 0;
@@ -97,32 +106,32 @@ public class Player extends Mob {
 		int up_flip_arms = 0b00;
 		int up_rarm_pos = 8;
 		int up_larm_pos = 0;
-		float bottom_left_pos = this.x + 8 * scale;
-		float bottom_right_pos = this.x;
+		float bottom_left_pos = x + 8 * scale;
+		float bottom_right_pos = x;
 		if (damageTicks > 0) {
 			Drawer.setCol(Color.red);
 		}
 		// Down
 		if (direction == Mob.DOWN) {
-			Drawer.draw(SpriteSheet.sheet, 0, 4, this.x, this.y, 8 * scale, 8 * scale);
-			Drawer.draw(SpriteSheet.sheet, 1, 4, this.x + 8 * scale, this.y, 8 * scale, 8 * scale);
+			Drawer.draw(SpriteSheet.sheet, 0, 4, x, y, 8 * scale, 8 * scale);
+			Drawer.draw(SpriteSheet.sheet, 1, 4, x + 8 * scale, y, 8 * scale, 8 * scale);
 
 			if (move_ticks > Options.TICK_RATE / 2) {
 
 				down_legs_modifier = Drawer.FLIP_X;
-				bottom_left_pos = this.x;
-				bottom_right_pos = this.x + 8 * scale;
+				bottom_left_pos = x;
+				bottom_right_pos = x + 8 * scale;
 			} else {
 				down_legs_modifier = 0b00;
-				bottom_left_pos = this.x + 8 * scale;
-				bottom_right_pos = this.x;
+				bottom_left_pos = x + 8 * scale;
+				bottom_right_pos = x;
 			}
-			Drawer.draw(SpriteSheet.sheet, 1, 5, bottom_left_pos, this.y + 8 * scale, 8 * scale, 8 * scale, down_legs_modifier);
-			Drawer.draw(SpriteSheet.sheet, 0, 5, bottom_right_pos, this.y + 8 * scale, 8 * scale, 8 * scale, down_legs_modifier);
+			Drawer.draw(SpriteSheet.sheet, 1, 5, bottom_left_pos, y + 8 * scale, 8 * scale, 8 * scale, down_legs_modifier);
+			Drawer.draw(SpriteSheet.sheet, 0, 5, bottom_right_pos, y + 8 * scale, 8 * scale, 8 * scale, down_legs_modifier);
 			if (attackTicks > 0) {
-				Drawer.draw(SpriteSheet.sheet, 8, 5, this.x + 20, this.y + 28, 12, 12, Drawer.FLIP_Y);
-				Drawer.draw(SpriteSheet.sheet, 9, 5, this.x + 20 , this.y + 16, 12, 12, Drawer.FLIP_Y);
-				swordHitbox = new Rectangle(Math.round(this.x + 20), Math.round(this.y + 16), 12, 24);
+				Drawer.draw(SpriteSheet.sheet, 8, 5, x + 20, y + 28, 12, 12, Drawer.FLIP_Y);
+				Drawer.draw(SpriteSheet.sheet, 9, 5, x + 20 , y + 16, 12, 12, Drawer.FLIP_Y);
+				swordHitbox = new Rectangle(Math.round(x + 20), Math.round(y + 16), 12, 24);
 			}
 		} else if (direction == Mob.LEFT) {
 			if (move_ticks > Options.TICK_RATE / 2 || attackTicks > 0) {
@@ -130,15 +139,15 @@ public class Player extends Mob {
 			} else {
 				side_pos_modifier = 0;
 			}
-			Drawer.draw(SpriteSheet.sheet, 2 + side_pos_modifier, 4, this.x + 8 * scale, this.y, 8 * scale, 8 * scale, Drawer.FLIP_X);
-			Drawer.draw(SpriteSheet.sheet, 3 + side_pos_modifier, 4, this.x, this.y, 8 * scale, 8 * scale, Drawer.FLIP_X);
-			Drawer.draw(SpriteSheet.sheet, 2 + side_pos_modifier, 5, this.x + 8 * scale, this.y + 8 * scale, 8 * scale, 8 * scale, Drawer.FLIP_X);
-			Drawer.draw(SpriteSheet.sheet, 3 + side_pos_modifier, 5, this.x, this.y + 8 * scale, 8 * scale, 8 * scale, Drawer.FLIP_X);
+			Drawer.draw(SpriteSheet.sheet, 2 + side_pos_modifier, 4, x + 8 * scale, y, 8 * scale, 8 * scale, Drawer.FLIP_X);
+			Drawer.draw(SpriteSheet.sheet, 3 + side_pos_modifier, 4, x, y, 8 * scale, 8 * scale, Drawer.FLIP_X);
+			Drawer.draw(SpriteSheet.sheet, 2 + side_pos_modifier, 5, x + 8 * scale, y + 8 * scale, 8 * scale, 8 * scale, Drawer.FLIP_X);
+			Drawer.draw(SpriteSheet.sheet, 3 + side_pos_modifier, 5, x, y + 8 * scale, 8 * scale, 8 * scale, Drawer.FLIP_X);
 
 			if (attackTicks > 0) {
-				Drawer.draw(SpriteSheet.sheet, 8, 4, this.x - 7, this.y + 11, 12, 12, Drawer.FLIP_X);
-				Drawer.draw(SpriteSheet.sheet, 9, 4, this.x - 19, this.y + 11, 12, 12, Drawer.FLIP_X);
-				swordHitbox = new Rectangle(Math.round(this.x - 19), Math.round(this.y + 11), 24, 12);
+				Drawer.draw(SpriteSheet.sheet, 8, 4, x - 7, y + 11, 12, 12, Drawer.FLIP_X);
+				Drawer.draw(SpriteSheet.sheet, 9, 4, x - 19, y + 11, 12, 12, Drawer.FLIP_X);
+				swordHitbox = new Rectangle(Math.round(x - 19), Math.round(y + 11), 24, 12);
 			}
 		} else if (direction == Mob.RIGHT) {
 			if (move_ticks > Options.TICK_RATE / 2 || attackTicks > 0) {
@@ -146,47 +155,47 @@ public class Player extends Mob {
 			} else {
 				side_pos_modifier = 0;
 			}
-			Drawer.draw(SpriteSheet.sheet, 2 + side_pos_modifier, 4, this.x, this.y, 8 * scale, 8 * scale);
-			Drawer.draw(SpriteSheet.sheet, 3 + side_pos_modifier, 4, this.x + 8 * scale, this.y, 8 * scale, 8 * scale);
-			Drawer.draw(SpriteSheet.sheet, 2 + side_pos_modifier, 5, this.x, this.y + 8 * scale, 8 * scale, 8 * scale);
-			Drawer.draw(SpriteSheet.sheet, 3 + side_pos_modifier, 5, this.x + 8 * scale, this.y + 8 * scale, 8 * scale, 8 * scale);
+			Drawer.draw(SpriteSheet.sheet, 2 + side_pos_modifier, 4, x, y, 8 * scale, 8 * scale);
+			Drawer.draw(SpriteSheet.sheet, 3 + side_pos_modifier, 4, x + 8 * scale, y, 8 * scale, 8 * scale);
+			Drawer.draw(SpriteSheet.sheet, 2 + side_pos_modifier, 5, x, y + 8 * scale, 8 * scale, 8 * scale);
+			Drawer.draw(SpriteSheet.sheet, 3 + side_pos_modifier, 5, x + 8 * scale, y + 8 * scale, 8 * scale, 8 * scale);
 
 			if (attackTicks > 0) {
-				Drawer.draw(SpriteSheet.sheet, 8, 4, this.x + 26, this.y + 11, 12, 12);
-				Drawer.draw(SpriteSheet.sheet, 9, 4, this.x + 34, this.y + 11, 12, 12);
-				swordHitbox = new Rectangle(Math.round(this.x + 26), Math.round(this.y + 11), 24, 12);
+				Drawer.draw(SpriteSheet.sheet, 8, 4, x + 26, y + 11, 12, 12);
+				Drawer.draw(SpriteSheet.sheet, 9, 4, x + 34, y + 11, 12, 12);
+				swordHitbox = new Rectangle(Math.round(x + 26), Math.round(y + 11), 24, 12);
 			}
 		} else if (direction == Mob.UP) {
 			if (attackTicks > 0) {
-				Drawer.draw(SpriteSheet.sheet, 8, 5, this.x + 20, this.y - 14, 12, 12);
-				Drawer.draw(SpriteSheet.sheet, 9, 5, this.x + 20, this.y - 2, 12, 12);
-				swordHitbox = new Rectangle(Math.round(this.x + 20), Math.round(this.y - 14), 12, 24);
+				Drawer.draw(SpriteSheet.sheet, 8, 5, x + 20, y - 14, 12, 12);
+				Drawer.draw(SpriteSheet.sheet, 9, 5, x + 20, y - 2, 12, 12);
+				swordHitbox = new Rectangle(Math.round(x + 20), Math.round(y - 14), 12, 24);
 			}
 			if (move_ticks > Options.TICK_RATE / 2 || attackTicks > 0) {
 				up_flip_arms = 0b00;
-				up_rarm_pos = (int)this.x + 8 * scale;
-				up_larm_pos = (int)this.x + 0 * scale;
+				up_rarm_pos = (int)x + 8 * scale;
+				up_larm_pos = (int)x + 0 * scale;
 			} else {
 				up_flip_arms = Drawer.FLIP_X;
-				up_larm_pos = (int)this.x + 8 * scale;
-				up_rarm_pos = (int)this.x + 0 * scale;
+				up_larm_pos = (int)x + 8 * scale;
+				up_rarm_pos = (int)x + 0 * scale;
 
 			}
-			Drawer.draw(SpriteSheet.sheet, 6, 4, up_larm_pos, this.y, 8 * scale, 8 * scale, up_flip_arms);
-			Drawer.draw(SpriteSheet.sheet, 7, 4, up_rarm_pos, this.y, 8 * scale, 8 * scale, up_flip_arms);
+			Drawer.draw(SpriteSheet.sheet, 6, 4, up_larm_pos, y, 8 * scale, 8 * scale, up_flip_arms);
+			Drawer.draw(SpriteSheet.sheet, 7, 4, up_rarm_pos, y, 8 * scale, 8 * scale, up_flip_arms);
 
 			if (move_ticks > Options.TICK_RATE / 2 || attackTicks > 0) {
 
 				down_legs_modifier = 0b00;
-				bottom_left_pos = this.x + 8 * scale;
-				bottom_right_pos = this.x;
+				bottom_left_pos = x + 8 * scale;
+				bottom_right_pos = x;
 			} else {
 				down_legs_modifier = Drawer.FLIP_X;
-				bottom_left_pos = this.x;
-				bottom_right_pos = this.x + 8 * scale;
+				bottom_left_pos = x;
+				bottom_right_pos = x + 8 * scale;
 			}
-			Drawer.draw(SpriteSheet.sheet, 6, 5, bottom_right_pos, this.y + 8 * scale, 8 * scale, 8 * scale, down_legs_modifier);
-			Drawer.draw(SpriteSheet.sheet, 7, 5, bottom_left_pos, this.y + 8 * scale, 8 * scale, 8 * scale, down_legs_modifier);
+			Drawer.draw(SpriteSheet.sheet, 6, 5, bottom_right_pos, y + 8 * scale, 8 * scale, 8 * scale, down_legs_modifier);
+			Drawer.draw(SpriteSheet.sheet, 7, 5, bottom_left_pos, y + 8 * scale, 8 * scale, 8 * scale, down_legs_modifier);
 		}
 
 		Drawer.setCol(Color.white);
@@ -198,6 +207,11 @@ public class Player extends Mob {
 			attackTicks--;
 			combat.function(this, lvl, x, y);
 		}
+		if (foodEatTicks > 0) {
+			foodEatTicks--;
+			special.function(this, lvl, x, y);
+		}
+		if (foodEatDelay > 0) foodEatDelay --;
 		if (attackDelay > 0) attackDelay--;
 		if (damageTicks > 0) damageTicks--;
 		if (displayLifeTicks > 0) displayLifeTicks--;
@@ -205,7 +219,7 @@ public class Player extends Mob {
 	}
 
 	public void attack() {
-		combat.use(this, lvl, x, y);
+		getCurrentWeapon().use(this, lvl, x, y);
 	}
 
 	public boolean move(float xa, float ya) {
@@ -269,18 +283,22 @@ public class Player extends Mob {
 	public int getMaxHealth() {
 		return max_health;
 	}
-	
+
 	public void setCurrentWeapon(Weapon combatWeapon) {
-		if (!combatWeapon.getType().canSwitch()) return;
+		if (!combatWeapon.getType().canSwitch() || !canDoSwitch) return;
 		this.currentWeapon = combatWeapon.getType().getSlot();
 	}
-	
+
 	public Weapon getCurrentWeapon() {
 		if (currentWeapon == 0x00) return combat; else return special;
 	}
-	
+
 	public Weapon getSpecialWeapon() {
 		return special;
 	}
 
+	public void onDoDamage(Mob mob, double damage) {
+		combat.onDoDamage(damage, mob, this, lvl, x, y);
+		special.onDoDamage(damage, mob, this, lvl, x, y);
+	}
 }

@@ -17,8 +17,8 @@ public abstract class Mob extends Entity {
 	int burnTicks;
 	int bleedTicks;
 	int burnRate = 15;
-	int bleedRate = 20;
-
+	int bleedRate = 30;
+	Mob bleedCauser;
 	public static final int UP = 00, DOWN = 01, LEFT = 02, RIGHT = 03;
 	boolean isMoving = false;
 	public int direction = 0x01; //Up = 0x00, Down = 0x01, Left = 0x02, Right = 0x03;
@@ -132,7 +132,7 @@ public abstract class Mob extends Entity {
 		int xMax = ((int)rect.x / 32) + 2;
 		int yMin = ((int)rect.y / 32) - 2;
 		int yMax = ((int)rect.y / 32) + 2;
-
+		if (bleedTicks > 0) xa *= 0.75;
 
 
 		for (int x = xMin; x < xMax; x++) {
@@ -184,6 +184,11 @@ public abstract class Mob extends Entity {
 		return true;
 	}
 
+	public void softDamage(double d, Player p) {
+		softDamage(d);
+		p.onDoDamage(this, d);
+	}
+	
 	public void softDamage(double d) {
 		int damage = (int)Math.ceil(d);
 		health -= damage;
@@ -200,7 +205,10 @@ public abstract class Mob extends Entity {
 	}
 
 	public void heal(double d) {
-		int damage = (int)Math.ceil(d);
+		if (d < 1) {
+			d = 1;
+		}
+		int damage = (int)Math.round(d);
 		health += damage;
 		if (health > max_health) {
 			health = max_health;
@@ -215,7 +223,7 @@ public abstract class Mob extends Entity {
 		if (damageTicks > 0) {
 			return;
 		}
-		int damage = (int)Math.ceil(d);
+		int damage = (int)Math.round(d);
 		health -= damage;
 		if (Options.DAMAGE_FEEDBACK) {
 			TextParticle tp = new TextParticle(lvl, (x + 12) - ("" + -damage).length() * 8, y - 16, ("" + -damage), new float[]{1.0f, 0, 0});
@@ -253,9 +261,12 @@ public abstract class Mob extends Entity {
 		if (bleedTicks > 0) {
 			bleedTicks--;
 			if (bleedTicks % bleedRate * (int)(Options.TICK_RATE / Options.MAX_TICK_RATE) == 0) {
-				softDamage(1);
+				if (bleedCauser != null && bleedCauser instanceof Player) softDamage(1, (Player)bleedCauser);
+				else softDamage(1);
 				SoundPlayer.play(Sound.bleed_small, 0.6f);
 			}
+		} else {
+			bleedCauser = null;
 		}
 	}
 
@@ -293,5 +304,15 @@ public abstract class Mob extends Entity {
 
 	public void setDirection(int direction) {
 		this.direction = direction;
+	}
+
+	public void damage(int damage, Player player) {
+		damage(damage);
+		player.onDoDamage(this, damage);
+	}
+
+	public void setBleedTicks(int i, Player player) {
+		bleedCauser = player;
+		setBleedTicks(i);
 	}
 }
