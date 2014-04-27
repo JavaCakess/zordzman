@@ -7,13 +7,17 @@ import zordz.level.Level;
 public abstract class Weapon {
 
 	
-	public static Zord zord = new Zord();
-	public static Minizord minizord = new Minizord();
-	public static CrossedShield crossed_shield = new CrossedShield();
-	public static TestSpecial test_special = new TestSpecial();
-	public static Chicken chicken = new Chicken();
-	public static SplinterZord splinter_zord = new SplinterZord();
-	public static CyanboysPlate cyanboys_plate = new CyanboysPlate();
+	public static Zord zord = new Zord(0);
+	public static Minizord minizord = new Minizord(1);
+	public static CrossedShield crossed_shield = new CrossedShield(2);
+	public static TestSpecial test_special = new TestSpecial(3);
+	public static Chicken chicken = new Chicken(4);
+	public static SplinterZord splinter_zord = new SplinterZord(5);
+	public static CyanboysPlate cyanboys_plate = new CyanboysPlate(6);
+	public static IgnisZord ignis_zord = new IgnisZord(7);
+	
+	int id;
+	Weapon[] weapons = new Weapon[1024];
 	
 	public static enum WeaponType {
 		ZORD(0x00, true), SHIELD(0x01, false), TEST(0x01, true), FOOD(0x01, true);
@@ -48,11 +52,13 @@ public abstract class Weapon {
 	public int texX;
 	public int texY;
 	
-	public Weapon(WeaponType type, String name, int texX, int texY) {
+	public Weapon(WeaponType type, String name, int texX, int texY, int id) {
 		this.type = type;
 		this.name = name;
 		this.texX = texX;
 		this.texY = texY;
+		this.id = id;
+		weapons[id] = this;
 	}
 	
 	public Weapon setDamage(int damage) {
@@ -88,5 +94,13 @@ public abstract class Weapon {
 	public void onDoDamage(double damage2, Mob mob, Player player, Level lvl,
 			float x, float y) {
 		
+	}
+	
+	public int getID() {
+		return id;
+	}
+
+	public static Weapon getByID(int id2) {
+		return null;
 	}
 }

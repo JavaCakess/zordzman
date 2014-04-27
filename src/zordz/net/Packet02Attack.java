@@ -28,10 +28,10 @@ public class Packet02Attack extends Packet {
 		client.sendData(getData());
 	}
 
-	@Override
-	public void writeData(GameServer server) {
-		server.sendDataToAllClients(getData());
-	}
+//	@Override
+//	public void writeData(GameServer server) {
+//		server.sendDataToAllClients(getData());
+//	}
 
 	@Override
 	public byte[] getData() {

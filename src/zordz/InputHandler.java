@@ -19,25 +19,26 @@ public class InputHandler {
 		case 0:
 			break;
 		case 1:
-			while (Keyboard.next()) {
-				if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
-					zordz.gamestate.togglePaused();
+			
+				while (Keyboard.next()) {
+					if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+						zordz.gamestate.togglePaused();
+					}
+					if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+						zordz.player.attack(true);
+					}
+					if (Keyboard.isKeyDown(Keyboard.KEY_Z)) {
+						zordz.player.setCurrentWeapon(zordz.player.getCombatWeapon(), true);
+					} else if (Keyboard.isKeyDown(Keyboard.KEY_X)) {
+						zordz.player.setCurrentWeapon(zordz.player.getSpecialWeapon(), true);
+					}
 				}
-				if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-					zordz.player.attack(true);
-				}
-				if (Keyboard.isKeyDown(Keyboard.KEY_Z)) {
-					zordz.player.setCurrentWeapon(zordz.player.getCombatWeapon());
-				} else if (Keyboard.isKeyDown(Keyboard.KEY_X)) {
-					zordz.player.setCurrentWeapon(zordz.player.getSpecialWeapon());
-				}
-			}
-			float camera_speed = zordz.player.getSpeed() * ((float)Options.MAX_TICK_RATE / Options.TICK_RATE);
-			float ymax = (zordz.screen.yOff+640)/32;
-			//float ymax_m = (zordz.level.height*32)-640;
-			float xmax = (zordz.screen.xOff+640)/32;
-			//float xmax_m = (zordz.level.width*32)-640;
-			if (!zordz.gamestate.paused) {
+				float camera_speed = zordz.player.getSpeed() * ((float)Options.MAX_TICK_RATE / Options.TICK_RATE);
+				float ymax = (zordz.screen.yOff+640)/32;
+				//float ymax_m = (zordz.level.height*32)-640;
+				float xmax = (zordz.screen.xOff+640)/32;
+				//float xmax_m = (zordz.level.width*32)-640;
+				if (!zordz.gamestate.paused) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
 					if (zordz.player.getY() < zordz.screen.yOff + min_scroll_y) {
 						zordz.screen.pushScr(0, -camera_speed);

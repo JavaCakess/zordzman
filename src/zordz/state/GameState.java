@@ -28,6 +28,7 @@ public class GameState extends State {
 	Player player;
 	int ticks = 0;
 	int statusY = 6;
+	public boolean multiplayer = false;
 	public GameState(Zordz zordz) {
 		this.zordz = zordz;
 		zordz.player = new PlayerMP(zordz.level, 100, 100, Options.USERNAME, null, -1);
@@ -36,17 +37,31 @@ public class GameState extends State {
 
 	public void init(Zordz zordz) {
 		this.zordz = zordz;
-		zordz.level.remove(zordz.player);
+		if (zordz.player != null) {
+			zordz.level.remove(zordz.player);
+		}
 		zordz.player = new PlayerMP(zordz.level, 100, 100, Options.USERNAME, null, -1);
 		zordz.level.add(zordz.player);
 		zordz.screen.setOff(0, 0);
+	}
+	
+
+	public void initMultiplayer(Zordz zordz) {
+		this.zordz = zordz;
+		zordz.screen.setOff(0, 0);
+		if (zordz.player != null) {
+			zordz.level.remove(zordz.player);
+		}
+		zordz.player = new PlayerMP(zordz.level, 100, 100, Options.USERNAME, null, -1);
+		zordz.level.add(zordz.player);
+		zordz.mutliplayerstate.sentLogin = false;
 	}
 	
 	public void render() {
 		float ox = zordz.screen.xOff;
 		float oy = zordz.screen.yOff;
 
-		zordz.level.render();
+		if (zordz.level != null) zordz.level.render();
 		if (paused) {
 			NewGLHandler.setCurrentColor(new float[]{0.0f, 0.0f, 0.0f, 0.4f}, true);
 			NewGLHandler.draw2DRect(ox + 0, oy + 0, Zordz.WIDTH, Zordz.HEIGHT, true);
@@ -135,10 +150,20 @@ public class GameState extends State {
 		} else {
 			Drawer.setCol(Color.LIGHT_GRAY);
 		}
-		if (!zordz.player.getSpecialWeapon().getType().canSwitch()) {
+		if (!zordz.player.getSpecialWeapon().getType().canSwitch() || !zordz.player.specialAvailable) {
 			Drawer.setCol(Color.gray);
-		} 
-		Text.render(zordz.player.getSpecialWeapon().getName(), ox + 80, oy + 24, 8, 8);
+		}
+		
+		Weapon sWeap = zordz.player.getSpecialWeapon();
+		float renderNameX = ox + 80;
+		
+		Text.render(sWeap.getName(), renderNameX, oy + 24, 8, 8);
+		
+		// Special Food Code
+		if (zordz.player.getSpecialWeapon().getType() == WeaponType.FOOD) {
+				Text.render("x" + zordz.player.getFoodCounter(), + renderNameX + (sWeap.getName().length() * 8) + 4, oy + 24, 8, 8);
+		}
+				
 		if (active) 
 			Drawer.setCol(Color.white);
 		Drawer.draw(SpriteSheet.sheet, zordz.player.getSpecialWeapon().texX, zordz.player.getSpecialWeapon().texY, ox + 324, oy + 10, 24, 24);
@@ -182,4 +207,5 @@ public class GameState extends State {
 		zordz.screen.setOff(privOx, privOy);
 		
 	}
+
 }

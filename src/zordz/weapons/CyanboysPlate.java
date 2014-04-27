@@ -6,8 +6,8 @@ import zordz.level.Level;
 
 public class CyanboysPlate extends Weapon {
 
-	public CyanboysPlate() {
-		super(WeaponType.SHIELD, "Cyanboy's Plate", 4, 7);
+	public CyanboysPlate(int id) {
+		super(WeaponType.SHIELD, "Cyanboy's Plate", 4, 7, id);
 	}
 
 	public void equip(Player player) {

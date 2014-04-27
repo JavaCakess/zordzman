@@ -11,8 +11,8 @@ import zordz.util.SoundPlayer;
 
 public class SplinterZord extends Weapon {
 	Random r = new Random();
-	public SplinterZord() {
-		super(WeaponType.ZORD, "Splinter Zord", 3, 7);
+	public SplinterZord(int id) {
+		super(WeaponType.ZORD, "Splinter Zord", 3, 7, id);
 		damage = 5;
 	}
 

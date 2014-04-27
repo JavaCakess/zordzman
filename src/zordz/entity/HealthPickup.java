@@ -2,6 +2,7 @@ package zordz.entity;
 
 import java.awt.Rectangle;
 
+import zordz.Zordz;
 import zordz.gfx.Drawer;
 import zordz.gfx.SpriteSheet;
 import zordz.level.Level;
@@ -14,6 +15,7 @@ import zordz.util.SoundPlayer;
 public class HealthPickup extends Entity {
 	public HealthPickup(Level level, float x, float y) {
 		super(level, x, y);
+		id = 1;
 		rect = new Rectangle((int)this.x, (int)this.y, 16, 16);
 	}
 
@@ -27,6 +29,9 @@ public class HealthPickup extends Entity {
 				m.heal(35);
 				SoundPlayer.play(Sound.health_pickup);
 				lvl.remove(this);
+				if (Zordz.zordz.gamestate.multiplayer) {
+					
+				}
 			}
 		}
 		rect.x = (int)x;

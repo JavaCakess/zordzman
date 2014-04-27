@@ -5,8 +5,8 @@ import zordz.level.Level;
 
 public class CrossedShield extends Weapon {
 
-	public CrossedShield() {
-		super(WeaponType.SHIELD, "Crossed Shield", 1, 7);
+	public CrossedShield(int id) {
+		super(WeaponType.SHIELD, "Crossed Shield", 1, 7, id);
 	}
 	
 	public void equip(Player player) {

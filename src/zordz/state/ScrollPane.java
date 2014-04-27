@@ -111,4 +111,8 @@ public class ScrollPane {
 	public String getSelected() {
 		return elements.get(currentInd);
 	}
+	
+	public void setEventHandler(ScrollPaneEHandler handler) {
+		this.event = handler;
+	}
 }

@@ -42,9 +42,4 @@ public class Packet00Login extends Packet {
         client.sendData(getData());
     }
 
-    @Override
-    public void writeData(GameServer server) {
-        server.sendDataToAllClients(getData());
-    }
-
 }

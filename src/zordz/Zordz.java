@@ -2,30 +2,25 @@ package zordz;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-
-import javax.swing.JOptionPane;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.openal.AL;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
-import zordz.entity.Player;
 import zordz.entity.PlayerMP;
 import zordz.level.Level;
 import zordz.net.GameClient;
-import zordz.net.GameServer;
-import zordz.net.Packet00Login;
+import zordz.net.TCPClient;
 import zordz.state.Button;
 import zordz.state.ChooseLevelState;
 import zordz.state.GameState;
 import zordz.state.HelpState;
-import zordz.state.MutliplayerState;
+import zordz.state.MultiplayerState;
 import zordz.state.OptionsState;
 import zordz.state.State;
 import zordz.state.TitleState;
@@ -47,10 +42,10 @@ public class Zordz {
 	public ChooseLevelState chooselevelstate;
 	public OptionsState optionsstate;
 	public HelpState helpstate;
-	public MutliplayerState mutliplayerstate;
+	public MultiplayerState mutliplayerstate;
 	public InputHandler inputhandler;
 	public GameClient gameclient;
-	public GameServer gameserver;
+	//public GameServer gameserver;
 	public static Zordz zordz;
 	public static String version = "v0.1.0";
 	public Map<String, String> englishMap = new HashMap<String, String>();
@@ -59,6 +54,7 @@ public class Zordz {
 	public Console console;
 	public String hex = "8B96315";
 	public PlayerMP player = null;
+	public TCPClient tcpclient;
 
 
 	public static void main(String[] args) {
@@ -97,7 +93,7 @@ public class Zordz {
 		chooselevelstate = new ChooseLevelState(this);
 		optionsstate = new OptionsState(this);
 		helpstate = new HelpState(this);
-		mutliplayerstate = new MutliplayerState(this);
+		mutliplayerstate = new MultiplayerState(this);
 		state = titlestate;
 		inputhandler = new InputHandler(this);
 		SoundPlayer.init();
@@ -106,8 +102,6 @@ public class Zordz {
 //			gameserver = new GameServer();
 //			gameserver.start();
 //		}
-		gameclient = new GameClient("localhost");
-		gameclient.start();
 		
 		console.write("Loading options");
 		ArrayList<String> options = IOTools.readFile(new File("res/settings/options.txt"));
@@ -126,7 +120,7 @@ public class Zordz {
 				Options.USERNAME = v[1];
 			}
 		}
-		console.write("Hello " + Options.USERNAME);
+		console.write("Hello " + Options.USERNAME + "!");
 		if (Options.console) {
 			console.setVisible(true);
 			optionsstate.console.checked = Options.console;

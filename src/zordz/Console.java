@@ -10,6 +10,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import zordz.entity.FoodKit;
 import zordz.entity.HealthPickup;
 import zordz.entity.Player;
 
@@ -127,6 +128,9 @@ public class Console extends JFrame {
 							switch (name) {
 							case "health_pickup":
 								zordz.level.add(new HealthPickup(zordz.level, x, y));
+								break;
+							case "foodkit":
+								zordz.level.add(new FoodKit(zordz.level, x, y));
 								break;
 							}
 						} catch (Exception e) {

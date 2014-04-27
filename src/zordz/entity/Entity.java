@@ -38,6 +38,8 @@ public abstract class Entity {
 		switch (id) {
 		case 1:
 			return new HealthPickup(l, 0, 0);
+		case 2:
+			return new FoodKit(l, 0, 0);
 		}
 		return new HealthPickup(l, 0, 0);
 	}

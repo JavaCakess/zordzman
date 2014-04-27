@@ -5,7 +5,7 @@ public abstract class Packet {
 	public byte id;
 	
 	public static enum PacketType {
-		NONE(-1), LOGIN(0x00), MOVE(0x01), ATTACK(0x02);
+		NONE(-1), LOGIN(0x00), MOVE(0x01), ATTACK(0x02), SWITCH_WEAPON(0x03);
 		
 		private int id;
 		PacketType(int id) {
@@ -21,7 +21,7 @@ public abstract class Packet {
 	}
 	
     public abstract void writeData(GameClient client);
-    public abstract void writeData(GameServer server);
+    //public abstract void writeData(GameServer server);
     
     public String readData(byte[] data) {
         String message = new String(data).trim();

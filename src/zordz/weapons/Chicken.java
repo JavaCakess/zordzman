@@ -8,19 +8,14 @@ import zordz.util.SoundPlayer;
 
 public class Chicken extends Weapon {
 
-	public Chicken() {
-		super(WeaponType.FOOD, "Chicken", 2, 7);
+	public Chicken(int id) {
+		super(WeaponType.FOOD, "Chicken", 2, 7, id);
 	}
 
 	public void use(Player player, Level level, float x, float y) {
-		if (player.foodEatDelay > 0) return;
-
-		if (player.foodCounter > 0) {
-			player.foodCounter--;
-		}
-
-		player.foodEatDelay = (int) ((int)Options.TICK_RATE * 5f);
-		player.foodEatTicks = (int) ((int)Options.TICK_RATE * 3f);
+		int delay = 5, ticks = 3;
+		if (player.getHealth() >= player.getMaxHealth()) return;
+		if (!player.eat(delay, ticks)) return;
 	}
 
 	public void function(Player player, Level level, float x, float y) {
@@ -31,6 +26,10 @@ public class Chicken extends Weapon {
 			}
 		} else {
 			player.canDoSwitch = true;
+			if (player.foodCounter == 0) {
+				player.setSpecialAvailable(false);
+				player.setCurrentWeapon(player.getCombatWeapon());
+			}
 		}
 	}
 }

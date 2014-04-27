@@ -4,6 +4,7 @@ import org.lwjgl.opengl.Display;
 
 import cjaf.tools.NewGLHandler;
 import zordz.state.Button;
+import zordz.state.MultiplayerState;
 import zordz.state.ScrButton;
 
 public class Screen {
@@ -22,7 +23,7 @@ public class Screen {
 					while (!Display.isCloseRequested()) {
 						try { Thread.sleep(1000); } catch (Exception e) {}
 						stateID = zordz.state.getID();
-						Display.setTitle("Zordzman " + Zordz.version + " | TPS: " + tickCount + " | S: " + stateID);
+						Display.setTitle("Zordzman " + Zordz.version + " | TPS: " + tickCount + " | S: " + stateID + " | " + Options.USERNAME);
 						tickCount = 0;
 					}
 				}
@@ -60,6 +61,8 @@ public class Screen {
 		if (Button.between_state_cd != 0 ) Button.between_state_cd--;
 		if (ScrButton.cooldown != 0 ) ScrButton.cooldown--;
 		if (Button.between_state_over_cd != 0) Button.between_state_over_cd--;
+		if (MultiplayerState.connect_cooldown != 0) MultiplayerState.connect_cooldown--;
+		if (MultiplayerState.connect_wait != 0) MultiplayerState.connect_wait--;
 		zordz.inputhandler.doInput();
 		tickCount++;
 		//Don't touch this stuff. Logic above! ^

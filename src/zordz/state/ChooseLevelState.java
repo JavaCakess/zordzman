@@ -58,9 +58,6 @@ public class ChooseLevelState extends State {
 			zordz.level.add(zordz.player);
 			zordz.gamestate.init(zordz);
 			
-			PlayerMP player = zordz.player;
-			Packet00Login loginPacket = new Packet00Login(player.getUsername(), player.getX(), player.getY());
-			loginPacket.writeData(zordz.gameclient);
 			zordz.switchState(zordz.gamestate);
 			SoundPlayer.play(Sound.button_clicked);
 		} else if (backToTitle.clicked()) {

@@ -9,10 +9,14 @@ import zordz.Zordz;
 import zordz.entity.PlayerMP;
 import zordz.net.Packet.PacketType;
 public class GameClient extends Thread {
-	DatagramSocket socket;
+	public DatagramSocket socket;
 	String host;
 	private InetAddress ipAddress;
-	public GameClient(String host) {
+	public boolean canPlay = false;
+	Zordz zordz;
+
+	public GameClient(Zordz zordz, String host) {
+		this.zordz = zordz;
 		try {
 			socket = new DatagramSocket();
 			this.ipAddress = InetAddress.getByName(host);
@@ -54,7 +58,15 @@ public class GameClient extends Thread {
 			packet = new Packet02Attack(data);
 			handleAttack((Packet02Attack) packet);
 			break;
+		case SWITCH_WEAPON:
+			packet = new Packet03SwitchWeap(data);
+			handleSwitchWeapon((Packet03SwitchWeap) packet);
+			break;
 		}
+	}
+
+	private void handleSwitchWeapon(Packet03SwitchWeap packet) {
+		Zordz.zordz.level.playerSwitch(packet.getUsername(), packet.getSlot());
 	}
 
 	public void sendData(byte[] data) {
@@ -76,7 +88,7 @@ public class GameClient extends Thread {
 		PlayerMP player = new PlayerMP(Zordz.zordz.level, packet.getX(), packet.getY(), packet.getUsername(), address, port);
 		Zordz.zordz.level.add(player);
 	}
-	
+
 	private void handleAttack(Packet02Attack packet) {
 		Zordz.zordz.level.playerAttack(packet.getUsername());
 	}

@@ -6,6 +6,7 @@ import zordz.Zordz;
 import zordz.level.Level;
 import zordz.net.Packet01Move;
 import zordz.net.Packet02Attack;
+import zordz.net.Packet03SwitchWeap;
 import zordz.weapons.Weapon;
 
 public class PlayerMP extends Player {
@@ -47,6 +48,15 @@ public class PlayerMP extends Player {
 			attackPacket.writeData(Zordz.zordz.gameclient);
 		}
 	}
+	
+	public void setCurrentWeapon(Weapon weap, boolean b) {
+		super.setCurrentWeapon(weap);
+		if (!b) { return; }
+		if (canDoSwitch()) {
+			Packet03SwitchWeap weapPacket = new Packet03SwitchWeap(username, currentWeapon);
+			weapPacket.writeData(Zordz.zordz.gameclient);
+		}
+	}
 
 	public void setAddr(InetAddress addr2) {
 		addr = addr2;
@@ -56,5 +66,8 @@ public class PlayerMP extends Player {
 		this.port = port;
 	}
 
+	public int getFoodCounter() {
+		return foodCounter;
+	}
 	
 }

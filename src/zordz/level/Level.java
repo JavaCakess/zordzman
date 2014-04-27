@@ -185,13 +185,15 @@ public class Level {
 	}
 
 	public void movePlayer(String username, float xa, float ya, int direction) {
-		for (Mob mob : getMobs()) {
-			if (mob instanceof Player) {
-				Player player = (Player) mob;
+		for (int a = 0; a < getEntities().size(); a++) {
+			Entity e = getEntities().get(a);
+			if (e instanceof PlayerMP) {
+				PlayerMP player = (PlayerMP) e;
 				if (player.getUsername().equals(username)) {
 					player.setX(xa);
 					player.setY(ya);
 					player.setDirection(direction);
+					player.move_ticks++;
 				}
 			}
 		}
@@ -205,6 +207,40 @@ public class Level {
 					player.attack(false);
 				}
 			}
+		}
+	}
+
+	public void playerSwitch(String username, int slot) {
+		for (Mob mob : getMobs()) {
+			if (mob instanceof PlayerMP) {
+				PlayerMP player = (PlayerMP) mob;
+				if (player.getUsername().equals(username)) {
+					if (slot == 0) {
+						player.setCurrentWeapon(player.getCombatWeapon(), false);
+					} else {
+						player.setCurrentWeapon(player.getSpecialWeapon(), false);
+					}
+				}
+			}
+		}
+	}
+
+	public PlayerMP getPlayerMP(String username) {
+		for (Mob mob : getMobs()) {
+			if (mob instanceof PlayerMP) {
+				PlayerMP player = (PlayerMP) mob;
+				if (player.getUsername().equals(username)) {
+					return player;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public void clear() {
+		for (int i = 0; i < entities.size(); i++) {
+			Entity e = entities.get(i);
+			entities.remove(e);
 		}
 	}
 }

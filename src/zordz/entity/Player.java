@@ -10,6 +10,7 @@ import zordz.gfx.SpriteSheet;
 import zordz.gfx.Text;
 import zordz.level.Level;
 import zordz.weapons.Weapon;
+import zordz.weapons.Weapon.WeaponType;
 import cjaf.tools.NewGLHandler;
 
 /**
@@ -26,8 +27,9 @@ public class Player extends Mob {
 	public static final float DEFAULT_SPEED = 1f;
 	public float speedPercentage = 1f;
 	//END STATISTICS
-	float move_ticks = 0;
+	public float move_ticks = 0;
 
+	public boolean specialAvailable = true;
 	public int foodCounter = 1;
 	public int foodEatTicks, foodEatDelay;
 	public int ticks;
@@ -48,7 +50,7 @@ public class Player extends Mob {
 		this.username = username;
 		speed = 1f; //Speed: 60
 		rect = new Rectangle((int)x, (int)y, 32, 32);
-		equip(Weapon.splinter_zord, Weapon.cyanboys_plate);
+		equip(Weapon.ignis_zord, Weapon.chicken);
 	}
 
 	public boolean canDoSwitch() {
@@ -215,6 +217,9 @@ public class Player extends Mob {
 		if (attackDelay > 0) attackDelay--;
 		if (damageTicks > 0) damageTicks--;
 		if (displayLifeTicks > 0) displayLifeTicks--;
+		if (foodCounter > 0 && special.getType() == WeaponType.FOOD) {
+			specialAvailable = true;
+		}
 		doEffects();
 	}
 
@@ -283,9 +288,15 @@ public class Player extends Mob {
 	public int getMaxHealth() {
 		return max_health;
 	}
+	
+	public void respawn() {
+		
+	}
 
 	public void setCurrentWeapon(Weapon combatWeapon) {
 		if (!combatWeapon.getType().canSwitch() || !canDoSwitch) return;
+		if (!(combatWeapon.getType() == WeaponType.FOOD) && foodCounter < 0) return;
+		if (combatWeapon.equals(special) && !specialAvailable) return;
 		this.currentWeapon = combatWeapon.getType().getSlot();
 	}
 
@@ -300,5 +311,28 @@ public class Player extends Mob {
 	public void onDoDamage(Mob mob, double damage) {
 		combat.onDoDamage(damage, mob, this, lvl, x, y);
 		special.onDoDamage(damage, mob, this, lvl, x, y);
+	}
+
+	public boolean eat(float delay, float ticks) {
+		boolean result = foodCounter > 0 && foodEatDelay < 1;
+		if (result) {
+			foodCounter --;
+			foodEatDelay = (int) ((int)Options.TICK_RATE * delay);
+			foodEatTicks = (int) ((int)Options.TICK_RATE * ticks);
+		}
+		
+		return result;
+	}
+
+	public void setSpecialAvailable(boolean b) {
+		specialAvailable = b;
+	}
+	
+	public void setCombatWeapon(int id) {
+		combat = Weapon.getByID(id);
+	}
+	
+	public void setSpecialWeapon(int id) {
+		special = Weapon.getByID(id);
 	}
 }

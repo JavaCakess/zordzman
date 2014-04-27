@@ -51,9 +51,9 @@ public class Packet01Move extends Packet {
 		client.sendData(getData());
 	}
 
-	public void writeData(GameServer server) {
-		server.sendDataToAllClients(getData());
-	}
+//	public void writeData(GameServer server) {
+//		server.sendDataToAllClients(getData());
+//	}
 
 	public byte[] getData() {
 		return ("01" + username + "," + xa + "," + ya + "," + direction).getBytes();

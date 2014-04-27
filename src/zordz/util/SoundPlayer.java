@@ -19,11 +19,14 @@ import zordz.Options;
 
 public class SoundPlayer {
 
+	public static boolean play = true;
+	
 	public static void init() {
 
 	}
 
 	public static Sound newSound(String path, int id) {
+		if (!play) { return null; }
 		WaveData data = null;
 		try {
 			data = WaveData.create(new BufferedInputStream(new FileInputStream(path)));
@@ -40,11 +43,13 @@ public class SoundPlayer {
 	}
 
 	public static void play(Sound sound) {
+		if (!play) { return; }
 		alSourcef(sound.s, AL_GAIN, Options.SOUND_LEVEL / 100f);
 		alSourcePlay(sound.s);
 	}
 	
 	public static void play(Sound sound, float volumePercent) {
+		if (!play) { return; }
 		alSourcef(sound.s, AL_GAIN, (Options.SOUND_LEVEL / 100f) * volumePercent);
 		alSourcePlay(sound.s);
 	}
