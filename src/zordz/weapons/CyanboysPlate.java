@@ -11,7 +11,7 @@ public class CyanboysPlate extends Weapon {
 	}
 
 	public void equip(Player player) {
-		player.speedPercentage -= 0.1f;
+		player.s.speedPercentage -= 0.1f;
 	}
 	
 	public void use(Player player, Level level, float x, float y) {

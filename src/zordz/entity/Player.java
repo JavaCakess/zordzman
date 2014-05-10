@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import zordz.Options;
 import zordz.Zordz;
 import zordz.gfx.Drawer;
+import zordz.gfx.SpriteReplacement;
 import zordz.gfx.SpriteSheet;
 import zordz.gfx.Text;
 import zordz.level.Level;
@@ -20,12 +21,7 @@ import cjaf.tools.NewGLHandler;
  */
 public class Player extends Mob {
 	//STATISTICS
-	public static final int DEFAULT_BURN_RATE = 15;
-	public float burnPercentage = 1f;
-	public static final int DEFAULT_MAX_HEALTH = 100;
-	public int healthAdditive;
-	public static final float DEFAULT_SPEED = 1f;
-	public float speedPercentage = 1f;
+	public Statistics s = new Statistics();
 	//END STATISTICS
 	public float move_ticks = 0;
 
@@ -45,7 +41,7 @@ public class Player extends Mob {
 	public Player(Level lvl, float x, float y, String username) {
 		super(lvl, x, y);
 		id = 0;
-		max_health = DEFAULT_MAX_HEALTH;
+		max_health = Statistics.DEFAULT_MAX_HEALTH;
 		health = max_health;
 		this.username = username;
 		speed = 1f; //Speed: 60
@@ -59,20 +55,17 @@ public class Player extends Mob {
 	
 	public void equip(Weapon combat, Weapon special) {
 		//Set default stats
-		max_health = DEFAULT_MAX_HEALTH;
-		healthAdditive = 0;
-		speed = DEFAULT_SPEED;
-		speedPercentage = 1f;
-		burnRate = DEFAULT_BURN_RATE;
-		burnPercentage = 1f;
+		max_health = Statistics.DEFAULT_MAX_HEALTH;
+		speed = Statistics.DEFAULT_SPEED;
+		burnRate = Statistics.DEFAULT_BURN_RATE;
 		this.combat = combat;
 		this.special = special;
 		combat.equip(this);
 		special.equip(this);
-		max_health += healthAdditive;
+		max_health += s.healthAdditive;
 		health = max_health;
-		speed *= speedPercentage;
-		burnRate = (int)(burnRate * burnPercentage);
+		speed *= s.speedPercentage;
+		burnRate = (int)(burnRate * s.burnPercentage);
 	}
 
 	public float healthPerc() {
@@ -80,7 +73,7 @@ public class Player extends Mob {
 	}
 
 	public void render() {
-
+		Drawer.replacement = SpriteReplacement.first_aid_kit;
 		int x = Math.round(this.x);
 		int y = Math.round(this.y);
 		NewGLHandler.setCurrentColor(new float[]{0.3f, 0.3f, 0.3f, 0.3f}, true);
@@ -201,6 +194,7 @@ public class Player extends Mob {
 		}
 
 		Drawer.setCol(Color.white);
+		Drawer.reset();
 	}
 
 	public void tick() {
