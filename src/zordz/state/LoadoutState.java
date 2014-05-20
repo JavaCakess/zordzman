@@ -64,11 +64,13 @@ public class LoadoutState extends State {
 			zordz.switchState(zordz.titlestate);
 			SoundPlayer.play(Sound.button_clicked);	
 		}
+		Drawer.setCol(Color.yellow);
 		
 		Text.render("Max HP:  " + (Statistics.DEFAULT_MAX_HEALTH + player.stats.healthAdditive),
-								100, 340, 8, 8);
+								100, 340, 16, 16);
 		Text.render("Speed:   " + (int)((Statistics.DEFAULT_SPEED * player.stats.speedPercentage) * 60),
-				100, 348, 8, 8);
+				100, 356, 16, 16);
+		Drawer.setCol(Color.white);
 	}
 
 	private void saveOptions() {
