@@ -1,7 +1,5 @@
 package zordz;
 
-import javax.swing.JFileChooser;
-
 import org.lwjgl.input.Keyboard;
 
 public class InputHandler {

@@ -1,11 +1,9 @@
 package zordz;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.openal.AL;
@@ -20,6 +18,7 @@ import zordz.state.Button;
 import zordz.state.ChooseLevelState;
 import zordz.state.GameState;
 import zordz.state.HelpState;
+import zordz.state.LoadoutState;
 import zordz.state.MultiplayerState;
 import zordz.state.OptionsState;
 import zordz.state.State;
@@ -43,6 +42,7 @@ public class Zordz {
 	public OptionsState optionsstate;
 	public HelpState helpstate;
 	public MultiplayerState mutliplayerstate;
+	public LoadoutState loadoutstate;
 	public InputHandler inputhandler;
 	public GameClient gameclient;
 	//public GameServer gameserver;
@@ -94,6 +94,7 @@ public class Zordz {
 		optionsstate = new OptionsState(this);
 		helpstate = new HelpState(this);
 		mutliplayerstate = new MultiplayerState(this);
+		loadoutstate = new LoadoutState(this);
 		state = titlestate;
 		inputhandler = new InputHandler(this);
 		SoundPlayer.init();
@@ -127,18 +128,6 @@ public class Zordz {
 		}
 //		optionsstate.tickRate.setValue(Options.TICK_RATE_METER);
 //		optionsstate.meterToTickRate();
-		console.write("Loading languages...");
-		try {
-			Scanner scan = new Scanner(new File("res/languages/english.txt"));
-			String line = "";
-			while (scan.hasNextLine()) {
-				line = scan.nextLine();
-				englishMap.put(line.substring(0, line.indexOf(" ")), line.substring(line.indexOf(" ") + 2, line.length() - 1));
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-
 		zordz = this;
 		Zordz.zordz.console.write("Loading levels... ");
 		File levelsDir = new File("res/levels/");

@@ -6,6 +6,7 @@ import cjaf.tools.NewGLHandler;
 import zordz.state.Button;
 import zordz.state.MultiplayerState;
 import zordz.state.ScrButton;
+import zordz.state.WeaponSelector;
 
 public class Screen {
 
@@ -22,8 +23,13 @@ public class Screen {
 				public void run() {
 					while (!Display.isCloseRequested()) {
 						try { Thread.sleep(1000); } catch (Exception e) {}
+						Runtime runt = Runtime.getRuntime();
 						stateID = zordz.state.getID();
-						Display.setTitle("Zordzman " + Zordz.version + " | TPS: " + tickCount + " | S: " + stateID + " | " + Options.USERNAME);
+						runt.gc();
+						long maxmem = runt.maxMemory() / 1024;
+						long used = maxmem - (runt.freeMemory() / 1024);
+						Display.setTitle("Zordzman " + Zordz.version + " | TPS: " + tickCount + " | " + Options.USERNAME
+								+ " | " + used + "/" + maxmem);
 						tickCount = 0;
 					}
 				}
@@ -63,6 +69,7 @@ public class Screen {
 		if (Button.between_state_over_cd != 0) Button.between_state_over_cd--;
 		if (MultiplayerState.connect_cooldown != 0) MultiplayerState.connect_cooldown--;
 		if (MultiplayerState.connect_wait != 0) MultiplayerState.connect_wait--;
+		if (WeaponSelector.select_cd != 0) WeaponSelector.select_cd--;
 		zordz.inputhandler.doInput();
 		tickCount++;
 		//Don't touch this stuff. Logic above! ^

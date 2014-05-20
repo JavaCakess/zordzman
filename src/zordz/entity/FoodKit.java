@@ -27,7 +27,7 @@ public class FoodKit extends Entity {
 		for (Mob m : lvl.getMobs()) {
 			if (m instanceof Player && m.intersects(rect)) {
 				Player player = (Player) m;
-				player.foodCounter+=2;
+				player.giveFood(2);
 				SoundPlayer.play(Sound.foodkit);
 				lvl.remove(this);
 			}

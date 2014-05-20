@@ -88,10 +88,6 @@ public class Button {
 	public boolean mouseOn() {
 		float ox = Zordz.zordz.screen.xOff;
 		float oy = Zordz.zordz.screen.yOff;
-		if (isMouseInside(ox, oy)) {
-			return true;
-		}
-
-		return false;
+		return isMouseInside(ox, oy);
 	}
 }

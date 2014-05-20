@@ -58,13 +58,11 @@ public class OptionsState extends State {
 		done.draw();
 		//Draw the volume bar!
 		NewGLHandler.setCurrentColor(new float[]{0.7f, 0.7f, 0.7f}, false);
-		Text.render(zordz.getString("#ZM_Volume") + ":", 40, 60, 16, 16);
-		Text.render(zordz.getString("#ZM_Performance") + ":", 40, 160, 16, 16);
+		Text.render("Volume:", 40, 60, 16, 16);
 		Text.render("Enable Console: ", 40, 260, 16, 16);
 		Text.render("Username:", 40, 300, 16, 16);
 		NewGLHandler.resetColors();
 		volume.draw();
-		tickRate.draw();
 		console.draw();
 		username.draw();
 	}
@@ -97,13 +95,6 @@ public class OptionsState extends State {
 			volume.setValue(Mouse.getX() - 100);
 			System.out.println("n: " + volume.value);
 			Options.SOUND_LEVEL = Math.round(volume.value / 4);
-		}  else if (tickRate.clicked()) {
-			tickRate.setValue(Mouse.getX() - 100);
-			Options.TICK_RATE = 30 + Math.round(tickRate.value / 14);
-			Options.TICK_RATE_METER = (int)tickRate.value;
-			if (Options.TICK_RATE % 2 == 1) {
-				Options.TICK_RATE++;
-			}
 		} else if (done.clicked()) {
 			saveOptions();
 			if (backToState == 0) {
@@ -116,16 +107,15 @@ public class OptionsState extends State {
 		if (console.wasClicked) {
 			zordz.console.setVisible(console.checked);
 		}
-		
-		if (Options.TICK_RATE <= 40) {
-			performance = zordz.getString("#ZM_Performance_Low");
-		}
-		if (Options.TICK_RATE > 40 && Options.TICK_RATE <= 50) {
-			performance = zordz.getString("#ZM_Performance_Middle");
-		}
-		if (Options.TICK_RATE > 50) {
-			performance = zordz.getString("#ZM_Performance_Good");
-		}
+//		if (Options.TICK_RATE <= 40) {
+//			performance = zordz.getString("#ZM_Performance_Low");
+//		}
+//		if (Options.TICK_RATE > 40 && Options.TICK_RATE <= 50) {
+//			performance = zordz.getString("#ZM_Performance_Middle");
+//		}
+//		if (Options.TICK_RATE > 50) {
+//			performance = zordz.getString("#ZM_Performance_Good");
+//		}
 		tickRate.setMeterText(performance);
 		long_ticks++;
 	}

@@ -23,6 +23,10 @@ public class SplinterZord extends Weapon {
 			SoundPlayer.play(Sound.melee_swing, 0.6f);
 		}
 	}
+	
+	public void equip(Player p) {
+		p.stats.speedPercentage += 0.1;
+	}
 
 	public void function(Player player, Level level, float x, float y) {
 		if (player.attackTicks == 3) {

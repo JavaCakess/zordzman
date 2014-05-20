@@ -10,8 +10,8 @@ public class CrossedShield extends Weapon {
 	}
 	
 	public void equip(Player player) {
-		player.s.burnPercentage -= 0.4f;
-		player.s.healthAdditive += 35;
+		player.stats.burnPercentage -= 0.4f;
+		player.stats.healthAdditive += 35;
 	}
 
 	public void use(Player player, Level level, float x, float y) {

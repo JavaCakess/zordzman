@@ -20,13 +20,20 @@ public abstract class Weapon {
 	Weapon[] weapons = new Weapon[1024];
 	
 	public static enum WeaponType {
-		ZORD(0x00, true), SHIELD(0x01, false), TEST(0x01, true), FOOD(0x01, true);
+		ZORD(0x00, true, "Sword"), SHIELD(0x01, false, "Shield"),
+		TEST(0x01, false, ""), FOOD(0x01, true, "Food");
 		
 		private int slot;
 		private boolean switchable;
-		WeaponType(int slot, boolean switchable) {
+		private String name;
+		WeaponType(int slot, boolean switchable, String name) {
 			this.slot = slot;
 			this.switchable = switchable;
+			this.name = name;
+		}
+		
+		public String getName() {
+			return name;
 		}
 		
 		public int getSlot() {
@@ -79,9 +86,7 @@ public abstract class Weapon {
 		return name;
 	}
 
-	public void equip(Player player) {
-		
-	}
+	public void equip(Player player) {}
 	
 	public WeaponType getType() {
 		return type;
@@ -92,9 +97,7 @@ public abstract class Weapon {
 	public abstract void function(Player player, Level level, float x, float y);
 
 	public void onDoDamage(double damage2, Mob mob, Player player, Level lvl,
-			float x, float y) {
-		
-	}
+			float x, float y) {}
 	
 	public int getID() {
 		return id;

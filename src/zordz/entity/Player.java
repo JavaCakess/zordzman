@@ -5,8 +5,8 @@ import java.awt.Rectangle;
 
 import zordz.Options;
 import zordz.Zordz;
+import zordz.backpacks.Backpack;
 import zordz.gfx.Drawer;
-import zordz.gfx.SpriteReplacement;
 import zordz.gfx.SpriteSheet;
 import zordz.gfx.Text;
 import zordz.level.Level;
@@ -21,12 +21,13 @@ import cjaf.tools.NewGLHandler;
  */
 public class Player extends Mob {
 	//STATISTICS
-	public Statistics s = new Statistics();
+	public Statistics stats = new Statistics();
 	//END STATISTICS
 	public float move_ticks = 0;
 
 	public boolean specialAvailable = true;
 	public int foodCounter = 1;
+	public static final int MAX_FOOD = 5;
 	public int foodEatTicks, foodEatDelay;
 	public int ticks;
 	public int attackTicks = 0;
@@ -35,9 +36,33 @@ public class Player extends Mob {
 	public Rectangle swordHitbox = new Rectangle();
 	String username = "Player";
 	Weapon combat = Weapon.zord;
-	Weapon special = Weapon.cyanboys_plate;
+	Weapon special = Weapon.crossed_shield;
 	int currentWeapon = 0;
 	public boolean canDoSwitch = true;
+	public Backpack backpack = null;
+	public boolean render = true;
+
+	public byte[] down_gfx = {
+			0, 4,
+			1, 4,
+			1, 5,
+			0, 5
+	};
+
+	public byte[] right_gfx = {
+			2, 4,
+			3, 4,
+			2, 5,
+			3, 5
+	};
+	
+	public byte[] up_gfx = {
+			6, 4,
+			7, 4,
+			6, 5,
+			7, 5
+	};
+
 	public Player(Level lvl, float x, float y, String username) {
 		super(lvl, x, y);
 		id = 0;
@@ -46,26 +71,29 @@ public class Player extends Mob {
 		this.username = username;
 		speed = 1f; //Speed: 60
 		rect = new Rectangle((int)x, (int)y, 32, 32);
-		equip(Weapon.ignis_zord, Weapon.chicken);
+		equip(Options.combatWeap, Options.specialWeap);
 	}
 
 	public boolean canDoSwitch() {
 		return canDoSwitch;
 	}
-	
+
 	public void equip(Weapon combat, Weapon special) {
 		//Set default stats
 		max_health = Statistics.DEFAULT_MAX_HEALTH;
 		speed = Statistics.DEFAULT_SPEED;
 		burnRate = Statistics.DEFAULT_BURN_RATE;
+		stats.healthAdditive = 0;
+		stats.burnPercentage = 1;
+		stats.speedPercentage = 1;
 		this.combat = combat;
 		this.special = special;
 		combat.equip(this);
 		special.equip(this);
-		max_health += s.healthAdditive;
+		max_health += stats.healthAdditive;
 		health = max_health;
-		speed *= s.speedPercentage;
-		burnRate = (int)(burnRate * s.burnPercentage);
+		speed *= stats.speedPercentage;
+		burnRate = (int)(burnRate * stats.burnPercentage);
 	}
 
 	public float healthPerc() {
@@ -73,12 +101,11 @@ public class Player extends Mob {
 	}
 
 	public void render() {
-		Drawer.replacement = SpriteReplacement.first_aid_kit;
 		int x = Math.round(this.x);
 		int y = Math.round(this.y);
 		NewGLHandler.setCurrentColor(new float[]{0.3f, 0.3f, 0.3f, 0.3f}, true);
 		NewGLHandler.draw2DRect((x + 12) - (username.length() * 4), y - 20, (8 * username.length()) + 4, 9, true);
-		
+
 		if (displayLifeTicks > 0) {
 			NewGLHandler.draw2DRect((x + 18) - (36), y - 11, 64, 8, true);
 			if (healthPerc() > 0.66) {
@@ -95,6 +122,8 @@ public class Player extends Mob {
 		Drawer.setCol(Color.white);
 		Text.render(username, (x + 12) - (username.length() * 4), y - 20, 8, 8);
 
+		if (!render) return;
+		
 		int scale = 2;
 		int down_legs_modifier = 0;
 		int side_pos_modifier = 0;
@@ -103,13 +132,79 @@ public class Player extends Mob {
 		int up_larm_pos = 0;
 		float bottom_left_pos = x + 8 * scale;
 		float bottom_right_pos = x;
+
+		SpriteSheet player_gfx = SpriteSheet.sheet;
+
+		byte down_gfx_0 = down_gfx[0];
+		byte down_gfx_1 = down_gfx[1];
+		byte down_gfx_2 = down_gfx[2];
+		byte down_gfx_3 = down_gfx[3];
+		byte down_gfx_4 = down_gfx[4];
+		byte down_gfx_5 = down_gfx[5];
+		byte down_gfx_6 = down_gfx[6];
+		byte down_gfx_7 = down_gfx[7];
+		
+		byte right_gfx_0 = right_gfx[0];
+		byte right_gfx_1 = right_gfx[1];
+		byte right_gfx_2 = right_gfx[2];
+		byte right_gfx_3 = right_gfx[3];
+		byte right_gfx_4 = right_gfx[4];
+		byte right_gfx_5 = right_gfx[5];
+		byte right_gfx_6 = right_gfx[6];
+		byte right_gfx_7 = right_gfx[7];
+
+		byte up_gfx_0 = up_gfx[0];
+		byte up_gfx_1 = up_gfx[1];
+		byte up_gfx_2 = up_gfx[2];
+		byte up_gfx_3 = up_gfx[3];
+		byte up_gfx_4 = up_gfx[4];
+		byte up_gfx_5 = up_gfx[5];
+		byte up_gfx_6 = up_gfx[6];
+		byte up_gfx_7 = up_gfx[7];
+		
 		if (damageTicks > 0) {
-			Drawer.setCol(Color.red);
+			if (burnTicks > 0) Drawer.setCol(new Color(255, 110, 0));
+			else Drawer.setCol(Color.red);
 		}
+
+		if (backpack != null) {
+			down_gfx_0 = backpack.down_gfx[0];
+			down_gfx_1 = backpack.down_gfx[1];
+			down_gfx_2 = backpack.down_gfx[2];
+			down_gfx_3 = backpack.down_gfx[3];
+
+			down_gfx_4 = backpack.down_gfx[4];
+			down_gfx_5 = backpack.down_gfx[5];
+			down_gfx_6 = backpack.down_gfx[6];
+			down_gfx_7 = backpack.down_gfx[7];
+			
+			right_gfx_0 = backpack.right_gfx[0];
+			right_gfx_1 = backpack.right_gfx[1];
+			right_gfx_2 = backpack.right_gfx[2];
+			right_gfx_3 = backpack.right_gfx[3];
+			
+			right_gfx_4 = backpack.right_gfx[4];
+			right_gfx_5 = backpack.right_gfx[5];
+			right_gfx_6 = backpack.right_gfx[6];
+			right_gfx_7 = backpack.right_gfx[7];
+
+			up_gfx_0 = backpack.up_gfx[0];
+			up_gfx_1 = backpack.up_gfx[1];
+			up_gfx_2 = backpack.up_gfx[2];
+			up_gfx_3 = backpack.up_gfx[3];
+			
+			up_gfx_4 = backpack.up_gfx[4];
+			up_gfx_5 = backpack.up_gfx[5];
+			up_gfx_6 = backpack.up_gfx[6];
+			up_gfx_7 = backpack.up_gfx[7];
+			
+			player_gfx = backpack.sheet;
+		}
+
 		// Down
 		if (direction == Mob.DOWN) {
-			Drawer.draw(SpriteSheet.sheet, 0, 4, x, y, 8 * scale, 8 * scale);
-			Drawer.draw(SpriteSheet.sheet, 1, 4, x + 8 * scale, y, 8 * scale, 8 * scale);
+			Drawer.draw(player_gfx, down_gfx_0, down_gfx_1, x, y, 8 * scale, 8 * scale);
+			Drawer.draw(player_gfx, down_gfx_2, down_gfx_3, x + 8 * scale, y, 8 * scale, 8 * scale);
 
 			if (move_ticks > Options.TICK_RATE / 2) {
 
@@ -121,8 +216,8 @@ public class Player extends Mob {
 				bottom_left_pos = x + 8 * scale;
 				bottom_right_pos = x;
 			}
-			Drawer.draw(SpriteSheet.sheet, 1, 5, bottom_left_pos, y + 8 * scale, 8 * scale, 8 * scale, down_legs_modifier);
-			Drawer.draw(SpriteSheet.sheet, 0, 5, bottom_right_pos, y + 8 * scale, 8 * scale, 8 * scale, down_legs_modifier);
+			Drawer.draw(player_gfx, down_gfx_4, down_gfx_5, bottom_left_pos, y + 8 * scale, 8 * scale, 8 * scale, down_legs_modifier);
+			Drawer.draw(player_gfx, down_gfx_6, down_gfx_7, bottom_right_pos, y + 8 * scale, 8 * scale, 8 * scale, down_legs_modifier);
 			if (attackTicks > 0) {
 				Drawer.draw(SpriteSheet.sheet, 8, 5, x + 20, y + 28, 12, 12, Drawer.FLIP_Y);
 				Drawer.draw(SpriteSheet.sheet, 9, 5, x + 20 , y + 16, 12, 12, Drawer.FLIP_Y);
@@ -134,10 +229,10 @@ public class Player extends Mob {
 			} else {
 				side_pos_modifier = 0;
 			}
-			Drawer.draw(SpriteSheet.sheet, 2 + side_pos_modifier, 4, x + 8 * scale, y, 8 * scale, 8 * scale, Drawer.FLIP_X);
-			Drawer.draw(SpriteSheet.sheet, 3 + side_pos_modifier, 4, x, y, 8 * scale, 8 * scale, Drawer.FLIP_X);
-			Drawer.draw(SpriteSheet.sheet, 2 + side_pos_modifier, 5, x + 8 * scale, y + 8 * scale, 8 * scale, 8 * scale, Drawer.FLIP_X);
-			Drawer.draw(SpriteSheet.sheet, 3 + side_pos_modifier, 5, x, y + 8 * scale, 8 * scale, 8 * scale, Drawer.FLIP_X);
+			Drawer.draw(player_gfx, right_gfx_0 + side_pos_modifier, right_gfx_1, x + 8 * scale, y, 8 * scale, 8 * scale, Drawer.FLIP_X);
+			Drawer.draw(player_gfx, right_gfx_2 + side_pos_modifier, right_gfx_3, x, y, 8 * scale, 8 * scale, Drawer.FLIP_X);
+			Drawer.draw(player_gfx, right_gfx_4 + side_pos_modifier, right_gfx_5, x + 8 * scale, y + 8 * scale, 8 * scale, 8 * scale, Drawer.FLIP_X);
+			Drawer.draw(player_gfx, right_gfx_6 + side_pos_modifier, right_gfx_7, x, y + 8 * scale, 8 * scale, 8 * scale, Drawer.FLIP_X);
 
 			if (attackTicks > 0) {
 				Drawer.draw(SpriteSheet.sheet, 8, 4, x - 7, y + 11, 12, 12, Drawer.FLIP_X);
@@ -150,10 +245,10 @@ public class Player extends Mob {
 			} else {
 				side_pos_modifier = 0;
 			}
-			Drawer.draw(SpriteSheet.sheet, 2 + side_pos_modifier, 4, x, y, 8 * scale, 8 * scale);
-			Drawer.draw(SpriteSheet.sheet, 3 + side_pos_modifier, 4, x + 8 * scale, y, 8 * scale, 8 * scale);
-			Drawer.draw(SpriteSheet.sheet, 2 + side_pos_modifier, 5, x, y + 8 * scale, 8 * scale, 8 * scale);
-			Drawer.draw(SpriteSheet.sheet, 3 + side_pos_modifier, 5, x + 8 * scale, y + 8 * scale, 8 * scale, 8 * scale);
+			Drawer.draw(player_gfx, right_gfx_0 + side_pos_modifier, right_gfx_1, x, y, 8 * scale, 8 * scale);
+			Drawer.draw(player_gfx, right_gfx_2 + side_pos_modifier, right_gfx_3, x + 8 * scale, y, 8 * scale, 8 * scale);
+			Drawer.draw(player_gfx, right_gfx_4 + side_pos_modifier, right_gfx_5, x, y + 8 * scale, 8 * scale, 8 * scale);
+			Drawer.draw(player_gfx, right_gfx_6 + side_pos_modifier, right_gfx_7, x + 8 * scale, y + 8 * scale, 8 * scale, 8 * scale);
 
 			if (attackTicks > 0) {
 				Drawer.draw(SpriteSheet.sheet, 8, 4, x + 26, y + 11, 12, 12);
@@ -176,8 +271,8 @@ public class Player extends Mob {
 				up_rarm_pos = (int)x + 0 * scale;
 
 			}
-			Drawer.draw(SpriteSheet.sheet, 6, 4, up_larm_pos, y, 8 * scale, 8 * scale, up_flip_arms);
-			Drawer.draw(SpriteSheet.sheet, 7, 4, up_rarm_pos, y, 8 * scale, 8 * scale, up_flip_arms);
+			Drawer.draw(player_gfx, up_gfx_0, up_gfx_1, up_larm_pos, y, 8 * scale, 8 * scale, up_flip_arms);
+			Drawer.draw(player_gfx, up_gfx_2, up_gfx_3, up_rarm_pos, y, 8 * scale, 8 * scale, up_flip_arms);
 
 			if (move_ticks > Options.TICK_RATE / 2 || attackTicks > 0) {
 
@@ -189,12 +284,11 @@ public class Player extends Mob {
 				bottom_left_pos = x;
 				bottom_right_pos = x + 8 * scale;
 			}
-			Drawer.draw(SpriteSheet.sheet, 6, 5, bottom_right_pos, y + 8 * scale, 8 * scale, 8 * scale, down_legs_modifier);
-			Drawer.draw(SpriteSheet.sheet, 7, 5, bottom_left_pos, y + 8 * scale, 8 * scale, 8 * scale, down_legs_modifier);
+			Drawer.draw(player_gfx, up_gfx_4, up_gfx_5, bottom_right_pos, y + 8 * scale, 8 * scale, 8 * scale, down_legs_modifier);
+			Drawer.draw(player_gfx, up_gfx_6, up_gfx_7, bottom_left_pos, y + 8 * scale, 8 * scale, 8 * scale, down_legs_modifier);
 		}
 
 		Drawer.setCol(Color.white);
-		Drawer.reset();
 	}
 
 	public void tick() {
@@ -208,7 +302,12 @@ public class Player extends Mob {
 			special.function(this, lvl, x, y);
 		}
 		if (foodEatDelay > 0) foodEatDelay --;
-		if (attackDelay > 0) attackDelay--;
+		if (attackDelay > 0) {
+			attackDelay--;
+			if (ticks % 5 > 0 && ticks % 5 < 3) {
+				render = false;
+			} else render = true;
+		}
 		if (damageTicks > 0) damageTicks--;
 		if (displayLifeTicks > 0) displayLifeTicks--;
 		if (foodCounter > 0 && special.getType() == WeaponType.FOOD) {
@@ -282,9 +381,9 @@ public class Player extends Mob {
 	public int getMaxHealth() {
 		return max_health;
 	}
-	
+
 	public void respawn() {
-		
+
 	}
 
 	public void setCurrentWeapon(Weapon combatWeapon) {
@@ -314,19 +413,27 @@ public class Player extends Mob {
 			foodEatDelay = (int) ((int)Options.TICK_RATE * delay);
 			foodEatTicks = (int) ((int)Options.TICK_RATE * ticks);
 		}
-		
+
 		return result;
 	}
 
 	public void setSpecialAvailable(boolean b) {
 		specialAvailable = b;
 	}
-	
+
 	public void setCombatWeapon(int id) {
 		combat = Weapon.getByID(id);
 	}
-	
+
 	public void setSpecialWeapon(int id) {
 		special = Weapon.getByID(id);
+	}
+
+	public void giveFood(int i) {
+		if (foodCounter + i > MAX_FOOD) {
+			foodCounter = MAX_FOOD;
+			return;
+		}
+		foodCounter += i;
 	}
 }

@@ -6,7 +6,7 @@ import zordz.level.Level;
 public class TestSpecial extends Weapon {
 
 	public TestSpecial(int id) {
-		super(WeaponType.TEST, "TestSpecial", 0, 0, id);
+		super(WeaponType.TEST, "", -1, -1, id);
 	}
 
 	public void use(Player player, Level level, float x, float y) {

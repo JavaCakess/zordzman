@@ -230,7 +230,7 @@ public abstract class Mob extends Entity {
 			lvl.add(tp);
 		}
 		SoundPlayer.play(Sound.hurt, 0.5f);
-		damageTicks = 15;
+		damageTicks = 20;
 		for (int k = 0; k < 4; k++) {
 			Particle p = new Particle(lvl, x + 12, y + 10, 3, new float[]{1f, 0f, 0f});
 			lvl.add(p);

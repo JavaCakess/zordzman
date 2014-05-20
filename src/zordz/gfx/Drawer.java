@@ -21,16 +21,11 @@ public class Drawer {
 
 	public static final int FLIP_X = 0b01;
 	public static final int FLIP_Y = 0b10;
-	public static SpriteReplacement replacement = null;
 
 	public static void setCol(Color c) {
 		glColor3f((float)c.getRed()/255.0f, (float)c.getGreen()/255.0f, (float)c.getBlue()/255.0f);
 	}
 
-	public static void reset() {
-		replacement = null;
-	}
-	
 	private static String byt(int e) {
 		return Integer.toHexString(e).toUpperCase();
 	}
@@ -38,25 +33,8 @@ public class Drawer {
 	public static void draw(SpriteSheet ss, int xtile, int ytile, float x, float y, 
 			float w, float h, int flip) {
 
-		if (replacement != null) {
-			
-			if (SpriteSheet.get(replacement.rspritesheet).equals(ss)) {
-				int coord = (xtile & 0xFF);
-				coord = coord << 8;
-				coord = coord | (ytile & 0xFF);
-				if (replacement.sheet.get(coord) != null) {
-					xtile = replacement.sheet.get(coord) >> 8;
-					ytile = replacement.sheet.get(coord) & 0xFF;
-					if (coord == 0x0705) {
-						xtile++;
-					}
-					ss = SpriteSheet.get(replacement.spritesheet);
-				} else {
-					System.out.println("Invalid tile?");
-				}
-			}
-		}
-
+		if (x < 0 || y < 0) return;
+		
 		Texture tex = ss.tex;
 		float xt = (xtile * ss.tW);
 		float yt = (ytile * ss.tH);

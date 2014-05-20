@@ -17,15 +17,17 @@ import cjaf.tools.NewGLHandler;
 public class TitleState extends State {
 	Zordz zordz;
 	Level titleLevel = new Level(640 / 32, 480 / 32);
-	Button sp = new Button("Singleplayer", Color.red, 232, 130, 12, 12);
+	Button sp = new Button("Singleplayer", Color.red, 232, 120, 12, 12);
 	String sp_text = "Singleplayer mode.";
-	Button mp = new Button("Multi-player", Color.blue, 232, 180, 12, 12);
+	Button mp = new Button("Multi-player", Color.blue, 232, 120 + Button.HEIGHT, 12, 12);
 	String mp_text = "Multiplayer mode.";
-	Button options = new Button("Options", Color.white, 232, 240, 28, 16);
+	Button options = new Button("Options", Color.white, 232, 210, 28, 16);
 	String options_text = "Configure the options.";
-	Button help    = new Button("Help", Color.green, 232, 300, 52, 16);
+	Button help    = new Button("Help", Color.green, 232, 210 + Button.HEIGHT, 52, 16);
 	String help_text = "How to play the game and info.";
-	Button exit = new Button("Quit", Color.orange, 232, 360, 52, 16);
+	Button loadout = new Button("Loadout", Color.yellow.darker(), 232, 300, 28, 16);
+	String loadout_text = "Select your weapons!";
+	Button exit = new Button("Quit", Color.orange, 232, 300 + Button.HEIGHT, 52, 16);
 	String exit_text = "Quit the game.";
 	
 	String buttonDesc = "";
@@ -51,6 +53,7 @@ public class TitleState extends State {
 		sp.draw();
 		mp.draw();
 		options.draw();
+		loadout.draw();
 		help.draw();
 		exit.draw();
 		Drawer.setCol(Color.lightGray);
@@ -82,6 +85,8 @@ public class TitleState extends State {
 			buttonDesc = options_text;
 		} else if (help.mouseOn()) {
 			buttonDesc = help_text;
+		} else if (loadout.mouseOn()) {
+			buttonDesc = loadout_text;
 		} else if (exit.mouseOn()) {
 			buttonDesc = exit_text;
 		} else {
@@ -101,6 +106,9 @@ public class TitleState extends State {
 		} else if (help.clicked()) {
 			SoundPlayer.play(Sound.button_clicked);
 			zordz.switchState(zordz.helpstate);
+		} else if (loadout.clicked()) {
+			SoundPlayer.play(Sound.button_clicked);
+			zordz.switchState(zordz.loadoutstate);
 		} else if (mp.clicked()) {
 			SoundPlayer.play(Sound.button_clicked);
 			zordz.switchState(zordz.mutliplayerstate);

@@ -17,15 +17,9 @@ public class IgnisZord extends Weapon {
 
 	public void use(Player player, Level level, float x, float y) {
 		if (player.attackDelay < 1) {
-			player.attackTicks = (int) ((int)Options.TICK_RATE / 6f);
-			player.attackDelay = (int) ((int)Options.TICK_RATE / 3f);
+			player.attackTicks = (int) ((int)Options.TICK_RATE / 6f); //30 ticks instead !!!
+			player.attackDelay = (int) ((int)Options.TICK_RATE / 2f);
 			SoundPlayer.play(Sound.melee_swing);
-			float yspeed = 0, xspeed = 0, xspawn = x, yspawn = y;
-			if (player.direction == Mob.UP) { yspeed = -1.15f; xspawn = x + 20; yspawn = y - 12; }
-			if (player.direction == Mob.DOWN) { yspeed = 1.15f; xspawn = x + 20; yspawn = y + 24;}
-			if (player.direction == Mob.LEFT) xspeed = -1.15f;
-			if (player.direction == Mob.RIGHT) xspeed = 1.15f;
-			level.add(new Fireball(level, xspawn, yspawn, xspeed, yspeed, player.direction, player));
 		}
 	}
 
