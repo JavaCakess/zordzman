@@ -22,17 +22,17 @@ public class Drawer {
 	public static final int FLIP_X = 0b01;
 	public static final int FLIP_Y = 0b10;
 
+	public static boolean on = true;
+	
 	public static void setCol(Color c) {
+		if (!on) return;
 		glColor3f((float)c.getRed()/255.0f, (float)c.getGreen()/255.0f, (float)c.getBlue()/255.0f);
 	}
-
-	private static String byt(int e) {
-		return Integer.toHexString(e).toUpperCase();
-	}
-
+	
 	public static void draw(SpriteSheet ss, int xtile, int ytile, float x, float y, 
 			float w, float h, int flip) {
 
+		if (!on) return;
 		if (x < 0 || y < 0) return;
 		
 		Texture tex = ss.tex;
@@ -86,6 +86,7 @@ public class Drawer {
 
 	public static void draw(SpriteSheet ss, int xtile, int ytile, float x, float y,
 			float w, float h) {
+		if (!on) return;
 		Texture tex = ss.tex;
 		float xt = (xtile * ss.tW);
 		float yt = (ytile * ss.tH);

@@ -8,7 +8,6 @@ import zordz.Zordz;
 import zordz.entity.PlayerMP;
 import zordz.level.Level;
 import zordz.level.tile.Tile;
-import zordz.net.Packet00Login;
 import zordz.util.Sound;
 import zordz.util.SoundPlayer;
 

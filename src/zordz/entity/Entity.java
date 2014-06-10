@@ -34,12 +34,18 @@ public abstract class Entity {
 		this.y = y;
 	}
 
-	public static Entity createEntity(Level l, int id) {
+	public static Entity createEntity(Level l, int id, String[] args) {
 		switch (id) {
 		case 1:
 			return new HealthPickup(l, 0, 0);
 		case 2:
 			return new FoodKit(l, 0, 0);
+		case 3:
+			switch (args[3]) {
+			case "RED":
+				return new Key(l, 0, 0, 1);
+			}
+			return new Key(l, 0, 0, 1);
 		}
 		return new HealthPickup(l, 0, 0);
 	}
@@ -47,7 +53,7 @@ public abstract class Entity {
 	public static Entity parseEntity(Level l, String s) {
 		int id = Integer.parseInt(s.split(";")[0]);
 		
-		Entity e = createEntity(l, id);
+		Entity e = createEntity(l, id, s.split(";"));
 		e.id = id;
 		e.x = Float.parseFloat(s.split(";")[1]);
 		e.y = Float.parseFloat(s.split(";")[2]);

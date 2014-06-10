@@ -1,7 +1,7 @@
 package zordz.entity;
 
-import cjaf.tools.NewGLHandler;
 import zordz.Options;
+import zordz.gfx.NewGLHandler;
 import zordz.gfx.Text;
 import zordz.level.Level;
 

@@ -11,6 +11,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
 import zordz.entity.PlayerMP;
+import zordz.gfx.NewGLHandler;
 import zordz.level.Level;
 import zordz.net.GameClient;
 import zordz.net.TCPClient;
@@ -25,7 +26,6 @@ import zordz.state.State;
 import zordz.state.TitleState;
 import zordz.util.IOTools;
 import zordz.util.SoundPlayer;
-import cjaf.tools.NewGLHandler;
 
 public class Zordz {
 
@@ -33,8 +33,6 @@ public class Zordz {
 	public static final DisplayMode DISPLAY_MODE = new DisplayMode(WIDTH, HEIGHT);
 	public Screen screen;
 	public Level level;
-	public int hp = 100;
-	public int coins = 10230;
 	public State state;
 	public TitleState titlestate;
 	public GameState gamestate;
@@ -45,7 +43,6 @@ public class Zordz {
 	public LoadoutState loadoutstate;
 	public InputHandler inputhandler;
 	public GameClient gameclient;
-	//public GameServer gameserver;
 	public static Zordz zordz;
 	public static String version = "v0.1.0";
 	public Map<String, String> englishMap = new HashMap<String, String>();
@@ -98,12 +95,7 @@ public class Zordz {
 		state = titlestate;
 		inputhandler = new InputHandler(this);
 		SoundPlayer.init();
-//
-//		if (JOptionPane.showConfirmDialog(null, "Run server?") == 0) {
-//			gameserver = new GameServer();
-//			gameserver.start();
-//		}
-		
+
 		console.write("Loading options");
 		ArrayList<String> options = IOTools.readFile(new File("res/settings/options.txt"));
 		for (String s : options) {
@@ -126,8 +118,6 @@ public class Zordz {
 			console.setVisible(true);
 			optionsstate.console.checked = Options.console;
 		}
-//		optionsstate.tickRate.setValue(Options.TICK_RATE_METER);
-//		optionsstate.meterToTickRate();
 		zordz = this;
 		Zordz.zordz.console.write("Loading levels... ");
 		File levelsDir = new File("res/levels/");
@@ -176,18 +166,7 @@ public class Zordz {
 		this.state = state;
 		Button.between_state_cd = 15;
 	}
-
-	public String getString(String key) {
-		if (Options.LANGUAGE == "ENGLISH") {
-			if (englishMap.get(key) == null) {
-				System.err.println("The key " + key + " does not exist!");
-				return "Unknown";
-			}
-			return englishMap.get(key);
-		}
-		return englishMap.get(key);
-	}
-
+	
 	public Level getLevel(String selected) {
 		return levels.get(selected);
 	}

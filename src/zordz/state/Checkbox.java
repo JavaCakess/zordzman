@@ -7,9 +7,9 @@ import org.newdawn.slick.opengl.Texture;
 
 import zordz.Zordz;
 import zordz.gfx.Drawer;
+import zordz.gfx.NewGLHandler;
 import zordz.util.Sound;
 import zordz.util.SoundPlayer;
-import cjaf.tools.NewGLHandler;
 
 public class Checkbox extends Button {
 	float w, h;

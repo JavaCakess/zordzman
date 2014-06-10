@@ -3,8 +3,6 @@ package zordz.weapons;
 import zordz.Options;
 import zordz.entity.Player;
 import zordz.level.Level;
-import zordz.util.Sound;
-import zordz.util.SoundPlayer;
 
 public class Chicken extends Weapon {
 

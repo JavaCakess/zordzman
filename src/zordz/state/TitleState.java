@@ -2,8 +2,6 @@ package zordz.state;
 
 import java.awt.Color;
 
-import org.newdawn.slick.opengl.Texture;
-
 import zordz.Options;
 import zordz.Zordz;
 import zordz.gfx.Drawer;
@@ -12,7 +10,6 @@ import zordz.level.Level;
 import zordz.level.tile.Tile;
 import zordz.util.Sound;
 import zordz.util.SoundPlayer;
-import cjaf.tools.NewGLHandler;
 
 public class TitleState extends State {
 	Zordz zordz;

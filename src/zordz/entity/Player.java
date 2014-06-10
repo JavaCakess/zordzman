@@ -7,12 +7,13 @@ import zordz.Options;
 import zordz.Zordz;
 import zordz.backpacks.Backpack;
 import zordz.gfx.Drawer;
+import zordz.gfx.NewGLHandler;
 import zordz.gfx.SpriteSheet;
 import zordz.gfx.Text;
 import zordz.level.Level;
+import zordz.util.Util;
 import zordz.weapons.Weapon;
 import zordz.weapons.Weapon.WeaponType;
-import cjaf.tools.NewGLHandler;
 
 /**
  * ID: 0
@@ -20,9 +21,7 @@ import cjaf.tools.NewGLHandler;
  *
  */
 public class Player extends Mob {
-	//STATISTICS
 	public Statistics stats = new Statistics();
-	//END STATISTICS
 	public float move_ticks = 0;
 
 	public boolean specialAvailable = true;
@@ -40,7 +39,8 @@ public class Player extends Mob {
 	int currentWeapon = 0;
 	public boolean canDoSwitch = true;
 	public Backpack backpack = null;
-	public boolean render = true;
+	boolean render = true;
+	boolean bot = false;
 
 	public byte[] down_gfx = {
 			0, 4,
@@ -124,9 +124,9 @@ public class Player extends Mob {
 
 		if (!render) return;
 		
-		int scale = 2;
-		int down_legs_modifier = 0;
-		int side_pos_modifier = 0;
+		byte scale = 2;
+		byte down_legs_modifier = 0;
+		byte side_pos_modifier = 0;
 		int up_flip_arms = 0b00;
 		int up_rarm_pos = 8;
 		int up_larm_pos = 0;
@@ -201,6 +201,7 @@ public class Player extends Mob {
 			player_gfx = backpack.sheet;
 		}
 
+		Weapon currWeap = this.getCurrentWeapon();
 		// Down
 		if (direction == Mob.DOWN) {
 			Drawer.draw(player_gfx, down_gfx_0, down_gfx_1, x, y, 8 * scale, 8 * scale);
@@ -219,8 +220,8 @@ public class Player extends Mob {
 			Drawer.draw(player_gfx, down_gfx_4, down_gfx_5, bottom_left_pos, y + 8 * scale, 8 * scale, 8 * scale, down_legs_modifier);
 			Drawer.draw(player_gfx, down_gfx_6, down_gfx_7, bottom_right_pos, y + 8 * scale, 8 * scale, 8 * scale, down_legs_modifier);
 			if (attackTicks > 0) {
-				Drawer.draw(SpriteSheet.sheet, 8, 5, x + 20, y + 28, 12, 12, Drawer.FLIP_Y);
-				Drawer.draw(SpriteSheet.sheet, 9, 5, x + 20 , y + 16, 12, 12, Drawer.FLIP_Y);
+				Drawer.draw(SpriteSheet.sheet, currWeap.handGFX_u_x_1, currWeap.handGFX_u_y_1, x + 20, y + 28, currWeap.handGFX_width, currWeap.handGFX_height, Drawer.FLIP_Y);
+				Drawer.draw(SpriteSheet.sheet, currWeap.handGFX_u_x_2, currWeap.handGFX_u_y_2, x + 20 , y + 16, currWeap.handGFX_width, currWeap.handGFX_height, Drawer.FLIP_Y);
 				swordHitbox = new Rectangle(Math.round(x + 20), Math.round(y + 16), 12, 24);
 			}
 		} else if (direction == Mob.LEFT) {
@@ -235,8 +236,8 @@ public class Player extends Mob {
 			Drawer.draw(player_gfx, right_gfx_6 + side_pos_modifier, right_gfx_7, x, y + 8 * scale, 8 * scale, 8 * scale, Drawer.FLIP_X);
 
 			if (attackTicks > 0) {
-				Drawer.draw(SpriteSheet.sheet, 8, 4, x - 7, y + 11, 12, 12, Drawer.FLIP_X);
-				Drawer.draw(SpriteSheet.sheet, 9, 4, x - 19, y + 11, 12, 12, Drawer.FLIP_X);
+				Drawer.draw(SpriteSheet.sheet, currWeap.handGFX_r_x_1, currWeap.handGFX_r_y_1, x - 7, y + 11, currWeap.handGFX_width, currWeap.handGFX_height, Drawer.FLIP_X);
+				Drawer.draw(SpriteSheet.sheet, currWeap.handGFX_r_x_2, currWeap.handGFX_r_y_2, x - 19, y + 11, currWeap.handGFX_width, currWeap.handGFX_height, Drawer.FLIP_X);
 				swordHitbox = new Rectangle(Math.round(x - 19), Math.round(y + 11), 24, 12);
 			}
 		} else if (direction == Mob.RIGHT) {
@@ -249,16 +250,15 @@ public class Player extends Mob {
 			Drawer.draw(player_gfx, right_gfx_2 + side_pos_modifier, right_gfx_3, x + 8 * scale, y, 8 * scale, 8 * scale);
 			Drawer.draw(player_gfx, right_gfx_4 + side_pos_modifier, right_gfx_5, x, y + 8 * scale, 8 * scale, 8 * scale);
 			Drawer.draw(player_gfx, right_gfx_6 + side_pos_modifier, right_gfx_7, x + 8 * scale, y + 8 * scale, 8 * scale, 8 * scale);
-
 			if (attackTicks > 0) {
-				Drawer.draw(SpriteSheet.sheet, 8, 4, x + 26, y + 11, 12, 12);
-				Drawer.draw(SpriteSheet.sheet, 9, 4, x + 34, y + 11, 12, 12);
+				Drawer.draw(SpriteSheet.sheet, currWeap.handGFX_r_x_1, currWeap.handGFX_r_y_1, x + 26, y + 11, currWeap.handGFX_width, currWeap.handGFX_height);
+				Drawer.draw(SpriteSheet.sheet, currWeap.handGFX_r_x_2, currWeap.handGFX_r_y_2, x + 34, y + 11, currWeap.handGFX_width, currWeap.handGFX_height);
 				swordHitbox = new Rectangle(Math.round(x + 26), Math.round(y + 11), 24, 12);
 			}
 		} else if (direction == Mob.UP) {
 			if (attackTicks > 0) {
-				Drawer.draw(SpriteSheet.sheet, 8, 5, x + 20, y - 14, 12, 12);
-				Drawer.draw(SpriteSheet.sheet, 9, 5, x + 20, y - 2, 12, 12);
+				Drawer.draw(SpriteSheet.sheet, currWeap.handGFX_u_x_1, currWeap.handGFX_u_y_1, x + 20, y - 14, currWeap.handGFX_width, currWeap.handGFX_height);
+				Drawer.draw(SpriteSheet.sheet, currWeap.handGFX_u_x_2, currWeap.handGFX_u_y_2, x + 20, y - 2, currWeap.handGFX_width, currWeap.handGFX_height);
 				swordHitbox = new Rectangle(Math.round(x + 20), Math.round(y - 14), 12, 24);
 			}
 			if (move_ticks > Options.TICK_RATE / 2 || attackTicks > 0) {
@@ -335,14 +335,15 @@ public class Player extends Mob {
 			ya = -1;
 		}
 
-
 		move_ticks+=Options.MAX_TICK_RATE / d;
 		if (move_ticks >= Options.MAX_TICK_RATE) {
 			move_ticks = 0;
 		}
 
-		for (Mob mob : lvl.getMobs()) {
-			if (mob instanceof Player && !mob.equals(this)) {
+		for (Entity ent : lvl.getEntities()) {
+			if (!(ent instanceof Player)) continue;
+			Player mob = (Player) ent;
+			if (!mob.equals(this) && mob.isBot()) {
 				Player player = (Player) mob;
 				if (Options.PLAYERS_MIMIC && !Zordz.zordz.player.equals(player)) {
 					player.move(xa, ya);
@@ -350,6 +351,10 @@ public class Player extends Mob {
 			}
 		}
 		return true;
+	}
+
+	public boolean isBot() {
+		return false;
 	}
 
 	public void softDamage(double d) {
@@ -380,10 +385,6 @@ public class Player extends Mob {
 
 	public int getMaxHealth() {
 		return max_health;
-	}
-
-	public void respawn() {
-
 	}
 
 	public void setCurrentWeapon(Weapon combatWeapon) {
@@ -422,11 +423,11 @@ public class Player extends Mob {
 	}
 
 	public void setCombatWeapon(int id) {
-		combat = Weapon.getByID(id);
+		combat = Util.getByID(id);
 	}
 
 	public void setSpecialWeapon(int id) {
-		special = Weapon.getByID(id);
+		special = Util.getByID(id);
 	}
 
 	public void giveFood(int i) {
@@ -435,5 +436,9 @@ public class Player extends Mob {
 			return;
 		}
 		foodCounter += i;
+	}
+	
+	public void setBot(boolean b) {
+		bot = b;
 	}
 }

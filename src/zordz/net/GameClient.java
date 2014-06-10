@@ -62,7 +62,15 @@ public class GameClient extends Thread {
 			packet = new Packet03SwitchWeap(data);
 			handleSwitchWeapon((Packet03SwitchWeap) packet);
 			break;
+		case PLAYER_INFO:
+			packet = new Packet05PlayerInfo(data);
+			handlePlayerInfo((Packet05PlayerInfo) packet);
+			break;
 		}
+	}
+
+	private void handlePlayerInfo(Packet05PlayerInfo packet) {
+		Zordz.zordz.level.playerInfo(packet);
 	}
 
 	private void handleSwitchWeapon(Packet03SwitchWeap packet) {

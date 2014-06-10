@@ -7,7 +7,7 @@ import org.newdawn.slick.opengl.Texture;
 
 import zordz.Options;
 import zordz.gfx.Drawer;
-import cjaf.tools.NewGLHandler;
+import zordz.gfx.NewGLHandler;
 
 public class ScrButton {
 

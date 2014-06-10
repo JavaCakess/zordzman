@@ -3,6 +3,7 @@ package zordz.weapons;
 import java.util.Random;
 
 import zordz.Options;
+import zordz.entity.Entity;
 import zordz.entity.Mob;
 import zordz.entity.Player;
 import zordz.level.Level;
@@ -30,7 +31,9 @@ public class SplinterZord extends Weapon {
 
 	public void function(Player player, Level level, float x, float y) {
 		if (player.attackTicks == 3) {
-			for (Mob mob : level.getMobs()) {
+			for (Entity ent : level.getEntities()) {
+				if (!(ent instanceof Mob)) continue;
+				Mob mob = (Mob) ent;
 				if (mob.intersects(player.swordHitbox) && mob != player) {
 					mob.damage(damage, player);
 					if (r.nextInt(5) == 0) {

@@ -4,13 +4,12 @@ import java.awt.Rectangle;
 
 import zordz.Options;
 import zordz.level.Level;
-import zordz.level.tile.Tile;
 import zordz.util.Sound;
 import zordz.util.SoundPlayer;
 
 public abstract class Mob extends Entity {
 
-	public int health, max_health;
+	int health, max_health;
 	public Rectangle rect;
 	protected float speed;
 	int damageTicks;
@@ -33,58 +32,12 @@ public abstract class Mob extends Entity {
 		return health;
 	}
 
-	public boolean isSolid(int x, int y) {
-		if (lvl.getTileAt(x >> 5, y >> 5).isSolid()) {
-			return true;
-		}
-		return false;
-	}
-
-	public Tile getPointIn(int x, int y) {
-		return lvl.getTileAt(x >> 5, y >> 5);
-	}
-
 	public int getBleedTicks() {
 		return bleedTicks;
 	}
 
 	public void setBleedTicks(int bt) {
 		bleedTicks = bt;
-	}
-
-	public boolean canMove() {
-		return true;
-		//		System.out.println(rect.x + "   " + rect.width);
-		//		
-		//
-		//		System.out.println("------------------------");
-		//		for (int x = xMin; x < xMax; x++) {
-		//			for (int y = yMin; y < yMax; y++) {
-		//				
-		//				System.out.println("Player X: " + this.x + ", X: " + x);
-		//				System.out.println("Tile ID: " + lvl.getTileAt(x >> 5, y >> 5));
-		//				System.out.println("Tile Pos: " + (x >> 5) + ", " + (y >> 5));
-		//				if (isSolid(x, y)) {
-		//					
-		//					ax = (x >> 5) * 32;
-		//					ay = (y >> 5) * 32;
-		//					if (direction == LEFT) {
-		//						rect.x = ax;
-		//						return false;
-		//					} else if (direction == RIGHT) {
-		//						rect.x = (ax + 32);
-		//						return false;
-		//					} else if (direction == DOWN) {
-		//						rect.y = (ay);
-		//						return false;
-		//					} else if (direction == UP) {
-		//						rect.y = ay;
-		//						return false;
-		//					}
-		//				}
-		//			}
-		//		}
-		//		return true;
 	}
 
 	public boolean move(float xa, float ya, boolean collisionCheck) {
@@ -139,34 +92,6 @@ public abstract class Mob extends Entity {
 			for (int y = yMin; y < yMax; y++) {
 				if (!lvl.getTileAt(x, y).pass(lvl, this, x * 32, y * 32)) {
 					System.out.println(this.y + "   " + ((int)rect.y >> 5));
-//					if (direction == UP ) {
-//						if (rect.y <= ((y + 1) * 32) - 1) {
-//							this.y = ((y + 1) * 32);
-//						} else {
-//							this.y -= speed;
-//						}
-//						return false;
-//					} else if (direction == DOWN) {
-//						if (rect.y + rect.height > y * 32) {
-//						} else if (this.y > (y + 1) * 32){
-//							this.y += speed;
-//						}
-//						return false;
-//					} else if (direction == LEFT) {
-//						if (rect.x <= ((x + 1) * 32) - 1) {
-//							this.x = ((x + 1) * 32);
-//						} else {
-//							this.x += speed;
-//						}
-//						return false;
-//					} else if (direction == RIGHT) {
-//						if (this.x + rect.width < x * 32) {
-//							this.x = x * 32;
-//						} else if (this.x > (x + 1) * 32){
-//							this.x -= speed;
-//						}
-//						return false;
-//					}
 					if (direction == UP && (rect.y < (y+1) << 5 && rect.y > ((y+1) << 5) - 4)) {
 						return false;
 					} else if (direction == DOWN && (rect.y + rect.height > y << 5 && rect.y + rect.height < (y << 5) + 4)) {

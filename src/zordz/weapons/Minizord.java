@@ -1,6 +1,7 @@
 package zordz.weapons;
 
 import zordz.Options;
+import zordz.entity.Entity;
 import zordz.entity.Mob;
 import zordz.entity.Player;
 import zordz.level.Level;
@@ -8,7 +9,6 @@ import zordz.util.Sound;
 import zordz.util.SoundPlayer;
 
 public class Minizord extends Weapon {
-
 	public Minizord(int id) {
 		super(WeaponType.ZORD, "Minizord", 0, 0, id);
 		damage = 8;
@@ -28,7 +28,9 @@ public class Minizord extends Weapon {
 
 	public void function(Player player, Level level, float x, float y) {
 		if (player.attackTicks == 3) {
-			for (Mob mob : level.getMobs()) {
+			for (Entity ent : level.getEntities()) {
+				if (!(ent instanceof Mob)) continue;
+				Mob mob = (Mob) ent;
 				if (mob.intersects(player.swordHitbox) && mob != player) {
 					mob.damage(damage);
 				}

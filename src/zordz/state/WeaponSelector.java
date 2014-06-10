@@ -2,13 +2,11 @@ package zordz.state;
 
 import java.awt.Color;
 
-import zordz.Options;
-import zordz.Zordz;
 import zordz.gfx.Drawer;
+import zordz.gfx.NewGLHandler;
 import zordz.gfx.SpriteSheet;
 import zordz.gfx.Text;
 import zordz.weapons.Weapon;
-import cjaf.tools.NewGLHandler;
 
 public class WeaponSelector {
 
@@ -17,13 +15,11 @@ public class WeaponSelector {
 	Weapon weap;
 	float x, y;
 	public static int select_cd = 15;
+	int index = 0;
 	public class WeaponSelectorBox extends Button {
-
-
 
 		public WeaponSelectorBox() {
 			super("", Color.white, 0, 0, 0, 0);
-			// TODO Auto-generated constructor stub
 			width = (int) (32);
 			height = (int) (32);
 		}
@@ -82,10 +78,6 @@ public class WeaponSelector {
 		boxes[0].x = x - 32;
 		boxes[1].x = x + 16;
 		boxes[2].x = x + 64;
-
-		for (int i = 0; i < boxes.length; i++) {
-
-		}
 	}
 
 	public void render() {
@@ -100,7 +92,11 @@ public class WeaponSelector {
 		Drawer.draw(SpriteSheet.sheet, weap.texX, weap.texY,
 				x + 8, y + 8, 48, 48);
 
+		int j = 0;
 		for (int i = 0; i < boxes.length; i++) {
+			boxes[i].wep = weapons[i];
+			if (j == 3) { break; }
+			j++;
 			boxes[i].render();
 		}
 
@@ -110,5 +106,6 @@ public class WeaponSelector {
 		// As well as it's type.
 		String typeName = weap.getType().getName();
 		Text.render(typeName, (x + 32) - (4 * typeName.length()), y + 64 + 16, 8, 8);
+		
 	}
 }

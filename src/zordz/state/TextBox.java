@@ -7,8 +7,8 @@ import org.lwjgl.input.Mouse;
 
 import zordz.Options;
 import zordz.gfx.Drawer;
+import zordz.gfx.NewGLHandler;
 import zordz.gfx.Text;
-import cjaf.tools.NewGLHandler;
 
 public class TextBox extends Button {
 

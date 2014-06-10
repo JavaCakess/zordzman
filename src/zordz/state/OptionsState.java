@@ -4,10 +4,9 @@ import java.awt.Color;
 
 import org.lwjgl.input.Mouse;
 
-import cjaf.tools.NewGLHandler;
-
 import zordz.Options;
 import zordz.Zordz;
+import zordz.gfx.NewGLHandler;
 import zordz.gfx.Text;
 import zordz.level.Level;
 import zordz.level.tile.Tile;
@@ -26,7 +25,7 @@ public class OptionsState extends State {
 	public Meter tickRate = new Meter(100, 200f, 400f, 50f, 400f, 400f, new float[]{0.4f, 0.5f, 0.4f}).setTextType(TextType.NORMAL).setCustomText(true);
 	public Checkbox console = new Checkbox(Color.green, false, 300, 260, 32, 32);
 	public TextBox username;
-	long long_ticks = 0;
+	boolean init = true;
 	int backToState = 0;
 	public OptionsState(Zordz zordz) {
 		this.zordz = zordz;
@@ -49,10 +48,7 @@ public class OptionsState extends State {
 	}
 	
 	public void render() {
-		if (long_ticks == 0) {
-			System.out.println("no");
-			init();
-		}
+		if (init) { init(); init = false; }
 		titleLevel.render();
 		cancel.draw();
 		done.draw();
@@ -80,7 +76,6 @@ public class OptionsState extends State {
 	
 	public void tick() {
 		
-		String performance = "";
 		zordz.screen.setOff(0, 0);
 		volume.setValue(Options.SOUND_LEVEL * 4);
 		if (cancel.clicked()) {
@@ -93,7 +88,6 @@ public class OptionsState extends State {
 			SoundPlayer.play(Sound.button_clicked);
 		} else if (volume.clicked()) {
 			volume.setValue(Mouse.getX() - 100);
-			System.out.println("n: " + volume.value);
 			Options.SOUND_LEVEL = Math.round(volume.value / 4);
 		} else if (done.clicked()) {
 			saveOptions();
@@ -107,17 +101,6 @@ public class OptionsState extends State {
 		if (console.wasClicked) {
 			zordz.console.setVisible(console.checked);
 		}
-//		if (Options.TICK_RATE <= 40) {
-//			performance = zordz.getString("#ZM_Performance_Low");
-//		}
-//		if (Options.TICK_RATE > 40 && Options.TICK_RATE <= 50) {
-//			performance = zordz.getString("#ZM_Performance_Middle");
-//		}
-//		if (Options.TICK_RATE > 50) {
-//			performance = zordz.getString("#ZM_Performance_Good");
-//		}
-		tickRate.setMeterText(performance);
-		long_ticks++;
 	}
 
 	public void meterToTickRate() {

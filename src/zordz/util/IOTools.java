@@ -36,7 +36,7 @@ public class IOTools {
 			String line = x.nextLine();
 			result.add(line);
 		}
-
+		x.close();
 		return result;
 	}
 
@@ -71,7 +71,7 @@ public class IOTools {
 			result = line;
 			break;
 		}
-
+		x.close();
 		return result;
 	}
 
@@ -191,7 +191,7 @@ public class IOTools {
 			}
 			count++;
 		}
-
+		sc.close();
 		return str;
 	}
 

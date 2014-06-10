@@ -7,6 +7,7 @@ import zordz.level.Level;
 public abstract class Weapon {
 
 	
+	public static Weapon[] weapons = new Weapon[1024];
 	public static Zord zord = new Zord(0);
 	public static Minizord minizord = new Minizord(1);
 	public static CrossedShield crossed_shield = new CrossedShield(2);
@@ -15,13 +16,22 @@ public abstract class Weapon {
 	public static SplinterZord splinter_zord = new SplinterZord(5);
 	public static CyanboysPlate cyanboys_plate = new CyanboysPlate(6);
 	public static IgnisZord ignis_zord = new IgnisZord(7);
+	public static CTana ctana = new CTana(8);
 	
 	int id;
-	Weapon[] weapons = new Weapon[1024];
+	public int handGFX_r_x_1 = -1;
+	public int handGFX_r_x_2 = -1;
+	public int handGFX_r_y_1 = -1;
+	public int handGFX_r_y_2 = -1;
+	public int handGFX_u_x_1 = -1;
+	public int handGFX_u_x_2 = -1;
+	public int handGFX_u_y_1 = -1;
+	public int handGFX_u_y_2 = -1;
+	public int handGFX_width = 12, handGFX_height = 12;
 	
 	public static enum WeaponType {
 		ZORD(0x00, true, "Sword"), SHIELD(0x01, false, "Shield"),
-		TEST(0x01, false, ""), FOOD(0x01, true, "Food");
+		TEST(0x01, false, ""), FOOD(0x01, true, "Food"), KATANA(0x00, true, "Katana");
 		
 		private int slot;
 		private boolean switchable;
@@ -103,7 +113,5 @@ public abstract class Weapon {
 		return id;
 	}
 
-	public static Weapon getByID(int id2) {
-		return null;
-	}
+	
 }

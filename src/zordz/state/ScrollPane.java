@@ -4,10 +4,10 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 import zordz.gfx.Drawer;
+import zordz.gfx.NewGLHandler;
 import zordz.gfx.Text;
 import zordz.util.Sound;
 import zordz.util.SoundPlayer;
-import cjaf.tools.NewGLHandler;
 
 public class ScrollPane {
 

@@ -5,12 +5,14 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import zordz.Options;
 import zordz.Zordz;
 import zordz.entity.Entity;
 import zordz.entity.Mob;
 import zordz.entity.Player;
 import zordz.entity.PlayerMP;
 import zordz.level.tile.Tile;
+import zordz.net.Packet05PlayerInfo;
 import zordz.util.IOTools;
 
 public class Level {
@@ -23,8 +25,6 @@ public class Level {
 	private byte[][] tiles;
 	//private byte[][] tile_data;
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
-	//private Random rand = new Random();
-	//private Player player;
 	public int botcount = 0;
 	
 	public Level() {
@@ -173,17 +173,7 @@ public class Level {
 	public ArrayList<Entity> getEntities() {
 		return entities;
 	}
-
-	public ArrayList<Mob> getMobs() {
-		ArrayList<Mob> mobs = new ArrayList<Mob>();
-		for (Entity e : getEntities()) {
-			if (e instanceof Mob) {
-				mobs.add((Mob)e);
-			}
-		}
-		return mobs;
-	}
-
+	
 	public void movePlayer(String username, float xa, float ya, int direction) {
 		for (int a = 0; a < getEntities().size(); a++) {
 			Entity e = getEntities().get(a);
@@ -200,7 +190,7 @@ public class Level {
 	}
 
 	public void playerAttack(String username) {
-		for (Mob mob : getMobs()) {
+		for (Entity mob : entities) {
 			if (mob instanceof PlayerMP) {
 				PlayerMP player = (PlayerMP) mob;
 				if (player.getUsername().equals(username)) {
@@ -211,7 +201,7 @@ public class Level {
 	}
 
 	public void playerSwitch(String username, int slot) {
-		for (Mob mob : getMobs()) {
+		for (Entity mob : entities) {
 			if (mob instanceof PlayerMP) {
 				PlayerMP player = (PlayerMP) mob;
 				if (player.getUsername().equals(username)) {
@@ -226,7 +216,7 @@ public class Level {
 	}
 
 	public PlayerMP getPlayerMP(String username) {
-		for (Mob mob : getMobs()) {
+		for (Entity mob : entities) {
 			if (mob instanceof PlayerMP) {
 				PlayerMP player = (PlayerMP) mob;
 				if (player.getUsername().equals(username)) {
@@ -242,5 +232,34 @@ public class Level {
 			Entity e = entities.get(i);
 			entities.remove(e);
 		}
+	}
+
+	public void playerInfo(Packet05PlayerInfo packet) {
+		PlayerMP player = getPlayerMP(packet.getUsername());
+		if (player == null) {
+			if (packet.getUsername().equalsIgnoreCase(Options.USERNAME)) {
+				return;
+			}
+		}
+		player.setX(packet.getFloatField("x"));
+		player.setY(packet.getFloatField("y"));
+		player.direction = packet.getIntField("dir");
+		player.setHealth(packet.getIntField("health"));
+		player.setMaxHealth(packet.getIntField("max_health"));
+		player.stats.healthAdditive = packet.getIntField("max_health") - 100;
+		
+		player.foodCounter = packet.getIntField("food_counter");
+		
+		int currwep = packet.getIntField("current_wep");
+		if (currwep == 0) player.setCurrentWeapon(player.getCombatWeapon(), false);
+		else player.setCurrentWeapon(player.getSpecialWeapon(), false);
+		
+		player.setCombatWeapon(packet.getIntField("combat_wep"));
+		player.setSpecialWeapon(packet.getIntField("special_wep"));
+	
+		player.setBleedTicks(packet.getIntField("bleed_ticks"));
+		player.setBurnTicks(packet.getIntField("burn_ticks"));
+		
+		player.setBurnRate(packet.getIntField("burn_rate"));
 	}
 }

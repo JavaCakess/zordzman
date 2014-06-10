@@ -2,8 +2,8 @@ package zordz.entity;
 
 import java.util.Random;
 
+import zordz.gfx.NewGLHandler;
 import zordz.level.Level;
-import cjaf.tools.NewGLHandler;
 
 public class FlameParticle extends Entity {
 	protected float dx, dy;

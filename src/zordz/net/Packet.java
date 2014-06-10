@@ -5,7 +5,7 @@ public abstract class Packet {
 	public byte id;
 	
 	public static enum PacketType {
-		NONE(-1), LOGIN(0x00), MOVE(0x01), ATTACK(0x02), SWITCH_WEAPON(0x03);
+		NONE(-1), LOGIN(0x00), MOVE(0x01), ATTACK(0x02), SWITCH_WEAPON(0x03), PLAYER_INFO(0x05);
 		
 		private int id;
 		PacketType(int id) {

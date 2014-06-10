@@ -4,17 +4,16 @@ import java.awt.Color;
 
 import zordz.Options;
 import zordz.Zordz;
-import zordz.entity.HealthPickup;
 import zordz.entity.Player;
 import zordz.entity.PlayerMP;
 import zordz.gfx.Drawer;
+import zordz.gfx.NewGLHandler;
 import zordz.gfx.SpriteSheet;
 import zordz.gfx.Text;
 import zordz.util.Sound;
 import zordz.util.SoundPlayer;
 import zordz.weapons.Weapon;
 import zordz.weapons.Weapon.WeaponType;
-import cjaf.tools.NewGLHandler;
 
 public class GameState extends State {
 	Zordz zordz;
@@ -121,7 +120,7 @@ public class GameState extends State {
 		NewGLHandler.resetColors();
 		if (zordz.player.healthPerc() < 0.33f && ticks < Options.TICK_RATE / 2)
 			Drawer.setCol(Color.red);
-		Text.render("HP:" + zordz.player.health + "/" + zordz.player.getMaxHealth(), ox + 0, oy + 0, 16, 16);
+		Text.render("HP:" + zordz.player.getHealth() + "/" + zordz.player.getMaxHealth(), ox + 0, oy + 0, 16, 16);
 		Drawer.setCol(Color.white);
 		Text.render("WEPS:", ox + 0, oy + 16, 16, 16);
 

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import org.newdawn.slick.opengl.Texture;
 
-import cjaf.tools.NewGLHandler;
-
 public class SpriteSheet {
 
 	public final int tilesAcross, tW, tH;

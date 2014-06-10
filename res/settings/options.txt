@@ -1,5 +1,5 @@
-soundlevel:99
+soundlevel:100
 tickratemeter:391
 console:true
 damage_feedback:true
-name:plebscale
+name:jabba

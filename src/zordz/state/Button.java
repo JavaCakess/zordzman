@@ -7,10 +7,10 @@ import org.newdawn.slick.opengl.Texture;
 
 import zordz.Zordz;
 import zordz.gfx.Drawer;
+import zordz.gfx.NewGLHandler;
 import zordz.gfx.Text;
 import zordz.util.Sound;
 import zordz.util.SoundPlayer;
-import cjaf.tools.NewGLHandler;
 
 public class Button {
 	public static int between_state_cd;

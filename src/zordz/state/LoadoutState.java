@@ -2,21 +2,17 @@ package zordz.state;
 
 import java.awt.Color;
 
-import javax.swing.text.html.Option;
-
 import zordz.Options;
 import zordz.Zordz;
 import zordz.entity.Player;
 import zordz.entity.Statistics;
 import zordz.gfx.Drawer;
-import zordz.gfx.SpriteSheet;
 import zordz.gfx.Text;
 import zordz.level.Level;
 import zordz.level.tile.Tile;
 import zordz.util.Sound;
 import zordz.util.SoundPlayer;
 import zordz.weapons.Weapon;
-import cjaf.tools.NewGLHandler;
 
 public class LoadoutState extends State {
 
@@ -66,9 +62,9 @@ public class LoadoutState extends State {
 		}
 		Drawer.setCol(Color.yellow);
 		
-		Text.render("Max HP:  " + (Statistics.DEFAULT_MAX_HEALTH + player.stats.healthAdditive),
+		Text.render("Max HP:   " + (Statistics.DEFAULT_MAX_HEALTH + player.stats.healthAdditive),
 								100, 340, 16, 16);
-		Text.render("Speed:   " + (int)((Statistics.DEFAULT_SPEED * player.stats.speedPercentage) * 60),
+		Text.render("Speed:    " + (int)((Statistics.DEFAULT_SPEED * player.stats.speedPercentage) * 60),
 				100, 356, 16, 16);
 		Drawer.setCol(Color.white);
 	}

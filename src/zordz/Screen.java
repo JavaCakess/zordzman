@@ -2,7 +2,7 @@ package zordz;
 
 import org.lwjgl.opengl.Display;
 
-import cjaf.tools.NewGLHandler;
+import zordz.gfx.NewGLHandler;
 import zordz.state.Button;
 import zordz.state.MultiplayerState;
 import zordz.state.ScrButton;

@@ -4,9 +4,8 @@ import java.awt.Color;
 
 import org.lwjgl.input.Mouse;
 
-import zordz.Zordz;
+import zordz.gfx.NewGLHandler;
 import zordz.gfx.Text;
-import cjaf.tools.NewGLHandler;
 
 public class Meter extends Button {
 

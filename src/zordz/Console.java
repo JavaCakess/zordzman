@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 
 import zordz.entity.FoodKit;
 import zordz.entity.HealthPickup;
+import zordz.entity.Key;
 import zordz.entity.Player;
 
 public class Console extends JFrame {
@@ -96,7 +97,9 @@ public class Console extends JFrame {
 						try {
 							float x = Float.parseFloat(args[1]);
 							float y = Float.parseFloat(args[2]);
-							zordz.level.add(new Player(zordz.level, x, y, "bot" + zordz.level.botcount));
+							Player bot = new Player(zordz.level, x, y, "bot" + zordz.level.botcount);
+							bot.setBot(true);
+							zordz.level.add(bot);
 							zordz.level.botcount++;
 						} catch (Exception e) {
 							write("Usage: add_player [x] [y]");
@@ -131,6 +134,9 @@ public class Console extends JFrame {
 								break;
 							case "foodkit":
 								zordz.level.add(new FoodKit(zordz.level, x, y));
+								break;
+							case "red_key":
+								zordz.level.add(new Key(zordz.level, x, y, 1));
 								break;
 							}
 						} catch (Exception e) {

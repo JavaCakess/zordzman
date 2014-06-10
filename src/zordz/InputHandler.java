@@ -33,9 +33,7 @@ public class InputHandler {
 				}
 				float camera_speed = zordz.player.getSpeed() * ((float)Options.MAX_TICK_RATE / Options.TICK_RATE);
 				float ymax = (zordz.screen.yOff+640)/32;
-				//float ymax_m = (zordz.level.height*32)-640;
 				float xmax = (zordz.screen.xOff+640)/32;
-				//float xmax_m = (zordz.level.width*32)-640;
 				if (!zordz.gamestate.paused) {
 				if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
 					if (zordz.player.getY() < zordz.screen.yOff + min_scroll_y) {
@@ -76,6 +74,10 @@ public class InputHandler {
 		case 3:
 			break;
 		case 4:
+			break;
+		case 5:
+			break;
+		case 6:
 			break;
 		}
 	}

@@ -24,7 +24,10 @@ public class FoodKit extends Entity {
 	}
 
 	public void tick() {
-		for (Mob m : lvl.getMobs()) {
+		for (int i = 0; i < lvl.getEntities().size(); i++) {
+			Entity ent = lvl.getEntities().get(i);
+			if (!(ent instanceof Mob)) continue;
+			Mob m = (Mob) ent;
 			if (m instanceof Player && m.intersects(rect)) {
 				Player player = (Player) m;
 				player.giveFood(2);

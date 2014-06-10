@@ -55,7 +55,10 @@ public class Fireball extends Entity {
 		rect = new Rectangle(Math.round(x), Math.round(y), 16, 16);
 		lifeticks++;
 
-		for (Mob m : lvl.getMobs()) {
+		for (int i = 0; i < lvl.getEntities().size(); i++) {
+			Entity ent = lvl.getEntities().get(i);
+			if (!(ent instanceof Mob)) continue;
+			Mob m = (Mob) ent;
 			if (!m.equals(shooter)) {
 				if (m.intersects(this.rect)) {
 					if (m.getBurnTicks() < 1) {
