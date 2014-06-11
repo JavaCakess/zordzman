@@ -19,6 +19,7 @@ public class Fireball extends Entity {
 		this.dy = dy;
 		dir = direction;
 		this.shooter = shooter;
+		name = "Fireball";
 		rect = new Rectangle(Math.round(x), Math.round(y), 16, 16);
 		id = 3;
 	}

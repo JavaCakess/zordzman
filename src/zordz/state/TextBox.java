@@ -57,6 +57,9 @@ public class TextBox extends Button {
 	}
 
 	public void tick() {
+		if (cursor_pos > text.length()) {
+			cursor_pos = text.length();
+		}
 		if (Mouse.isButtonDown(0)) {
 			if (this.clicked()) {
 				focus = true;

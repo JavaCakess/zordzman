@@ -10,6 +10,9 @@ public abstract class Entity {
 	protected Level lvl;
 	public int id;
 	public Rectangle rect = new Rectangle();
+	String name;
+	public int uid;
+	
 	public Entity(Level level, float x, float y) {
 		this.x = x;
 		this.y = y;
@@ -18,34 +21,29 @@ public abstract class Entity {
 		this.lvl = level;
 	}
 	
-	public float getX() {
-		return x;
-	}
+	public String getName() { return name; }
+	
+	public float getX() { return x; }
 
-	public void setX(float x) {
-		this.x = x;
-	}
+	public void setX(float x) { this.x = x; }
 
-	public float getY() {
-		return y;
-	}
+	public float getY() { return y; }
 
-	public void setY(float y) {
-		this.y = y;
-	}
+	public void setY(float y) { this.y = y; }
 
 	public static Entity createEntity(Level l, int id, String[] args) {
 		switch (id) {
 		case 1:
+			 
 			return new HealthPickup(l, 0, 0);
 		case 2:
 			return new FoodKit(l, 0, 0);
 		case 3:
 			switch (args[3]) {
 			case "RED":
-				return new Key(l, 0, 0, 1);
+				return new Key(l, 0, 0, 0);
 			}
-			return new Key(l, 0, 0, 1);
+			return new Key(l, 0, 0, 0);
 		}
 		return new HealthPickup(l, 0, 0);
 	}

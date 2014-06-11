@@ -16,6 +16,7 @@ public class FoodKit extends Entity {
 	public FoodKit(Level level, float x, float y) {
 		super(level, x, y);
 		id = 2;
+		name = "FoodKit";
 		rect = new Rectangle(Math.round(x), Math.round(y), 16, 16);
 	}
 

@@ -1,6 +1,5 @@
 package zordz.net;
 
-import zordz.net.GameClient;
 
 public class Packet03SwitchWeap extends Packet {
 

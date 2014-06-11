@@ -69,7 +69,6 @@ public class OptionsState extends State {
 	}
 	
 	public void init() {
-		System.out.println("four eyes");
 		username.setText(Options.USERNAME);
 		System.out.println(username.text);
 	}

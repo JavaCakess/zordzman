@@ -1,15 +1,16 @@
 package zordz.level;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import zordz.Options;
 import zordz.Zordz;
 import zordz.entity.Entity;
-import zordz.entity.Mob;
-import zordz.entity.Player;
 import zordz.entity.PlayerMP;
 import zordz.level.tile.Tile;
 import zordz.net.Packet05PlayerInfo;
@@ -27,6 +28,10 @@ public class Level {
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
 	public int botcount = 0;
 	
+	public String script = "";
+	
+	public int lastUID = 0;
+	
 	public Level() {
 		
 	}
@@ -41,6 +46,20 @@ public class Level {
 			fileName.substring(0, fileName.length()-4) + ".ents"));
 		for (String s : data) {
 			l.add(Entity.parseEntity(l, s));
+		}
+		
+		// Attach the Lua script.
+		
+		try {
+			File script = new File(path + File.separatorChar + "script.lua");
+			if (!script.exists()) return l;
+			BufferedReader reader = new BufferedReader(new FileReader(script));
+			String ln;
+			while ((ln = reader.readLine()) != null) l.script = l.script.concat(ln + "\n");
+			
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		return l;
 	}
@@ -88,7 +107,7 @@ public class Level {
 	public Level(int WIDTH, int HEIGHT) {
 		this.setWidth(WIDTH);
 		this.setHeight(HEIGHT);
-		tiles = new byte[WIDTH][WIDTH];
+		tiles = new byte[WIDTH][HEIGHT];
 	}
 
 	public byte getTileIDAt(int x, int y) {	
@@ -123,11 +142,16 @@ public class Level {
 	}
 	
 	public void add(Entity e) {
+		e.uid = lastUID;
+		lastUID++;
 		entities.add(e);
 	}
 	
 	public void remove(Entity e) {
-		if (entities.contains(e)) entities.remove(e);
+		if (entities.contains(e)) {
+			lastUID = e.uid;
+			entities.remove(e);
+		}
 	}
 
 	public Tile getTileAt(int x, int y) {
@@ -231,6 +255,7 @@ public class Level {
 		for (int i = 0; i < entities.size(); i++) {
 			Entity e = entities.get(i);
 			entities.remove(e);
+			lastUID = 0;
 		}
 	}
 

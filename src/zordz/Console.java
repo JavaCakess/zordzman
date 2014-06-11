@@ -136,7 +136,7 @@ public class Console extends JFrame {
 								zordz.level.add(new FoodKit(zordz.level, x, y));
 								break;
 							case "red_key":
-								zordz.level.add(new Key(zordz.level, x, y, 1));
+								zordz.level.add(new Key(zordz.level, x, y, 0));
 								break;
 							}
 						} catch (Exception e) {

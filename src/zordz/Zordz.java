@@ -25,6 +25,7 @@ import zordz.state.OptionsState;
 import zordz.state.State;
 import zordz.state.TitleState;
 import zordz.util.IOTools;
+import zordz.util.LuaExec;
 import zordz.util.SoundPlayer;
 
 public class Zordz {
@@ -95,6 +96,7 @@ public class Zordz {
 		state = titlestate;
 		inputhandler = new InputHandler(this);
 		SoundPlayer.init();
+		LuaExec.init();
 
 		console.write("Loading options");
 		ArrayList<String> options = IOTools.readFile(new File("res/settings/options.txt"));

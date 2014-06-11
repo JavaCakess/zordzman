@@ -33,7 +33,8 @@ public class IgnisZord extends Weapon {
 
 	public void function(Player player, Level level, float x, float y) {
 		if (player.attackTicks == 3) {
-			for (Entity ent : level.getEntities()) {
+			for (int i = 0; i < level.getEntities().size(); i++) {
+				Entity ent = level.getEntities().get(i);
 				if (!(ent instanceof Mob)) continue;
 				Mob mob = (Mob) ent;
 				if (mob.intersects(player.swordHitbox) && mob != player) {

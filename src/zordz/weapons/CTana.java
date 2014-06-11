@@ -44,7 +44,8 @@ public class CTana extends Weapon {
 
 	public void function(Player player, Level level, float x, float y) {
 		if (player.attackTicks == 9) {
-			for (Entity entity : level.getEntities()) {
+			for (int i = 0; i < level.getEntities().size(); i++) {
+				Entity entity = level.getEntities().get(i);
 				if (!(entity instanceof Mob)) continue;
 				Mob mob = (Mob) entity;
 				if (mob.intersects(player.swordHitbox) && mob != player) {

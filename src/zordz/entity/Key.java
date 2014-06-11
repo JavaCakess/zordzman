@@ -6,12 +6,13 @@ import zordz.level.Level;
 
 public class Key extends Entity {
 	
-	int color = 0; // 0 = Red
-	int ticks = 0;
+	public int color = 0; // 0 = Red
+	public int ticks = 0;
 	
 	public Key(Level level, float x, float y, int color) {
 		super(level, x, y);
 		this.color = color;
+		name = "Key";
 	}
 
 	public void render() {
