@@ -51,7 +51,6 @@ public class HelpState extends State {
 	}
 
 	public int getID() {
-		
 		return 4;
 	}
 
@@ -63,5 +62,4 @@ public class HelpState extends State {
 	public void onSwitchTo(State awayFrom) {
 		
 	}
-	
 }

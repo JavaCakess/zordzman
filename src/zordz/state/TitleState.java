@@ -29,7 +29,6 @@ public class TitleState extends State {
 	
 	String buttonDesc = "";
 	int ticks = 0;
-	int cjafFlashNum = 0;
 	public TitleState(Zordz zordz) {
 		this.zordz = zordz;
 		for (int x = 0; x < titleLevel.getWidth(); x++) {
@@ -57,19 +56,6 @@ public class TitleState extends State {
 		Text.render(buttonDesc, 0, 480-41, 16, 16);
 		Drawer.setCol(Color.white);
 		Text.render(Zordz.version, 0, 480-24, 24, 24);
-		if (ticks % Options.TICK_RATE == 0) cjafFlashNum++;
-		String cjafString = "CJAF!";
-		for (int i = 0; i < cjafString.length(); i++) {
-			if (cjafFlashNum % cjafString.length() == i) {
-				Drawer.setCol(Color.red);
-			}
-			Text.render(""+cjafString.charAt(i), 640 - (24 * -i+1) - (24 * 5), 480 - 24, 24, 24);
-			Drawer.setCol(Color.white);
-		}
-		
-		for (int i = 0; i < zordz.hex.length(); i++) {
-			Text.render(""+zordz.hex.charAt(i), 640 - (16 * -i+1) - (16 * zordz.hex.length()), 480 - 40, 16, 16);
-		}
 		Drawer.setCol(Color.white);
 	}
 	public void tick() {

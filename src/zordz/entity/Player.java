@@ -70,7 +70,7 @@ public class Player extends Mob {
 		health = max_health;
 		this.username = username;
 		speed = 1f; //Speed: 60
-		rect = new Rectangle((int)x, (int)y, 32, 32);
+		rect = new Rectangle((int)x, (int)y + 16, 32, 16);
 		equip(Options.combatWeap, Options.specialWeap);
 	}
 
@@ -292,7 +292,7 @@ public class Player extends Mob {
 	}
 
 	public void tick() {
-		rect = new Rectangle((int)x, (int)y, 32, 32);
+		rect = new Rectangle((int)x, (int)y + 16, 32, 16);
 		if (attackTicks > 0) {
 			attackTicks--;
 			combat.function(this, lvl, x, y);

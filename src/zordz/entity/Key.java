@@ -4,6 +4,11 @@ import zordz.gfx.Drawer;
 import zordz.gfx.SpriteSheet;
 import zordz.level.Level;
 
+/**
+ * ID: 3
+ * @author user
+ *
+ */
 public class Key extends Entity {
 	
 	public int color = 0; // 0 = Red

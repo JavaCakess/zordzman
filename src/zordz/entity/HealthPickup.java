@@ -13,6 +13,8 @@ import zordz.util.SoundPlayer;
  * ID: 1
  */
 public class HealthPickup extends Entity {
+	int ticks = 0;
+	
 	public HealthPickup(Level level, float x, float y) {
 		super(level, x, y);
 		id = 1;
@@ -22,6 +24,8 @@ public class HealthPickup extends Entity {
 
 	public void render() {
 		Drawer.draw(SpriteSheet.sheet, 0, 2, x, y, 16, 16);
+		ticks++;
+		if (ticks % 60 < 30) y += 0.1; else y -= 0.1;
 	}
 
 	public void tick() {

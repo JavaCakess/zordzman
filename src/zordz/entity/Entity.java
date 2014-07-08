@@ -39,11 +39,7 @@ public abstract class Entity {
 		case 2:
 			return new FoodKit(l, 0, 0);
 		case 3:
-			switch (args[3]) {
-			case "RED":
-				return new Key(l, 0, 0, 0);
-			}
-			return new Key(l, 0, 0, 0);
+			return new Key(l, 0, 0, Short.parseShort(args[3]));
 		}
 		return new HealthPickup(l, 0, 0);
 	}

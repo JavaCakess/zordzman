@@ -19,6 +19,7 @@ import zordz.state.Button;
 import zordz.state.ChooseLevelState;
 import zordz.state.GameState;
 import zordz.state.HelpState;
+import zordz.state.IntroState;
 import zordz.state.LoadoutState;
 import zordz.state.MultiplayerState;
 import zordz.state.OptionsState;
@@ -44,6 +45,7 @@ public class Zordz {
 	public LoadoutState loadoutstate;
 	public InputHandler inputhandler;
 	public GameClient gameclient;
+	public IntroState introstate;
 	public static Zordz zordz;
 	public static String version = "v0.1.0";
 	public Map<String, String> englishMap = new HashMap<String, String>();
@@ -53,7 +55,7 @@ public class Zordz {
 	public String hex = "8B96315";
 	public PlayerMP player = null;
 	public TCPClient tcpclient;
-
+	
 
 	public static void main(String[] args) {
 		new Zordz().start();
@@ -93,8 +95,9 @@ public class Zordz {
 		helpstate = new HelpState(this);
 		mutliplayerstate = new MultiplayerState(this);
 		loadoutstate = new LoadoutState(this);
-		state = titlestate;
 		inputhandler = new InputHandler(this);
+		introstate = new IntroState(this);
+		state = introstate;
 		SoundPlayer.init();
 		LuaExec.init();
 

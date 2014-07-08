@@ -15,10 +15,10 @@ public class Sound {
 	public static final Sound health_pickup = SoundPlayer.newSound("res/sfx/pickup/health_pickup.wav", 8);
 	public static final Sound foodkit = SoundPlayer.newSound("res/sfx/pickup/foodkit.wav", 9);
 	public static final Sound katana_swing = SoundPlayer.newSound("res/sfx/items/katana_swing01.wav", 10);
-    
+    public static final Sound start = SoundPlayer.newSound("res/music/start.wav", 11);
+	
     public Sound(int source, int id) {
     	this.s = source;
         sounds[id] = this;
     }
-    
 }

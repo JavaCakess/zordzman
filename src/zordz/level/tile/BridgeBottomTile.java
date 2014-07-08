@@ -5,19 +5,16 @@ import zordz.gfx.Drawer;
 import zordz.gfx.SpriteSheet;
 import zordz.level.Level;
 
-public class BridgeTopTile extends Tile {
-
-	int currentAnim;
+public class BridgeBottomTile extends Tile {
+	int currentAnim = 0;
 	int anims[] = {0, 1, 2, 1};
-	
-	public BridgeTopTile(int id) {
-		super(id, 0, 0, 0x4F4F00, false);
-		this.ssx = 7 + currentAnim;
-		
+	public BridgeBottomTile(int id) {
+		super(id, 0, 0, 0x4F5F00, false);
+		this.ssx = 11 + currentAnim;
 	}
 
 	public void render(Level level, float x, float y) {
-		Drawer.draw(SpriteSheet.sheet, 7 + anims[currentAnim], ssy, x, y, 32, 32);
+		Drawer.draw(SpriteSheet.sheet, 11 + anims[currentAnim], ssy, x, y, 32, 32);
 	}
 
 	public void tick(Level level, float x, float y) {
@@ -30,4 +27,5 @@ public class BridgeTopTile extends Tile {
 			}
 		}
 	}
+
 }

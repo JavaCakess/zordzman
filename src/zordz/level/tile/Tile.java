@@ -16,8 +16,8 @@ public abstract class Tile {
 	public static Tile WATER = new WaterTile(2);
 	public static Tile SAND = new SandTile(3, 5, 0);
 	public static Tile SAND_ROCK = new SandRockTile(4, 6, 0);
-	public static Tile BRIDGE_TOP = new BridgeTopTile(5);
-	//public static Tile BRIDGE_BOTTOM = new BridgeBottomTile(6);
+	public static Tile BRIDGE_HORZ = new BridgeHorzTile(5, 7, 0);
+	public static Tile BRIDGE_VERT = new BridgeVertTile(6, 8, 0);
 	
 	public Tile(int id, int ssx, int ssy, int col, boolean solid) {
 		this.ssx = ssx;

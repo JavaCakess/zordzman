@@ -17,7 +17,6 @@ public class InputHandler {
 		case 0:
 			break;
 		case 1:
-			
 				while (Keyboard.next()) {
 					if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
 						zordz.gamestate.togglePaused();
