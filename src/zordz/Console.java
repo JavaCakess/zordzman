@@ -17,6 +17,10 @@ import zordz.entity.Player;
 
 public class Console extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 710334028696985287L;
 	JTextArea txtArea;
 	JTextField field;
 	public Console(final Zordz zordz) {

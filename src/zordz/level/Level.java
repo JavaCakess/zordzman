@@ -27,47 +27,47 @@ public class Level {
 	//private byte[][] tile_data;
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
 	public int botcount = 0;
-	
+
 	public String script = "";
-	
+
 	public int lastUID = 0;
-	
+
 	public Level() {
-		
+
 	}
-	
+
 	public static Level loadMap(String path, String fileName) {
 		// First the MAP loading.
 		// Load the .lvl bit.
 		Level l = Level.loadLevel(path + File.separatorChar + fileName.substring(0, fileName.length()-4) + ".lvl");
 		// Then the entities.
 		ArrayList<String> data = 
-			IOTools.readFile(new File(path + File.separatorChar + 
-			fileName.substring(0, fileName.length()-4) + ".ents"));
+				IOTools.readFile(new File(path + File.separatorChar + 
+						fileName.substring(0, fileName.length()-4) + ".ents"));
 		for (String s : data) {
 			l.add(Entity.parseEntity(l, s));
 		}
-		
+
 		// Attach the Lua script.
-		
+
 		try {
 			File script = new File(path + File.separatorChar + "script.lua");
 			if (!script.exists()) return l;
 			BufferedReader reader = new BufferedReader(new FileReader(script));
 			String ln;
 			while ((ln = reader.readLine()) != null) l.script = l.script.concat(ln + "\n");
-			
+
 			reader.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return l;
 	}
-	
+
 	public static Level loadLevel(String path) {
 		int yPos = 0;
 		Scanner x = null;
-		
+
 		try {
 			x = new Scanner(new File(path));
 		} catch (FileNotFoundException e) {
@@ -99,11 +99,11 @@ public class Level {
 		level.setWidth(wd);
 		level.setHeight(ht);
 		x.close();
-		
+
 
 		return level;
 	}
-	
+
 	public Level(int WIDTH, int HEIGHT) {
 		this.setWidth(WIDTH);
 		this.setHeight(HEIGHT);
@@ -113,7 +113,7 @@ public class Level {
 	public byte getTileIDAt(int x, int y) {	
 		return tiles[x][y];
 	}
-	
+
 	public void render() {
 		for (int x = (int)(Zordz.zordz.screen.xOff / 32) - 1; x < (int)(Zordz.zordz.screen.xOff / 32) + WIDTH + 1; x++) {
 			for (int y = (int)(Zordz.zordz.screen.yOff / 32) - 1; y < (int)(Zordz.zordz.screen.yOff / 32) + HEIGHT + 1; y++) {
@@ -140,13 +140,13 @@ public class Level {
 			e.render();
 		}
 	}
-	
+
 	public void add(Entity e) {
 		e.uid = lastUID;
 		lastUID++;
 		entities.add(e);
 	}
-	
+
 	public void remove(Entity e) {
 		if (entities.contains(e)) {
 			lastUID = e.uid;
@@ -160,7 +160,7 @@ public class Level {
 		}
 		return Tile.getByID(tiles[x][y]);
 	}
-	
+
 	public void tick() {
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
@@ -197,7 +197,7 @@ public class Level {
 	public ArrayList<Entity> getEntities() {
 		return entities;
 	}
-	
+
 	public void movePlayer(String username, float xa, float ya, int direction) {
 		for (int a = 0; a < getEntities().size(); a++) {
 			Entity e = getEntities().get(a);
@@ -250,7 +250,7 @@ public class Level {
 		}
 		return null;
 	}
-	
+
 	public void clear() {
 		for (int i = 0; i < entities.size(); i++) {
 			Entity e = entities.get(i);
@@ -262,8 +262,15 @@ public class Level {
 	public void playerInfo(Packet05PlayerInfo packet) {
 		PlayerMP player = getPlayerMP(packet.getUsername());
 		if (player == null) {
-			if (packet.getUsername().equalsIgnoreCase(Options.USERNAME)) {
-				return;
+			return;
+		}
+		
+		if (player.getX() != packet.getFloatField("x") || player.getY() != packet.getFloatField("y")) {
+			System.out.println("gaypenis");
+			float d = Options.TICK_RATE;
+			player.move_ticks+=Options.MAX_TICK_RATE / d;
+			if (player.move_ticks >= Options.MAX_TICK_RATE) {
+				player.move_ticks = 0;
 			}
 		}
 		player.setX(packet.getFloatField("x"));
@@ -272,19 +279,19 @@ public class Level {
 		player.setHealth(packet.getIntField("health"));
 		player.setMaxHealth(packet.getIntField("max_health"));
 		player.stats.healthAdditive = packet.getIntField("max_health") - 100;
-		
+
 		player.foodCounter = packet.getIntField("food_counter");
-		
+
 		int currwep = packet.getIntField("current_wep");
 		if (currwep == 0) player.setCurrentWeapon(player.getCombatWeapon(), false);
 		else player.setCurrentWeapon(player.getSpecialWeapon(), false);
-		
+
 		player.setCombatWeapon(packet.getIntField("combat_wep"));
 		player.setSpecialWeapon(packet.getIntField("special_wep"));
-	
+
 		player.setBleedTicks(packet.getIntField("bleed_ticks"));
 		player.setBurnTicks(packet.getIntField("burn_ticks"));
-		
+
 		player.setBurnRate(packet.getIntField("burn_rate"));
 	}
 }

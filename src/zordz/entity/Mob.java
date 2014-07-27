@@ -40,45 +40,7 @@ public abstract class Mob extends Entity {
 		bleedTicks = bt;
 	}
 
-	public boolean move(float xa, float ya, boolean collisionCheck) {
-		int xMin = ((int)rect.x / 32) - 2;
-		int xMax = ((int)rect.x / 32) + 2;
-		int yMin = ((int)rect.y / 32) - 2;
-		int yMax = ((int)rect.y / 32) + 2;
-
-
-
-		if (collisionCheck) {
-			for (int x = xMin; x < xMax; x++) {
-				for (int y = yMin; y < yMax; y++) {
-					if (!lvl.getTileAt(x, y).pass(lvl, this, x * 32, y * 32)) {
-						System.out.println("no");
-						if (direction == UP && rect.y < (y * 32) + 32) {
-							move(0, speed);
-							return false;
-						}
-						if (direction == DOWN && rect.y + rect.height < (y * 32)) {
-							move(0, -speed);
-							return false;
-						}
-						if (direction == LEFT && rect.x < (x * 32) + 32) {
-							move(speed, 0);
-							return false;
-						}
-						if (direction == RIGHT && rect.x + rect.width > (x * 32)) {
-							move(-speed, 0);
-							return false;
-						}
-					}
-				}
-			}
-		}
-		x += xa * (Options.MAX_TICK_RATE / Options.TICK_RATE);
-		y += ya * (Options.MAX_TICK_RATE / Options.TICK_RATE);
-		return true;
-	}
-
-	public boolean move(float xa, float ya) {
+	public boolean move(float xa, float ya, boolean doMove) {
 
 
 		int xMin = ((int)rect.x / 32) - 2;
@@ -104,8 +66,10 @@ public abstract class Mob extends Entity {
 				}
 			}
 		}
-		x += xa * (Options.MAX_TICK_RATE / Options.TICK_RATE);
-		y += ya * (Options.MAX_TICK_RATE / Options.TICK_RATE);
+		if (doMove) {
+			x += xa * (Options.MAX_TICK_RATE / Options.TICK_RATE);
+			y += ya * (Options.MAX_TICK_RATE / Options.TICK_RATE);
+		}
 		return true;
 	}
 
@@ -113,7 +77,7 @@ public abstract class Mob extends Entity {
 		softDamage(d);
 		p.onDoDamage(this, d);
 	}
-	
+
 	public void softDamage(double d) {
 		int damage = (int)Math.ceil(d);
 		health -= damage;

@@ -30,7 +30,7 @@ public class IntroState extends State {
 		
 		NewGLHandler.setCurrentColor(new float[]{alpha, alpha, alpha}, false);
 		NewGLHandler.draw2DRect(0, 0, Zordz.WIDTH, Zordz.HEIGHT, true);
-		NewGLHandler.setCurrentColor(new float[]{alpha / 2, 0f, 0f}, false);
+		NewGLHandler.setCurrentColor(new float[]{alpha / 1.75f, 0f, 0f}, false);
 		Text.render("Fountanio", 320 - ("Fountanio".length() * 16), 196, 32, 32);
 		NewGLHandler.resetColors();
 	}
@@ -48,7 +48,7 @@ public class IntroState extends State {
 			System.out.println(waitTicks);
 		} else ticks++;
 		
-		if (totalticks == 30) SoundPlayer.play(Sound.start);
+		if (totalticks == 60) SoundPlayer.play(Sound.start);
 		totalticks++;
 	}
 

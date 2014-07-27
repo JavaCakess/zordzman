@@ -33,9 +33,16 @@ public class PlayerMP extends Player {
 	}
 
 	public boolean move(float xa, float ya) {
-		if (super.move(xa, ya) && Zordz.zordz.gamestate.multiplayer) {
-			Packet01Move movePacket = new Packet01Move(username, x, y, direction);
-			movePacket.writeData(Zordz.zordz.gameclient);
+		if (Zordz.zordz.gamestate.multiplayer) {
+			float xx = x, yy = y;
+			if (super.move(xa, ya, false, true)) {
+				Packet01Move movePacket = new Packet01Move(username, x, y, direction);
+				movePacket.writeData(Zordz.zordz.gameclient);
+				x = xx; y = yy;
+				return true;
+			}
+		} else {
+			super.move(xa, ya, true, true);
 			return true;
 		}
 		return false;
@@ -48,7 +55,7 @@ public class PlayerMP extends Player {
 			attackPacket.writeData(Zordz.zordz.gameclient);
 		}
 	}
-	
+
 	public void setCurrentWeapon(Weapon weap, boolean b) {
 		super.setCurrentWeapon(weap);
 		if (!b) { return; }
@@ -69,5 +76,5 @@ public class PlayerMP extends Player {
 	public int getFoodCounter() {
 		return foodCounter;
 	}
-	
+
 }

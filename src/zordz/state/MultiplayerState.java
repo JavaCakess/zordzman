@@ -20,7 +20,6 @@ public class MultiplayerState extends State {
 	Button backToTitle = new Button("Go Back", Color.yellow, Zordz.WIDTH / 2 - (Button.WIDTH / 2), Zordz.HEIGHT - Button.HEIGHT - 24, 26, 16);
 	ScrollPane servers = new ScrollPane("Servers", 80, 60, 480, (480 / 12 * 9) - 100, 0, 0, null);
 	Button connect = new Button("Connect", Color.green, Zordz.WIDTH / 2 - (Button.WIDTH / 2), 3, 26, 16);
-	Level mpMap;
 	public boolean canPlay;
 	public boolean sentLogin = false;
 	public String status = "Join a server.";
@@ -45,9 +44,6 @@ public class MultiplayerState extends State {
 		);
 		servers.fullBarSize = 187;
 		servers.add("localhost");
-		servers.add("ckjaf.zapto.org");
-		servers.add("26.16.195.10");
-		servers.add("mzordz.com");
 	}
 
 	public void render() {
@@ -55,7 +51,7 @@ public class MultiplayerState extends State {
 		servers.render();
 		backToTitle.draw();
 		connect.draw();
-		Drawer.setCol(Color.lightGray);
+		Drawer.setCol(new Color(200, 200, 200));
 		Text.render(status, 78, 480-160, 16, 16);
 		Drawer.setCol(Color.white);
 	}
@@ -73,7 +69,10 @@ public class MultiplayerState extends State {
 				try { Thread.sleep(1000); } catch (Exception e) {}
 				if (zordz.tcpclient.status != TCPClient.SUCCESSFUL) {
 					connect_cooldown = 60;
-					status = "Failed to connect.";
+					if (zordz.tcpclient.status == TCPClient.FAILED_TO_CONNECT)
+						status = "Failed to connect.";
+					else if (zordz.tcpclient.status == TCPClient.USERNAME_TAKEN)
+						status = "Username taken.";
 					zordz.tcpclient = null;
 					zordz.gameclient = null;
 					return;

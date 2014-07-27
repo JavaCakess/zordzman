@@ -27,6 +27,7 @@ public class TCPClient extends Thread {
 	public static final int SUCCESSFUL = 1;
 	public static final int FAILED_TO_CONNECT = -1;
 	public static final int MAP_NOT_FOUND = 2;
+	public static final int USERNAME_TAKEN = 3;
 	public int status = 0;
 
 	// Packet Type (Sent by client | Sent by server)
@@ -59,7 +60,12 @@ public class TCPClient extends Thread {
 			while ((line = reader.readLine()) != null) {
 				String[] args = line.split(" ");
 				System.out.println(line);
-				if (args[0].equals("MAP")) {
+				if (args[0].equals("INV")) {
+					if (args[1] == "0") {
+						// Invalid username
+						status = USERNAME_TAKEN;
+					}
+				} else if (args[0].equals("MAP")) {
 					zordz.level = zordz.getLevel(args[1].substring(0, args[1].length() - 4));
 					if (zordz.level == null) {
 						status = MAP_NOT_FOUND;

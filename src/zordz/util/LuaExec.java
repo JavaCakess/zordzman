@@ -1,7 +1,5 @@
 package zordz.util;
 
-import java.io.File;
-
 import javax.script.Bindings;
 import javax.script.Compilable;
 import javax.script.CompiledScript;

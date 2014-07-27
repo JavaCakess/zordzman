@@ -55,7 +55,7 @@ public class Player extends Mob {
 			2, 5,
 			3, 5
 	};
-	
+
 	public byte[] up_gfx = {
 			6, 4,
 			7, 4,
@@ -123,7 +123,7 @@ public class Player extends Mob {
 		Text.render(username, (x + 12) - (username.length() * 4), y - 20, 8, 8);
 
 		if (!render) return;
-		
+
 		byte scale = 2;
 		byte down_legs_modifier = 0;
 		byte side_pos_modifier = 0;
@@ -143,7 +143,7 @@ public class Player extends Mob {
 		byte down_gfx_5 = down_gfx[5];
 		byte down_gfx_6 = down_gfx[6];
 		byte down_gfx_7 = down_gfx[7];
-		
+
 		byte right_gfx_0 = right_gfx[0];
 		byte right_gfx_1 = right_gfx[1];
 		byte right_gfx_2 = right_gfx[2];
@@ -161,7 +161,7 @@ public class Player extends Mob {
 		byte up_gfx_5 = up_gfx[5];
 		byte up_gfx_6 = up_gfx[6];
 		byte up_gfx_7 = up_gfx[7];
-		
+
 		if (damageTicks > 0) {
 			if (burnTicks > 0) Drawer.setCol(new Color(255, 110, 0));
 			else Drawer.setCol(Color.red);
@@ -177,12 +177,12 @@ public class Player extends Mob {
 			down_gfx_5 = backpack.down_gfx[5];
 			down_gfx_6 = backpack.down_gfx[6];
 			down_gfx_7 = backpack.down_gfx[7];
-			
+
 			right_gfx_0 = backpack.right_gfx[0];
 			right_gfx_1 = backpack.right_gfx[1];
 			right_gfx_2 = backpack.right_gfx[2];
 			right_gfx_3 = backpack.right_gfx[3];
-			
+
 			right_gfx_4 = backpack.right_gfx[4];
 			right_gfx_5 = backpack.right_gfx[5];
 			right_gfx_6 = backpack.right_gfx[6];
@@ -192,12 +192,12 @@ public class Player extends Mob {
 			up_gfx_1 = backpack.up_gfx[1];
 			up_gfx_2 = backpack.up_gfx[2];
 			up_gfx_3 = backpack.up_gfx[3];
-			
+
 			up_gfx_4 = backpack.up_gfx[4];
 			up_gfx_5 = backpack.up_gfx[5];
 			up_gfx_6 = backpack.up_gfx[6];
 			up_gfx_7 = backpack.up_gfx[7];
-			
+
 			player_gfx = backpack.sheet;
 		}
 
@@ -320,8 +320,8 @@ public class Player extends Mob {
 		getCurrentWeapon().use(this, lvl, x, y);
 	}
 
-	public boolean move(float xa, float ya) {
-		super.move(xa, ya);
+	public boolean move(float xa, float ya, boolean anim, boolean doMove) {
+		super.move(xa, ya, doMove);
 		float d = Options.TICK_RATE;
 		if (xa > 0) {
 			xa = 1;
@@ -335,9 +335,11 @@ public class Player extends Mob {
 			ya = -1;
 		}
 
-		move_ticks+=Options.MAX_TICK_RATE / d;
-		if (move_ticks >= Options.MAX_TICK_RATE) {
-			move_ticks = 0;
+		if (anim) {
+			move_ticks+=Options.MAX_TICK_RATE / d;
+			if (move_ticks >= Options.MAX_TICK_RATE) {
+				move_ticks = 0;
+			}
 		}
 
 		for (Entity ent : lvl.getEntities()) {
@@ -346,7 +348,7 @@ public class Player extends Mob {
 			if (!mob.equals(this) && mob.isBot()) {
 				Player player = (Player) mob;
 				if (Options.PLAYERS_MIMIC && !Zordz.zordz.player.equals(player)) {
-					player.move(xa, ya);
+					player.move(xa, ya, doMove);
 				}
 			}
 		}
@@ -354,7 +356,7 @@ public class Player extends Mob {
 	}
 
 	public boolean isBot() {
-		return false;
+		return bot;
 	}
 
 	public void softDamage(double d) {
@@ -437,7 +439,7 @@ public class Player extends Mob {
 		}
 		foodCounter += i;
 	}
-	
+
 	public void setBot(boolean b) {
 		bot = b;
 	}
