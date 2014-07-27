@@ -4,7 +4,7 @@ around October 13, 2013.
 Main reason I'm putting it on GitHub is to get some help
 cleaning the code up.
 
-# Libraries #
+## Libraries ##
 
 You'll need Slick 2D ( Doesn't really matter what version, its
  only used for texture loading anyway), and LWJGL (very latest
@@ -16,15 +16,15 @@ directory.
 There's also the lwjgl_util.jar that you'll need to get.
 Can't remember if that's actually needed or not, though...
 
-## Trivial Stuff ##
+# Trivial Stuff #
 
-# Plot #
+## Plot ##
 
 Basically the plot is that a Nordic boy, Zorrvik, sets out
 to destroy the evil Omnom, who has been terrorizing his
 kind. He must save various locations from Omnom.
 
-# Gameplay #
+## Gameplay ##
 
 The Player can select a map on singleplayer or join a server
 on multiplayer (currently only localhost, though), and they 
@@ -39,7 +39,7 @@ other than combat, such as food to heal the player, or a shield
 to increase the player's maximum HP. Some of these Special Weapons
 also have negative effects, such as making the player burn faster.
 
-# Graphics #
+## Graphics ##
 
 The graphics are meant to look a bit like Legend of Zelda on the NES
 or something, but I'm very bad at art. All the sprites and tiles are
