@@ -46,7 +46,7 @@ or something, but I'm very bad at art. All the sprites and tiles are
 stored in spritesheets. You can find UI things such as buttons in the
 res/gui folder.
 
-# Level Format #
+## Level Format ##
 
 Levels are, right now, just folders that end in '.map' (too lazy).
 Inside them are .lvl files (Level files, contain all the tiles), .ents
